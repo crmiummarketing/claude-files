@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bot Flow — Zoho Summit 2026 | SendPulse-стиль</title>
+<style>
+  :root {
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --purple: #9333ea;
+    --purple-light: #f3e8ff;
+    --blue: #0284c7;
+    --blue-light: #e0f2fe;
+    --slate: #64748b;
+    --slate-light: #f1f5f9;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --cyan: #0891b2;
+    --cyan-light: #cffafe;
+    --teal: #0d9488;
+    --teal-light: #ccfbf1;
+    --dark: #1e293b;
+    --amber: #f59e0b;
+    --amber-light: #fef3c7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+    line-height: 1.55;
+    padding: 24px;
+    font-size: 14px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header.page-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    padding: 32px;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+  }
+  header.page-header h1 { font-size: 26px; margin-bottom: 8px; font-weight: 700; }
+  header.page-header p { font-size: 15px; opacity: 0.95; }
+
+  .legend {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    margin-bottom: 28px;
+  }
+  .legend h3 { font-size: 14px; margin-bottom: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    background: white;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+    z-index: 100;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .nav-bar a {
+    color: #4f46e5;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    background: #eef2ff;
+    flex-shrink: 0;
+  }
+  .nav-bar a:hover { background: #e0e7ff; }
+
+  h2 {
+    font-size: 22px;
+    margin: 50px 0 8px;
+    color: #1e293b;
+    border-left: 5px solid #4f46e5;
+    padding-left: 14px;
+  }
+  h2:first-of-type { margin-top: 30px; }
+
+  .section-meta {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #78350f;
+    border-radius: 4px;
+  }
+  .section-meta strong { color: #451a03; }
+
+  h3.flow-sub {
+    font-size: 15px;
+    color: #475569;
+    margin: 28px 0 12px;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  /* === BLOCK STYLES === */
+  .block {
+    background: white;
+    border-radius: 8px;
+    margin: 0 auto;
+    max-width: 480px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    position: relative;
+  }
+
+  .block-header {
+    padding: 8px 14px;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: space-between;
+  }
+
+  .block-header-left { display: flex; align-items: center; gap: 6px; }
+
+  .block-msg .block-header { background: var(--green); }
+  .block-action .block-header { background: var(--purple); }
+  .block-filter .block-header { background: var(--blue); }
+  .block-pause .block-header { background: var(--slate); }
+  .block-cond .block-header { background: var(--red); }
+  .block-api .block-header { background: var(--cyan); }
+  .block-wait .block-header { background: var(--teal); }
+  .block-trigger .block-header { background: var(--dark); }
+  .block-campaign .block-header { background: #be185d; }
+
+  .copy-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .copy-btn:hover { background: rgba(255, 255, 255, 0.35); }
+  .copy-btn.success { background: #fbbf24; color: #78350f; }
+
+  .block-content {
+    padding: 14px 16px;
+    font-size: 13.5px;
+    white-space: pre-wrap;
+    color: #1f2937;
+    user-select: text;
+  }
+
+  .block-content var, .var {
+    background: #ddd6fe;
+    color: #5b21b6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .block-content .b { font-weight: 600; }
+  .block-content .em { font-style: italic; color: #475569; }
+
+  .block-settings {
+    background: #f8fafc;
+    border-top: 1px dashed #cbd5e1;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #475569;
+  }
+  .block-settings strong { color: #1e293b; }
+  .block-settings code {
+    background: #e2e8f0;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 11px;
+    color: #be185d;
+  }
+
+  .quick-replies {
+    padding: 0 14px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .qr {
+    background: #eff6ff;
+    border: 1px solid #3b82f6;
+    color: #1e40af;
+    padding: 5px 12px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .qr.url {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+  .qr.payment {
+    background: #ecfccb;
+    border-color: #65a30d;
+    color: #365314;
+  }
+
+  .arrow {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 24px;
+    margin: 6px 0;
+    line-height: 1;
+  }
+  .arrow-label {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 500;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+  }
+
+  .branch-divider {
+    text-align: center;
+    margin: 24px 0;
+    padding: 14px;
+    background: #fef3c7;
+    border-radius: 8px;
+    color: #78350f;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .branch-divider .small { font-size: 12px; font-weight: 400; color: #92400e; margin-top: 4px; }
+
+  .role-tag {
+    display: inline-block;
+    background: #fce7f3;
+    color: #9f1239;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+  }
+
+  .variant-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .variant-card-header {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .footer-info {
+    margin-top: 50px;
+    padding: 24px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #475569;
+  }
+  .footer-info h3 { font-size: 14px; color: #1e293b; margin-bottom: 10px; }
+  .footer-info ul { padding-left: 20px; }
+  .footer-info li { margin-bottom: 6px; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #16a34a;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.25s;
+    z-index: 1000;
+    font-weight: 500;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    header.page-header { padding: 20px; }
+    header.page-header h1 { font-size: 20px; }
+    h2 { font-size: 18px; }
+    .block { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="page-header">
+    <h1>📨 Bot Flow — Zoho Summit 2026</h1>
+    <p>SendPulse-стиль із повними текстами. Кожен блок має кнопку <b>Копіювати</b> — перенесення в SendPulse займає секунди.</p>
+  </header>
+
+  <section class="legend">
+    <h3>Легенда блоків SendPulse</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background: var(--green)"></div>Повідомлення (Message)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--purple)"></div>Дія (Action)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--blue)"></div>Фільтр (Filter)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--teal)"></div>Очікування відповіді</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--slate)"></div>Пауза (Pause)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--red)"></div>Умова (Condition)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--cyan)"></div>Запит API (Webhook)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--dark)"></div>Тригер (Start)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: #be185d"></div>Кампанія (Campaign)</div>
+    </div>
+    <div style="margin-top: 14px; padding: 10px 12px; background: #f1f5f9; border-radius: 6px; font-size: 12px; color: #475569;">
+      <b>Змінні</b> позначаються як <span class="var">{{name}}</span>, <span class="var">{{email}}</span>, <span class="var">{{role}}</span> — у SendPulse це поля підписника.
+    </div>
+  </section>
+
+  <nav class="nav-bar">
+    <a href="#flow1">Реєстрація</a>
+    <a href="#flow1b">Програма за роллю</a>
+    <a href="#p1">П1 (08.05)</a>
+    <a href="#p2">П2 (13.05)</a>
+    <a href="#p3">П3 (18.05)</a>
+    <a href="#p4">П4 (24.05)</a>
+    <a href="#r1">R1 (26.05)</a>
+    <a href="#r2">R2 (27.05)</a>
+    <a href="#r3">R3 (27.05)</a>
+    <a href="#extra">Додатково</a>
+  </nav>
+
+  <!-- ========== FLOW 1: РЕЄСТРАЦІЯ ========== -->
+  <h2 id="flow1">📋 Flow 1: Реєстрація</h2>
+  <div class="section-meta"><strong>Тригер:</strong> Welcome message (стандартний). Запускається при першому /start у бот або переході з лендинга.</div>
+
+  <!-- TRIGGER -->
+  <div class="block block-trigger">
+    <div class="block-header">
+      <div class="block-header-left">▶ Тригер — Welcome message</div>
+    </div>
+    <div class="block-content">Стандартний тригер SendPulse «Welcome message». Запускається на /start.</div>
+    <div class="block-settings">
+      <strong>Start-параметри з лендинга:</strong> <code>?utm_source</code>, <code>?utm_campaign</code>, <code>?partner_id</code>
+      → автоматично записуються у змінні підписника
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- MESSAGE 1 — Welcome -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Вітання</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">👋 Вітаю на <span class="b">Zoho Summit 2026</span>
+
+<span class="b">27 травня • Online • Безкоштовно</span>
+
+6 блоків — кожен під свою аудиторію. Можна підключатись лише до тих, що для вас актуальні.
+
+За 3 кроки оформлю реєстрацію і надішлю ваш квиток. Поїхали?</div>
+    <div class="quick-replies">
+      <span class="qr">✅ Так, реєструємось</span>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- MESSAGE 2 — Ask name -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Запит імені</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Як до вас звертатись?
+
+Напишіть, будь ласка, ім'я і прізвище — щоб квиток був персональний.</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- WAIT name -->
+  <div class="block block-wait">
+    <div class="block-header">
+      <div class="block-header-left">⏳ Очікування відповіді</div>
+    </div>
+    <div class="block-content">Зберегти відповідь користувача → змінна <span class="var">{{name}}</span></div>
+    <div class="block-settings">
+      <strong>Налаштування:</strong> поле для збереження = <code>name</code> · тип = <code>String</code> · таймаут = 24 год
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- MESSAGE 3 — Ask email -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Запит email</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="var">{{name}}</span>, на яку пошту надіслати квиток і програму?
+
+Email потрібен на випадок, якщо Telegram буде в беззвучному 27 травня — нагадування продублюємо листом.</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- WAIT email -->
+  <div class="block block-wait">
+    <div class="block-header">
+      <div class="block-header-left">⏳ Очікування відповіді</div>
+    </div>
+    <div class="block-content">Зберегти відповідь користувача → змінна <span class="var">{{email}}</span></div>
+    <div class="block-settings">
+      <strong>Налаштування:</strong> поле = <code>email</code> · тип = <code>Email</code> (валідація формату вмикається автоматично)
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- FILTER — email valid -->
+  <div class="block block-filter">
+    <div class="block-header">
+      <div class="block-header-left">🔀 Фільтр — Перевірка email</div>
+    </div>
+    <div class="block-content">Розгалужити flow за валідністю email</div>
+    <div class="block-settings">
+      <strong>Умова "Валідний":</strong> <code>{{email}}</code> містить <code>@</code> AND <code>.</code><br>
+      <strong>Інакше:</strong> повернутись на крок «Запит email» з повідомленням про помилку
+    </div>
+  </div>
+
+  <div class="arrow"><span class="arrow-label">якщо валідний</span></div>
+
+  <!-- MESSAGE 4 — Choose role -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Вибір ролі</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Залишилось обрати вашу роль у компанії — щоб у наступних повідомленнях надсилати лише те, що корисно саме вам.</div>
+    <div class="quick-replies">
+      <span class="qr">👔 CEO / Власник</span>
+      <span class="qr">📊 COO / Операційний директор</span>
+      <span class="qr">💰 CFO / Фінансовий директор</span>
+      <span class="qr">💻 CTO / IT-директор</span>
+      <span class="qr">🎯 Керівник відділу</span>
+      <span class="qr">➕ Інше</span>
+    </div>
+  </div>
+
+  <div class="branch-divider">
+    🔀 Розгалуження за натиснутою кнопкою — 6 гілок
+    <div class="small">У SendPulse кожна Quick-Reply кнопка веде у свій continuation. Структура далі ідентична для всіх 6 — змінюються лише теги і текст програми.</div>
+  </div>
+
+  <!-- FLOW 1b: STRUCTURE AFTER ROLE -->
+  <h2 id="flow1b">🎯 Flow 1b: Після вибору ролі (структура для всіх 6 гілок)</h2>
+  <div class="section-meta">Структура нижче — <strong>однакова для кожної з 6 ролей</strong>. Підставляється свій тег і свій текст програми. Для гілки «Інше» додається 1 крок (запит ролі вільним текстом).</div>
+
+  <!-- ACTION — Set tags -->
+  <div class="block block-action">
+    <div class="block-header">
+      <div class="block-header-left">⚡ Дія — Встановити теги і змінні</div>
+    </div>
+    <div class="block-content">Додати теги і записати роль у змінну.</div>
+    <div class="block-settings">
+      <strong>Призначити тег:</strong> <code>role_ceo</code> <em>(або відповідний за натиснутою кнопкою)</em><br>
+      <strong>Призначити тег:</strong> <code>registered</code><br>
+      <strong>Записати змінну:</strong> <code>role</code> = <code>"CEO / Власник"</code>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- ACTION — Webhook to Zoho -->
+  <div class="block block-api">
+    <div class="block-header">
+      <div class="block-header-left">🔗 Запит API — Webhook у Zoho CRM</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати JSON</button>
+    </div>
+    <div class="block-content" data-copy='{"name":"{{name}}","email":"{{email}}","role":"{{role}}","utm_source":"{{utm_source}}","utm_campaign":"{{utm_campaign}}","tag":"registered","event":"summit_registration"}'>POST → ваш Webhook URL у Make / Zoho Flow
+
+Body (JSON):
+{
+  "name": "<span class="var">{{name}}</span>",
+  "email": "<span class="var">{{email}}</span>",
+  "role": "<span class="var">{{role}}</span>",
+  "utm_source": "<span class="var">{{utm_source}}</span>",
+  "utm_campaign": "<span class="var">{{utm_campaign}}</span>",
+  "tag": "registered",
+  "event": "summit_registration"
+}</div>
+    <div class="block-settings">
+      <strong>Метод:</strong> <code>POST</code> · <strong>Headers:</strong> <code>Content-Type: application/json</code>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- MESSAGE — Ticket image + button -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Квиток</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="em">📎 Картинка: квиток (готує дизайнер) — фон з логотипом Zoho Summit, дата 27.05.2026, формат Online</span>
+
+✅ <span class="var">{{name}}</span>, реєстрацію завершено
+
+Це ваш квиток на Zoho Summit 2026. Зберігайте у чаті — нагадування про старт надішлю автоматично.
+
+Дублікат квитка і програму вже надіслав на пошту <span class="var">{{email}}</span>.
+
+Що далі?</div>
+    <div class="quick-replies">
+      <span class="qr">📋 Ознайомитись з програмою для моєї ролі</span>
+      <span class="qr url">📅 Додати в календар</span>
+    </div>
+  </div>
+
+  <div class="arrow"><span class="arrow-label">якщо клік «Програма»</span></div>
+
+  <!-- MESSAGE — Program (placeholder) -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Програма за роллю</div>
+    </div>
+    <div class="block-content"><span class="em">📌 Текст залежить від обраної ролі — 6 варіантів нижче (натисніть «Копіювати» біля потрібного).</span></div>
+  </div>
+
+  <!-- 6 ROLE PROGRAM VARIANTS -->
+  <h3 class="flow-sub">📋 Варіанти тексту «Програма за роллю» — 6 версій</h3>
+
+  <!-- CEO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_ceo</span> &nbsp; Для CEO / Власника</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="var">{{name}}</span>, для вашої ролі найважливіші ці три блоки:
+
+🎯 <span class="b">10:00–11:00 | Блок 1 — Zoho як стратегічний вибір</span>
+Чому Zoho — це не IT-проєкт, а рішення про систему управління. Досвід України: від скепсису до 8–10 років стабільного використання.
+<span class="em">Спікер: Павло Яковенко, CEO CRMiUM</span>
+
+🎯 <span class="b">11:10–12:30 | Блок 2 — Панельна дискусія з клієнтами</span>
+3–4 наших клієнти відповідають на гострі питання без фільтрів. Як вибирали, що було складно, кому НЕ варто впроваджувати.
+
+🎯 <span class="b">12:40–13:20 | Блок 3 — Zoho очима COO</span>
+Як виглядає бізнес зсередини. P&L-аудит, дашборди, де AI реально економить час керівника.
+
+<span class="b">Болі, які ці блоки закривають:</span>
+• 5+ систем, які не синхронізуються між собою
+• Дані розкидані по Excel, пошті й Telegram
+• Власник не бачить реального стану бізнесу в реальному часі
+
+Якщо у вас є 3 години в першій половині дня — цього вистачить, щоб взяти стратегічну користь.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Дивитись повну програму на сайті</span>
+        <span class="qr">✅ Готово</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_coo</span> &nbsp; Для COO / Операційний директор</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="var">{{name}}</span>, для вашої ролі ось три ключові блоки:
+
+🎯 <span class="b">11:10–12:30 | Блок 2 — Панельна дискусія з клієнтами</span>
+Реальні COO компаній на Zoho відповідають на гострі питання. Як вони перевели операційку з Excel у систему.
+
+🎯 <span class="b">12:40–13:20 | Блок 3 — Кейс CRMiUM: операційна прозорість</span>
+Андрій Тетерін, наш COO, розкаже, як зсередини виглядає бізнес на Zoho. P&L-аудит, дашборди для керівника, роль AI у щоденній операційці.
+
+🎯 <span class="b">15:30–17:30 | Блок 5 — Live-демо по відділах</span>
+Інтерактивне демо: продажі, маркетинг, сервіс, HR. Не презентація, а реальне налаштування процесу в реальному часі.
+
+<span class="b">Болі, які закриваємо:</span>
+• Звіти збираються вручну, дашборд для директора готується годинами
+• Відділи працюють у різних системах, дані не сходяться
+• Немає наскрізної аналітики від маркетингу до фінансів
+
+Можна підключитись на 11:10 і піти після обіду — найкорисніше буде в цьому проміжку.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Дивитись повну програму на сайті</span>
+        <span class="qr">✅ Готово</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CFO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_cfo</span> &nbsp; Для CFO / Фінансовий директор</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="var">{{name}}</span>, для вашої ролі рекомендую ці блоки:
+
+🎯 <span class="b">11:10–12:30 | Блок 2 — Панельна дискусія з клієнтами</span>
+CFO компаній на Zoho ділиться, як вибудували фінансовий контур: облік, дебіторка, управлінська аналітика, кілька юрлиц.
+
+🎯 <span class="b">12:40–13:20 | Блок 3 — P&L-аудит у Zoho</span>
+Андрій Тетерін, COO CRMiUM, покаже власну управлінську аналітику. P&L у реальному часі, дашборди по відділах, ROI-розрахунки.
+
+🎯 <span class="b">15:30–17:30 | Блок 5 — Live-демо</span>
+У блоці 5 є модулі Zoho Books, Zoho Inventory, Zoho Analytics — фінансова частина екосистеми.
+
+<span class="b">Болі, які закриваємо:</span>
+• Декілька юрлиц без єдиного фінбалансу
+• Ручні офери, рахунки, нагадування про оплату
+• Звіт для інвестора готується тижнями замість хвилин
+
+Якщо ви готуєте компанію до інвестора — це найкорисніший день у травні.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Дивитись повну програму на сайті</span>
+        <span class="qr">✅ Готово</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_cto</span> &nbsp; Для CTO / IT-директор</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="var">{{name}}</span>, ваша основна цільова сесія — Блок 4. Але рекомендую і Блок 5:
+
+🎯 <span class="b">14:00–15:20 | Блок 4 — Zoho для CTO: архітектура, безпека, AI</span>
+Антон Рімін, керівник практики Zoho в CRMiUM:
+• low-code платформа Creator і Catalyst
+• REST API, webhook, рівні інтеграцій
+• SSO (SAML, OAuth), GDPR, ISO 27001
+• Міграція з legacy-систем без втрати даних
+• Zoho AI (Zia) — на чому побудована, як працюють агенти
+
+🎯 <span class="b">15:30–17:30 | Блок 5 — Live-демо по відділах</span>
+Бізнес-сценарій налаштовується в реальному часі. Ви побачите, як працює кастомізація без розробників.
+
+<span class="b">Болі, які закриваємо:</span>
+• Декілька систем, які треба інтегрувати між собою
+• Залежність від OpenAI/Microsoft AI з невизначеною юрисдикцією
+• Бажання дати бізнесу low-code інструменти, щоб не блокувати кожну зміну розробкою
+
+4 години технічного контенту без маркетингу — рідкість на українському ринку.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Дивитись повну програму на сайті</span>
+        <span class="qr">✅ Готово</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEAD -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_head</span> &nbsp; Для керівника відділу</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="var">{{name}}</span>, для вашої ролі найбільше дасть <span class="b">Блок 5 — Live-демо по відділах</span> (15:30–17:30).
+
+Це не презентація, а інтерактивне демо на реальному бренді. Ви стаєте частиною сценарію.
+
+🎯 <span class="b">Що покажемо:</span>
+• Продажі — налаштування воронки, лід-скоринг, прогноз угод (Руслан Шастун)
+• Маркетинг — атрибуція, email-розсилки, лендинги в Zoho (Ігор Притула)
+• Сервіс — тікет-система, SLA, омніканальна підтримка (Надія Мартинюк)
+• HR — підбір, онбординг, оцінка ефективності
+
+<span class="b">Болі, які закриваємо:</span>
+• Дані відділу в Excel, керівник не бачить статусу в моменті
+• Ручні задачі, які мали б автоматизуватись (нагадування, статуси, ескалації)
+• Дублювання роботи між відділами
+
+Якщо хочете побачити саме «свій» функціонал — підключайтеся з 15:30.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Дивитись повну програму на сайті</span>
+        <span class="qr">✅ Готово</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTHER -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_other</span> &nbsp; Для «Інше» (з додатковим кроком)</span>
+    </div>
+    <div style="padding: 12px 14px; background: #fef3c7; font-size: 12px; color: #78350f; border-bottom: 1px dashed #d97706;">
+      ⚠️ Перед цим повідомленням — додатковий запит: «Опишіть, будь ласка, вашу роль одним повідомленням». Зберегти у <span class="var">{{role}}</span> вільним текстом.
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="var">{{name}}</span>, у саміті є 6 блоків — і один з них точно ваш.
+
+Якщо вас цікавлять стратегія і вибір платформи → <span class="b">Блок 1 (10:00)</span>.
+Якщо реальні відгуки клієнтів → <span class="b">Блок 2 (11:10)</span>.
+Якщо операційна аналітика і управлінські звіти → <span class="b">Блок 3 (12:40)</span>.
+Якщо технічна сторона, API, інтеграції, AI → <span class="b">Блок 4 (14:00)</span>.
+Якщо функціонал по відділах (продажі/маркетинг/сервіс/HR) → <span class="b">Блок 5 (15:30)</span>.
+Якщо кейси у вашій індустрії → <span class="b">Блок 6 (17:40)</span>.
+
+Можна підключатись на будь-яку комбінацію.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Дивитись повну програму на сайті</span>
+        <span class="qr">✅ Готово</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING MESSAGE -->
+  <h3 class="flow-sub">🏁 Завершальне повідомлення (однакове для всіх ролей)</h3>
+
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Закриття реєстрації</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Готово, <span class="var">{{name}}</span>. Реєстрація завершена.
+
+Що буде далі:
+• Кілька корисних повідомлень за наступні 3 тижні — нічого зайвого, тільки про Zoho і про блоки саміту.
+• Нагадування ввечері 26 травня і вранці 27 травня — щоб ви точно не пропустили старт.
+• Якщо захочете нагадати собі програму — напишіть «програма», і я надішлю ще раз.
+
+До зустрічі 27 травня 👋</div>
+  </div>
+
+
+  <!-- ========== CAMPAIGN P1 ========== -->
+  <h2 id="p1">📨 Кампанія П1 — «Що таке Zoho за 2 хвилини»</h2>
+  <div class="section-meta">
+    <strong>Тип:</strong> Кампанія SendPulse (не flow з паузами!)<br>
+    <strong>Дата відправки:</strong> 08.05.2026, 11:00 (Київ)<br>
+    <strong>Сегмент:</strong> підписники з тегом <code>registered</code>
+  </div>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — Прогрів П1</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="b">Zoho за 2 хвилини. Без маркетингу.</span>
+
+Якщо чули назву, але ніколи детально не дивились — ось суть.
+
+🔹 <span class="b">55+ продуктів в одній екосистемі:</span>
+CRM, маркетинг (email, social, лендинги), фінанси (бухоблік, склад, рахунки), HR, підтримка клієнтів, аналітика, проєктний менеджмент.
+
+🔹 <span class="b">Які питання закриває:</span>
+• Один ID користувача на всі модулі — не треба окремих ліцензій на кожен сервіс
+• Дані з продажів автоматично доступні в маркетингу і фінансах
+• Звіти і дашборди працюють «з коробки» по всіх модулях
+
+🔹 <span class="b">Хто користується у світі:</span>
+Amazon, Netflix, Bosch, Suzuki, Hyatt, Stanford University. 100+ млн користувачів.
+
+🔹 <span class="b">Власний AI — Zia:</span>
+Не залежить від OpenAI чи Google. Передбачає закриття угод, шукає закономірності в даних, запускає процеси автоматично. AI-агенти — частина платформи, не доплата.
+
+🔹 <span class="b">30 років без зовнішніх інвесторів.</span>
+Це означає, що Zoho не зобов'язана піднімати ціни заради виходу на IPO, як SAP чи Salesforce. Стратегічна стабільність — рідкість серед SaaS.
+
+Microsoft і Google продають набір окремих продуктів. Zoho будує одну систему, де модулі говорять однією мовою — і ви платите за екосистему, а не за десятки ліцензій.
+
+На саміті побачите це не на слайдах, а в живому демо.</div>
+    <div class="quick-replies">
+      <span class="qr url">🔗 Дивитись програму саміту</span>
+    </div>
+  </div>
+
+  <!-- ========== CAMPAIGN P2 ========== -->
+  <h2 id="p2">📨 Кампанія П2 — «Чому CRMiUM впроваджує Zoho 10 років»</h2>
+  <div class="section-meta">
+    <strong>Дата:</strong> 13.05.2026, 11:00 · <strong>Сегмент:</strong> <code>registered</code>
+  </div>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — Прогрів П2</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="b">Чому ми обрали Zoho — і впроваджуємо її 10 років</span>
+
+Ми CRMiUM — системний інтегратор. Працюємо з 4 платформами: Zoho, Odoo, Creatio, Salesforce. Для кожного клієнта обираємо ту, що підходить під задачу.
+
+Zoho впроваджуємо найчастіше. Ось чому.
+
+🏆 <span class="b">Єдиний Premium-партнер Zoho в Україні.</span>
+Це найвищий рівень партнерства — отримують компанії з підтвердженою кількістю проєктів, сертифікованою командою і клієнтським NPS.
+
+🏆 <span class="b">500+ реалізованих проєктів. 80+ спеціалістів. Клієнти у 36 країнах.</span>
+Серед них — клієнти, які з нами 8–10 років. Це не «впровадили і пішли», а постійний розвиток системи разом з бізнесом.
+
+🏆 <span class="b">Власна методологія впровадження:</span>
+PM, бізнес-аналітик, тімлід, навчання команди клієнта. Не «продамо ліцензії і нехай розбираються», а реальний change-проєкт.
+
+🏆 <span class="b">Самі живемо в Zoho.</span>
+Наша операційка, продажі, фінанси, маркетинг — все на Zoho. Те, що покажемо на саміті в Блоці 3 — наш реальний бізнес зсередини.
+
+Це не «реклама партнера». Це 10 років вибору на користь однієї платформи серед усіх, які ми бачили.
+
+27 травня покажемо чому.</div>
+    <div class="quick-replies">
+      <span class="qr url">🔗 Подивитись програму</span>
+    </div>
+  </div>
+
+  <!-- ========== CAMPAIGN P3 ========== -->
+  <h2 id="p3">📨 Кампанія П3 — «Спікер і блок під вашу роль»</h2>
+  <div class="section-meta">
+    <strong>Дата:</strong> 18.05.2026, 11:00 · <strong>Тип:</strong> 6 окремих кампаній за тегом ролі
+  </div>
+
+  <!-- P3 CEO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>📅 П3 для <span class="role-tag">role_ceo</span></span>
+      <span style="font-size: 11px; color: #64748b;">Сегмент: registered AND role_ceo</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, до саміту 9 днів. Розповідаю про блок, який буде особливо для вас.</span>
+
+<span class="b">Блок 2 — Панельна дискусія з клієнтами CRMiUM (11:10–12:30)</span>
+
+Це не маркетингові кейси з сайту. Це реальні CEO і власники, які запросили ми, погодили формат «без фільтрів» і не редагуватимуть відповіді.
+
+<span class="b">Що питатимемо у клієнтів:</span>
+• Чому ви взагалі вирішили автоматизуватись — і що було тригером
+• На чому економили на старті і потім пожаліли
+• Що не зробили із того, що варто було
+• Кому ви НЕ радите впроваджувати Zoho
+• Як виглядав перший рік життя на новій системі
+
+<span class="b">Питання, на які зазвичай не відповідають у публічних кейсах</span> — тому формат закритий, без запису для широкого доступу. Тільки для учасників саміту.
+
+Якщо у вас є своє конкретне питання, яке хочете поставити цим CEO — напишіть мені текстом, передам спікеру.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Подивитись програму</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- P3 COO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>📅 П3 для <span class="role-tag">role_coo</span></span>
+      <span style="font-size: 11px; color: #64748b;">Сегмент: registered AND role_coo</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, до саміту 9 днів. Хочу окремо розповісти про блок, який буде для вас найкориснішим.</span>
+
+<span class="b">Блок 3 — Zoho очима COO. Кейс CRMiUM (12:40–13:20)</span>
+
+Спікер — Андрій Тетерін, COO CRMiUM. Він покаже <span class="b">наш бізнес зсередини</span> на Zoho.
+
+<span class="b">Конкретно що побачите:</span>
+• Дашборд керівника — як виглядає у понеділок ранку
+• P&L у реальному часі по відділах і по проєктах
+• Як AI закриває рутину аналітики (Zia робить запити на природній мові)
+• Що ми НЕ автоматизували принципово і чому
+
+Це той випадок, коли інтегратор показує не клієнтський кейс, а себе. Без вибірки і прикрас.
+
+Якщо у вас є питання до Андрія — напишіть текстом, передам.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Подивитись програму</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- P3 CFO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>📅 П3 для <span class="role-tag">role_cfo</span></span>
+      <span style="font-size: 11px; color: #64748b;">Сегмент: registered AND role_cfo</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, до саміту 9 днів. Виділив для вас два найкорисніші блоки.</span>
+
+<span class="b">Блок 3 (12:40–13:20) — P&L і управлінська аналітика на Zoho</span>
+Андрій Тетерін, COO CRMiUM, покаже наш реальний фінансовий контур: P&L по проєктах, кеш-флоу, контроль дебіторки. На прикладі CRMiUM, не клієнтських кейсах.
+
+<span class="b">Блок 5 (15:30–17:30) — Live-демо</span>
+Тут буде секція з Zoho Books, Zoho Inventory і Zoho Analytics. Покажуть як інтегруються фінмодулі з продажами і складом — без імпортів-експортів.
+
+<span class="b">Болі, які традиційно живуть у фінансах і які закриваються в Zoho:</span>
+• Декілька юрлиц — окремий облік у кожному, зведення вручну
+• Ручні рахунки, акти, нагадування про прострочки
+• Звіт для інвестора або ради директорів готується по 2 тижні
+
+Якщо у вас є конкретне питання до Андрія — напишіть, передам спікеру.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Подивитись програму</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- P3 CTO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>📅 П3 для <span class="role-tag">role_cto</span></span>
+      <span style="font-size: 11px; color: #64748b;">Сегмент: registered AND role_cto</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, до саміту 9 днів. Готую вас до Блоку 4 — він повністю технічний.</span>
+
+<span class="b">Блок 4 — Zoho для CTO: архітектура, безпека, AI (14:00–15:20)</span>
+
+Спікер — Антон Рімін, керівник практики Zoho в CRMiUM. 4 роки в екосистемі, від аналітика до тімліда.
+
+<span class="b">Що буде:</span>
+• Архітектура: де живуть дані, як скейлиться, що під капотом
+• API і webhook — реальні приклади інтеграцій з ERP, складами, IP-телефонією
+• Low-code платформа Creator — кейси, коли вона замінює окрему розробку
+• SSO (SAML, OAuth), сертифікації (ISO 27001, SOC 2, GDPR)
+• Zoho AI (Zia) — на чому побудована, які моделі під капотом, як інтегрується з власними даними
+• Міграція з legacy: 1С, кастомні системи, інші CRM
+
+80 хвилин технічного контенту, без маркетингу. Якщо у вас на руках архітектурне рішення про CRM/ERP — це блок, який варто послухати.
+
+Питання до Антона — пишіть текстом, передам.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Подивитись програму</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- P3 HEAD -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>📅 П3 для <span class="role-tag">role_head</span></span>
+      <span style="font-size: 11px; color: #64748b;">Сегмент: registered AND role_head</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, до саміту 9 днів. Окремо про Блок 5 — він повністю ваш.</span>
+
+<span class="b">Блок 5 — Live-демо по відділах (15:30–17:30)</span>
+
+Це 2 години інтерактивного демо. Не презентація — реальне налаштування процесу на нашому brand-stand'і. Учасники голосують і впливають на сценарій.
+
+<span class="b">Що покажемо в кожній секції:</span>
+
+<span class="b">Продажі (Руслан Шастун, CCO CRMiUM):</span>
+Воронка від першого ліда до угоди. Лід-скоринг, прогноз закриття, AI-помічник у листуванні.
+
+<span class="b">Маркетинг (Ігор Притула, техлід):</span>
+Атрибуція по каналах, email-кампанії, лендинги в Zoho LandingPage, єдиний звіт «маркетинг → продажі → виручка».
+
+<span class="b">Сервіс (Надія Мартинюк, TeamLead аналітиків):</span>
+Тікет-система Zoho Desk, SLA, омніканальна підтримка (email + чат + Telegram + дзвінки).
+
+<span class="b">HR:</span>
+Підбір (Zoho Recruit), онбординг, оцінка ефективності.
+
+Кожна секція — 25–30 хвилин. Можна підключитись лише на свій відділ.</div>
+      <div class="quick-replies">
+        <span class="qr url">🔗 Подивитись програму</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CAMPAIGN P4 ========== -->
+  <h2 id="p4">📨 Кампанія П4 — «Збір питань для Q&A»</h2>
+  <div class="section-meta">
+    <strong>Дата:</strong> 24.05.2026, 11:00 · <strong>Сегмент:</strong> <code>registered</code><br>
+    <strong>Особливість:</strong> після повідомлення — Очікування відповіді → Дія → Webhook у Zoho CRM
+  </div>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — Прогрів П4</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="b"><span class="var">{{name}}</span>, до саміту 3 дні.</span>
+
+Хочу зробити блок Q&A в кінці дня корисним саме для вас.
+
+Які 1–2 питання ви хочете поставити нашій команді — про Zoho, про впровадження, про вашу конкретну ситуацію?
+
+Напишіть текстом просто наступним повідомленням — я зберу всі питання і передам спікерам перед самітом. Найбільш частотні і гострі — обговоримо публічно в Q&A.
+
+Питання можуть бути будь-якими: про функції, про ціни, про підтримку після впровадження, про вашу індустрію, про порівняння з іншими CRM.
+
+Це справді працює: люди, які ставили питання заздалегідь, кажуть, що отримують у 3 рази більше користі від івенту.</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="block block-wait">
+    <div class="block-header">
+      <div class="block-header-left">⏳ Очікування відповіді</div>
+    </div>
+    <div class="block-content">Зберегти відповідь користувача → змінна <span class="var">{{q_text}}</span></div>
+    <div class="block-settings">
+      <strong>Налаштування:</strong> поле = <code>q_text</code> · тип = <code>String</code> · таймаут = 72 години (до старту саміту)
+    </div>
+  </div>
+
+  <div class="arrow"><span class="arrow-label">якщо відповів</span></div>
+
+  <div class="block block-action">
+    <div class="block-header">
+      <div class="block-header-left">⚡ Дія — Тег + webhook</div>
+    </div>
+    <div class="block-content">Помітити користувача як гарячого ліда і передати питання в Zoho CRM.</div>
+    <div class="block-settings">
+      <strong>Призначити тег:</strong> <code>q_submitted</code><br>
+      <strong>Webhook:</strong> POST → Make → Zoho CRM (оновити поле <code>Question</code> у ліді)<br>
+      <strong>Email менеджеру:</strong> sales@crmium.com з темою «Питання для Q&A від <span class="var">{{name}}</span>»
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Підтвердження</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Дякую, <span class="var">{{name}}</span>. Питання передам спікерам ще до старту саміту.
+
+Якщо воно буде серед найчастотніших — обговоримо публічно в Q&A. Якщо ні — отримаєте письмову відповідь від відповідального спікера протягом тижня після саміту.</div>
+  </div>
+
+
+  <!-- ========== R1 ========== -->
+  <h2 id="r1">⏰ Нагадування R1 — «Завтра саміт»</h2>
+  <div class="section-meta">
+    <strong>Дата:</strong> 26.05.2026, 19:00 · <strong>Сегмент:</strong> <code>registered</code>
+  </div>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — R1</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="b"><span class="var">{{name}}</span>, завтра — Zoho Summit 2026.</span>
+
+27 травня, 10:00–18:00. Онлайн.
+
+Нагадую програму:
+
+🕘 <span class="b">10:00–11:00</span> | Блок 1 — Zoho як стратегічний вибір (CEO)
+🕘 <span class="b">11:10–12:30</span> | Блок 2 — Панельна дискусія з клієнтами
+🕘 <span class="b">12:40–13:20</span> | Блок 3 — Zoho очима COO. Кейс CRMiUM
+🕘 <span class="b">14:00–15:20</span> | Блок 4 — Zoho для CTO: архітектура, безпека, AI
+🕘 <span class="b">15:30–17:30</span> | Блок 5 — Live-демо по відділах
+🕘 <span class="b">17:40–18:10</span> | Блок 6 — Кейси по індустріях
+🕘 <span class="b">18:10–18:30</span> | Q&A
+
+🎯 <span class="b">Ваш блок (за роллю <span class="var">{{role}}</span>):</span> [підставляється Filter element залежно від тегу]
+
+Завтра о 09:30 пришлю посилання на трансляцію. За 5 хвилин до «вашого» блоку — окреме нагадування.</div>
+    <div class="quick-replies">
+      <span class="qr url">🔗 Дивитись повну програму</span>
+    </div>
+  </div>
+
+
+  <!-- ========== R2 ========== -->
+  <h2 id="r2">⏰ Нагадування R2 — «Стартуємо за 30 хв»</h2>
+  <div class="section-meta">
+    <strong>Дата:</strong> 27.05.2026, 09:30 · <strong>Сегмент:</strong> <code>registered</code><br>
+    <strong>Дублюється email-каналом</strong>
+  </div>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — R2</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">🟢 <span class="b"><span class="var">{{name}}</span>, стартуємо за 30 хвилин.</span>
+
+<span class="b">Посилання на трансляцію:</span> [URL трансляції — підставити перед запуском]
+
+Якщо плануєте лише на конкретний блок — підключайтесь за 5 хвилин до його початку. Тайминг можна звірити за програмою.
+
+Питання можна писати у чат трансляції під час кожного блоку. Q&A — в кінці дня (18:10).</div>
+    <div class="quick-replies">
+      <span class="qr url">🎬 Підключитись до трансляції</span>
+    </div>
+  </div>
+
+
+  <!-- ========== R3 ========== -->
+  <h2 id="r3">⏰ Нагадування R3 — «За 5 хв до вашого блоку»</h2>
+  <div class="section-meta">
+    <strong>Дата:</strong> 27.05.2026 · <strong>Тип:</strong> 4 окремі кампанії з різним часом за тегом ролі
+  </div>
+
+  <!-- R3 CEO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>⏰ R3 для <span class="role-tag">role_ceo</span></span>
+      <span style="font-size: 11px; color: #64748b;">Час відправки: 09:55 (за 5 хв до Блоку 1)</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content">⏰ <span class="b"><span class="var">{{name}}</span>, через 5 хвилин — Блок 1 «Zoho як стратегічний вибір».</span>
+
+Це той блок, який ми готували саме для CEO. Павло Яковенко, CEO CRMiUM.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Підключитись</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- R3 COO/CFO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>⏰ R3 для <span class="role-tag">role_coo</span> + <span class="role-tag">role_cfo</span></span>
+      <span style="font-size: 11px; color: #64748b;">Час: 12:35 (за 5 хв до Блоку 3)</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content">⏰ <span class="b"><span class="var">{{name}}</span>, через 5 хвилин — Блок 3 «Zoho очима COO».</span>
+
+Андрій Тетерін покаже наш бізнес зсередини: P&L, дашборди, AI у реальній роботі.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Підключитись</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- R3 CTO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>⏰ R3 для <span class="role-tag">role_cto</span></span>
+      <span style="font-size: 11px; color: #64748b;">Час: 13:55 (за 5 хв до Блоку 4)</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content">⏰ <span class="b"><span class="var">{{name}}</span>, через 5 хвилин — Блок 4 «Zoho для CTO: архітектура, безпека, AI».</span>
+
+80 хвилин технічного контенту. Антон Рімін, керівник практики Zoho.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Підключитись</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- R3 HEAD -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span>⏰ R3 для <span class="role-tag">role_head</span></span>
+      <span style="font-size: 11px; color: #64748b;">Час: 15:25 (за 5 хв до Блоку 5)</span>
+    </div>
+    <div class="block block-campaign" style="margin: 0; border-radius: 0; box-shadow: none; border: none;">
+      <div class="block-header">
+        <div class="block-header-left">📅 Кампанія</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content">⏰ <span class="b"><span class="var">{{name}}</span>, через 5 хвилин — Блок 5 «Live-демо по відділах».</span>
+
+2 години інтерактивного демо. Підключайтесь і впливайте на сценарій.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Підключитись</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========== ADDITIONAL ========== -->
+  <h2 id="extra">🛠 Додаткові flow і налаштування</h2>
+
+  <h3 class="flow-sub">📨 Standard reply (тригер на повідомлення поза flow)</h3>
+
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Standard reply</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Не зрозумів запит 🤔
+
+Що можу зробити:
+• Надіслати програму саміту → напишіть <span class="b">програма</span>
+• Надіслати посилання на трансляцію (доступне 27 травня з 09:30) → напишіть <span class="b">посилання</span>
+• Поставити питання спікерам → напишіть ваше питання після слова <span class="b">питання:</span>
+
+Або просто чекайте на наступне повідомлення — я надішлю його у запланований день.</div>
+  </div>
+
+
+  <div class="footer-info">
+    <h3>📌 Важливі нотатки для запуску в SendPulse</h3>
+    <ul>
+      <li><b>Прогрів через Кампанії, не через Pause у flow.</b> Усі повідомлення П1–П4 і R1–R3 створюються як окремі заплановані кампанії на конкретні дати, з фільтром за тегами. Якщо реалізувати через Pause у flow — той, хто зареєструється 24.05, отримає П1 (з гачком «Що таке Zoho за 2 хв») вже після саміту.</li>
+      <li><b>Email-канал паралельно.</b> Дублюємо 3 критичні точки: квиток (одразу після реєстрації), R2 (27.05 09:30), запис (28.05). Решту повідомлень — лише в Telegram.</li>
+      <li><b>Webhook → Zoho CRM спрацьовує у 4 точках:</b> після реєстрації (тег <code>registered</code>), після відповіді у П4 (тег <code>q_submitted</code>), після кліку «Підключитись» у R2/R3 (тег <code>attended</code>), 27.05 23:00 для тих, хто не натиснув жодного кліку (тег <code>no_show</code> через cron у Make).</li>
+      <li><b>Імпорт у SendPulse:</b> готових .json імпортів flow у SendPulse немає — кожен блок треба зібрати руками у візуальному редакторі. Цей файл слугує референсом — копіюєте текст з блоку, вставляєте у відповідний елемент SendPulse.</li>
+      <li><b>Тестування:</b> після збору flow — обов'язково пройти його з 2 акаунтів (з ноутбука і телефону), для кожної з 6 ролей. Перевірити, що webhook працює, email дублюється, картинка квитка приходить.</li>
+    </ul>
+  </div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+function copyText(button) {
+  const block = button.closest('.block') || button.closest('.variant-card');
+  const contentEl = block.querySelector('.block-content');
+  let text = contentEl.innerText;
+  // Strip excess whitespace at start/end
+  text = text.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const original = button.textContent;
+    button.textContent = '✓ Скопійовано';
+    button.classList.add('success');
+    showToast('Текст скопійовано в буфер обміну');
+    setTimeout(() => {
+      button.textContent = original;
+      button.classList.remove('success');
+    }, 2000);
+  }).catch(err => {
+    showToast('Помилка копіювання');
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-bar a').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
