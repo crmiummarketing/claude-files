@@ -1154,11 +1154,13 @@ body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
   /* Hero — менший padding, меншi cells */
   body[data-concept="brand"] .br-hero { padding: 44px 24px 40px; border-radius: 24px; }
   body[data-concept="brand"] .br-eyebrow { font-size: 10px; padding: 6px 12px; gap: 8px; }
-  body[data-concept="brand"] .br-hero-row { gap: 16px; }
+  /* Більший gap між countdown і CTA-блоком */
+  body[data-concept="brand"] .br-hero-row { gap: 28px; }
   body[data-concept="brand"] .br-cd-cell { min-width: 64px; padding: 12px 12px 8px; }
   body[data-concept="brand"] .br-cd-cell b { font-size: 26px; }
   body[data-concept="brand"] .br-cd-sep { font-size: 22px; }
-  body[data-concept="brand"] .br-hero-cta { width: 100%; }
+  /* Більший gap між orange CTA-кнопкою і sub-текстом під нею */
+  body[data-concept="brand"] .br-hero-cta { width: 100%; gap: 14px; }
   /* CTA: одна лінія, менший шрифт + nowrap */
   body[data-concept="brand"] .br-cta-primary {
     width: 100%;
@@ -1289,18 +1291,32 @@ body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
   }
 }
 
-/* На мобільному — швидші затримки в hero waterfall, щоб trust-cards
-   не "залипали" поки користувач уже починає скролити вниз. */
+/* На мобільному — ШВИДШІ затримки і коротша тривалість анімацій,
+   щоб блоки залітали різко й не запізнювались. */
 @media (max-width: 760px) {
-  body[data-concept="brand"] .br-eyebrow  { animation-delay:  20ms !important; }
-  body[data-concept="brand"] .br-h1       { animation-delay: 100ms !important; }
-  body[data-concept="brand"] .br-lead     { animation-delay: 200ms !important; }
-  body[data-concept="brand"] .br-hero-row { animation-delay: 300ms !important; }
-  body[data-concept="brand"] .br-trust-card:nth-child(1) { animation-delay: 380ms !important; }
-  body[data-concept="brand"] .br-trust-card:nth-child(2) { animation-delay: 440ms !important; }
-  body[data-concept="brand"] .br-trust-card:nth-child(3) { animation-delay: 500ms !important; }
-  body[data-concept="brand"] .br-trust-card:nth-child(4) { animation-delay: 560ms !important; }
-  body[data-concept="brand"] .br-trust-card:nth-child(5) { animation-delay: 620ms !important; }
+  /* Hero waterfall — затримки мінімальні */
+  body[data-concept="brand"] .br-eyebrow  { animation-delay:   0ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-h1       { animation-delay:  60ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-lead     { animation-delay: 140ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-hero-row { animation-delay: 220ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-trust-card { animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(1) { animation-delay: 280ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(2) { animation-delay: 320ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(3) { animation-delay: 360ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(4) { animation-delay: 400ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(5) { animation-delay: 440ms !important; }
+
+  /* Card scroll-reveal — коротша тривалість slideUp на мобільному */
+  body[data-concept="brand"] .br-section .br-pain,
+  body[data-concept="brand"] .br-section .br-what-card,
+  body[data-concept="brand"] .br-section .br-flex-card,
+  body[data-concept="brand"] .br-section .br-tl-card,
+  body[data-concept="brand"] .br-section .br-speaker,
+  body[data-concept="brand"] .br-section .br-faq-item,
+  body[data-concept="brand"] .br-section .br-final-info,
+  body[data-concept="brand"] .br-section .br-form-wrap {
+    animation-duration: 480ms !important;
+  }
 }
 
 /* ===========================================================
