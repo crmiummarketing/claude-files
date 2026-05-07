@@ -11,6 +11,10 @@ html, body {
   font-family: var(--font-body, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Safety net: жоден елемент не повинен тягнути сторінку вбік на маленьких
+     екранах. overflow-x: clip — не ламає position: sticky (на відміну від hidden). */
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {

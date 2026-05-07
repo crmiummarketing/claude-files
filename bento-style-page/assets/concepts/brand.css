@@ -228,6 +228,10 @@ body[data-concept="brand"] .br-h1 {
   font-size: clamp(40px, 6.6vw, 88px);
   line-height: 0.98;
   letter-spacing: -0.035em;
+  /* На малих екранах "Трансформація" — довге слово, дозволяємо переносити */
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
   color: var(--c-ink);
   margin-bottom: 28px;
   max-width: 1080px;
@@ -1212,6 +1216,24 @@ body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
   }
   body[data-concept="brand"] .br-cd-cell { min-width: 58px; padding: 10px 10px 6px; }
   body[data-concept="brand"] .br-cd-cell b { font-size: 22px; }
+}
+
+@media (max-width: 360px) {
+  /* iPhone SE / маленькі Android — countdown і hero мусять вміщатися без overflow.
+     Зменшуємо hero padding, h1 font-size, і робимо countdown компактним. */
+  body[data-concept="brand"] .brand-page { padding: 0 16px 64px; }
+  body[data-concept="brand"] .br-hero { padding: 36px 18px 32px; }
+  body[data-concept="brand"] .br-section { padding-left: 4px; padding-right: 4px; }
+  body[data-concept="brand"] .br-h1 { font-size: 34px; }
+  body[data-concept="brand"] .br-countdown {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  body[data-concept="brand"] .br-cd-cell { min-width: 52px; padding: 8px 8px 5px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 20px; }
+  body[data-concept="brand"] .br-cd-cell span { font-size: 9px; }
+  body[data-concept="brand"] .br-cd-sep { font-size: 18px; }
 }
 
 /* ===========================================================
