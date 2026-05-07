@@ -117,7 +117,7 @@ Bento-style-page/
 - Hero-row → знизу, +700ms
 - Trust-cards × 5 → знизу, по +80ms (880-1200ms)
 
-На мобільному (≤760px) затримки скорочені до 20-620ms.
+На мобільному (≤760px) — **швидше**: затримки 0-440ms, тривалість 500ms (не 720), щоб блоки залітали різко й не запізнювались на швидкому swipe-скролі.
 
 ### B) Card scroll-reveal (per-card IO)
 Кожна картка `.br-pain, .br-what-card, .br-flex-card, .br-tl-card, .br-speaker, .br-faq-item, .br-final-info, .br-form-wrap` має:
@@ -128,6 +128,8 @@ animation-play-state: paused;
 ```
 
 JS у `page.js` спостерігає за КОЖНОЮ карткою індивідуально через `IntersectionObserver` (threshold 0.06, rootMargin -10% знизу). При появі — `el.style.animationPlayState = 'running'`. Картки залітають **по-черзі** як юзер скролить.
+
+На мобільному (≤760px) `animation-duration` через `!important` override = **480ms** (замість 720) — швидше, без запізнень.
 
 ### C) Number counters (для `[data-counter]` елементів)
 Цифри в `.br-trust-num` і `.br-what-num` з атрибутом `data-counter` анімуються 0→target за 1800ms ease-out quartic при появі у viewport (threshold 0.5).
@@ -158,8 +160,9 @@ transition: border-color .3s cubic-bezier(.22,1,.36,1),
 |---|---|
 | ≥ 1100px | Desktop full layout |
 | 1100-760px | 3-кол → 2-кол |
-| ≤ 760px | 1-кол, бургер-меню, sticky nav, fixed mobile menu |
+| ≤ 760px | 1-кол, бургер-меню, sticky nav, fixed mobile menu, швидші анімації |
 | ≤ 420px | Tight: дрібні правки |
+| ≤ 360px | iPhone SE / малі Android: countdown wraps, h1=34px, padding 16px |
 
 ### Mobile UI деталі
 - Burger-меню (`.br-burger` + `.br-mnav`) замість горизонтального nav
@@ -167,6 +170,30 @@ transition: border-color .3s cubic-bezier(.22,1,.36,1),
 - `.br-logo-event` (текст біля логотипу) ховається
 - Topbar — sticky `top: 12px`, glass blur background
 - Mobile menu — `position: fixed; top: 88px` коли відкритий
+- `.br-hero-row gap: 28px` (просторно між countdown і CTA)
+- `.br-hero-cta gap: 14px` (між кнопкою і sub-text)
+
+### Mobile overflow safety net
+
+3 рівні захисту від горизонтального скролу на малих екранах:
+
+1. **Глобальний clip** у `base.css`:
+   ```css
+   html, body {
+     overflow-x: clip;   /* модерніше за hidden, не ламає position: sticky */
+     max-width: 100%;
+   }
+   ```
+
+2. **H1 word-wrap** для довгих українських слів:
+   ```css
+   .br-h1 {
+     overflow-wrap: break-word;
+     hyphens: auto;
+   }
+   ```
+
+3. **`@media (max-width: 360px)`** з tight overrides — countdown `flex-wrap: wrap`, hero padding 18px, h1 font 34px.
 
 ---
 
