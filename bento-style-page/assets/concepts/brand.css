@@ -178,7 +178,7 @@ body[data-concept="brand"] .br-hero {
     var(--c-bg);
   border: 1px solid var(--c-line);
   border-radius: 32px;
-  padding: 72px 64px 64px;
+  padding: 56px 56px 48px;
   overflow: hidden;
   isolation: isolate;
 }
@@ -225,7 +225,9 @@ body[data-concept="brand"] .br-eyebrow-dot {
 body[data-concept="brand"] .br-h1 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(40px, 6.6vw, 88px);
+  /* Зменшено для MacBook 13" — раніше було clamp(40, 6.6vw, 88).
+     Тепер max 68px замість 88, і scaling factor нижче 5vw. */
+  font-size: clamp(36px, 5vw, 68px);
   line-height: 0.98;
   letter-spacing: -0.035em;
   /* На малих екранах "Трансформація" — довге слово, дозволяємо переносити */
@@ -378,7 +380,7 @@ body[data-concept="brand"] .br-trust-h {
 body[data-concept="brand"] .br-trust-num {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 44px;
+  font-size: 38px;
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--c-ink);
@@ -396,9 +398,9 @@ body[data-concept="brand"] .br-trust-l {
 /* ===========================================================
    SECTION HEAD (shared)
    =========================================================== */
-body[data-concept="brand"] .br-section { padding: 96px 0 0; }
+body[data-concept="brand"] .br-section { padding: 80px 0 0; }
 body[data-concept="brand"] .br-section-head {
-  margin-bottom: 56px;
+  margin-bottom: 44px;
   max-width: 920px;
 }
 body[data-concept="brand"] .br-num {
@@ -413,7 +415,8 @@ body[data-concept="brand"] .br-num {
 body[data-concept="brand"] .br-h2 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(34px, 4.6vw, 64px);
+  /* Зменшено з max 64px до 52px для MacBook 13" */
+  font-size: clamp(28px, 3.8vw, 52px);
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--c-ink);
@@ -546,7 +549,7 @@ body[data-concept="brand"] .br-what-card--accent {
 body[data-concept="brand"] .br-what-num {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 88px;
+  font-size: 68px;
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--c-ink);
@@ -853,7 +856,9 @@ body[data-concept="brand"] .br-speaker:hover {
 }
 body[data-concept="brand"] .br-speaker-photo-wrap {
   position: relative;
-  aspect-ratio: 3 / 4;
+  /* Square (1/1) — фото компактні, картка вміщається на 13" MacBook
+     разом з біо нижче. Object-position top-center зберігає обличчя у фокусі. */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--c-tint-soft);
 }
@@ -1345,45 +1350,46 @@ body[data-concept="brand"] .br-section .br-faq-item,
 body[data-concept="brand"] .br-section .br-final-info,
 body[data-concept="brand"] .br-section .br-form-wrap {
   opacity: 0;
-  animation: brSlideUp .72s cubic-bezier(.22, 1, .36, 1) forwards;
+  /* Прискорено з 0.72s до 0.5s — щоб картки не "залипали" при скролі. */
+  animation: brSlideUp .5s cubic-bezier(.22, 1, .36, 1) forwards;
   animation-play-state: paused;
 }
 
 /* Staggered delay для form section: info-блок з'являється першим, форма другим */
-body[data-concept="brand"] .br-section .br-final-info { animation-delay: .04s; }
-body[data-concept="brand"] .br-section .br-form-wrap  { animation-delay: .14s; }
+body[data-concept="brand"] .br-section .br-final-info { animation-delay: .02s; }
+body[data-concept="brand"] .br-section .br-form-wrap  { animation-delay: .08s; }
 
-/* Stagger через :nth-child / :nth-of-type — кожна наступна картка з затримкою */
+/* Stagger через :nth-child / :nth-of-type — затримки скорочено на 50% */
 body[data-concept="brand"] .br-section .br-pain:nth-child(1),
 body[data-concept="brand"] .br-section .br-what-card:nth-child(1),
 body[data-concept="brand"] .br-section .br-flex-card:nth-child(1),
 body[data-concept="brand"] .br-section .br-speaker:nth-child(1),
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(1) { animation-delay: .04s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(1) { animation-delay: .02s; }
 body[data-concept="brand"] .br-section .br-pain:nth-child(2),
 body[data-concept="brand"] .br-section .br-what-card:nth-child(2),
 body[data-concept="brand"] .br-section .br-flex-card:nth-child(2),
 body[data-concept="brand"] .br-section .br-speaker:nth-child(2),
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(2) { animation-delay: .12s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(2) { animation-delay: .07s; }
 body[data-concept="brand"] .br-section .br-pain:nth-child(3),
 body[data-concept="brand"] .br-section .br-what-card:nth-child(3),
 body[data-concept="brand"] .br-section .br-flex-card:nth-child(3),
 body[data-concept="brand"] .br-section .br-speaker:nth-child(3),
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(3) { animation-delay: .20s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(3) { animation-delay: .12s; }
 body[data-concept="brand"] .br-section .br-what-card:nth-child(4),
 body[data-concept="brand"] .br-section .br-flex-card:nth-child(4),
 body[data-concept="brand"] .br-section .br-speaker:nth-child(4),
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(4) { animation-delay: .28s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(4) { animation-delay: .17s; }
 body[data-concept="brand"] .br-section .br-what-card:nth-child(5),
 body[data-concept="brand"] .br-section .br-speaker:nth-child(5),
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(5) { animation-delay: .36s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(5) { animation-delay: .22s; }
 body[data-concept="brand"] .br-section .br-speaker:nth-child(6),
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(6) { animation-delay: .44s; }
-body[data-concept="brand"] .br-section .br-faq-item:nth-child(7) { animation-delay: .52s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(6) { animation-delay: .27s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(7) { animation-delay: .32s; }
 
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(1) { animation-delay: .04s; }
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(2) { animation-delay: .10s; }
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(3) { animation-delay: .16s; }
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(4) { animation-delay: .22s; }
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(5) { animation-delay: .28s; }
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(6) { animation-delay: .34s; }
-body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(7) { animation-delay: .40s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(1) { animation-delay: .02s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(2) { animation-delay: .06s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(3) { animation-delay: .10s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(4) { animation-delay: .14s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(5) { animation-delay: .18s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(6) { animation-delay: .22s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(7) { animation-delay: .26s; }
