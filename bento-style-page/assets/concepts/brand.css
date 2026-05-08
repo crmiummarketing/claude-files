@@ -1114,72 +1114,78 @@ body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
 }
 
 /* ===========================================================
-   SHORT-VIEWPORT DESKTOP (MacBook 13" — ~1280×800, ~1440×900)
-   Адаптуємо ТІЛЬКИ Hero, щоб перший екран зайняв ~весь viewport
-   і наступна секція не висовувалася над фолдом. h1 переноситься
-   на 3 рядки через <br> у HTML (Zoho Summit. / Трансформація вашого / бізнесу).
-   На високих екранах (>900px) і на мобільному — без змін.
+   SHORT-VIEWPORT DESKTOP (MacBook 13" — типово 1280-1440 × 720-900)
+   Hero займає ~весь viewport через min-height: calc(100vh - 96px),
+   тож наступна секція гарантовано починається ЗА фолдом.
+   Контент стискається помірно, дорогу пустоту знизу заповнює
+   радіальний glow картки.
    =========================================================== */
 @media (min-width: 1100px) and (max-height: 900px) {
   body[data-concept="brand"] .br-hero {
-    padding: 48px 56px 44px;
+    /* Hero card заповнює viewport від topbar до низу.
+       96px = topbar (~64) + page-padding-top + safety. */
+    min-height: calc(100vh - 96px);
+    padding: 44px 56px 40px;
   }
   body[data-concept="brand"] .br-eyebrow {
-    margin-bottom: 28px;
+    margin-bottom: 22px;
   }
   body[data-concept="brand"] .br-h1 {
-    font-size: clamp(40px, 4.8vw, 60px);
-    margin-bottom: 24px;
+    font-size: clamp(36px, 4.2vw, 54px);
+    margin-bottom: 20px;
   }
   body[data-concept="brand"] .br-lead {
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.5;
-    margin-bottom: 36px;
-    max-width: 680px;
+    margin-bottom: 30px;
+    max-width: 660px;
   }
   body[data-concept="brand"] .br-hero-row {
     margin-bottom: 0;
-    gap: 28px;
+    gap: 24px;
   }
   body[data-concept="brand"] .br-cd-cell {
-    padding: 12px 16px 9px;
-    min-width: 70px;
+    padding: 11px 15px 8px;
+    min-width: 66px;
   }
-  body[data-concept="brand"] .br-cd-cell b { font-size: 30px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 28px; }
   body[data-concept="brand"] .br-cta-primary {
-    padding: 16px 26px;
+    padding: 15px 24px;
     font-size: 15px;
   }
   body[data-concept="brand"] .br-trust {
-    margin-top: 36px;
+    margin-top: 28px;
     gap: 14px;
   }
   body[data-concept="brand"] .br-trust-card {
-    padding: 20px 20px;
+    padding: 18px 18px;
     border-radius: 16px;
   }
-  body[data-concept="brand"] .br-trust-num { font-size: 34px; }
-  body[data-concept="brand"] .br-trust-num span { font-size: 24px; }
-  body[data-concept="brand"] .br-trust-h { font-size: 19px; }
+  body[data-concept="brand"] .br-trust-num { font-size: 32px; }
+  body[data-concept="brand"] .br-trust-num span { font-size: 22px; }
+  body[data-concept="brand"] .br-trust-h { font-size: 18px; }
   body[data-concept="brand"] .br-trust-l { font-size: 12px; line-height: 1.4; }
 }
 
-/* Дуже короткий viewport (< 780px height) — додатковий стиск */
-@media (min-width: 1100px) and (max-height: 780px) {
-  body[data-concept="brand"] .br-hero { padding: 36px 48px 36px; }
-  body[data-concept="brand"] .br-eyebrow { margin-bottom: 22px; }
+/* Ще тісніший контент для коротших MBP (~720-820px height) */
+@media (min-width: 1100px) and (max-height: 820px) {
+  body[data-concept="brand"] .br-hero { padding: 32px 48px 32px; }
+  body[data-concept="brand"] .br-eyebrow { margin-bottom: 16px; }
   body[data-concept="brand"] .br-h1 {
-    font-size: clamp(34px, 4.2vw, 50px);
-    margin-bottom: 18px;
+    font-size: clamp(30px, 3.4vw, 44px);
+    margin-bottom: 14px;
   }
-  body[data-concept="brand"] .br-lead { margin-bottom: 28px; font-size: 16px; }
-  body[data-concept="brand"] .br-hero-row { gap: 22px; }
-  body[data-concept="brand"] .br-cd-cell { padding: 10px 14px 8px; min-width: 64px; }
-  body[data-concept="brand"] .br-cd-cell b { font-size: 26px; }
-  body[data-concept="brand"] .br-trust { margin-top: 28px; }
-  body[data-concept="brand"] .br-trust-card { padding: 16px 16px; }
-  body[data-concept="brand"] .br-trust-num { font-size: 28px; }
-  body[data-concept="brand"] .br-trust-h { font-size: 16px; }
+  body[data-concept="brand"] .br-lead { font-size: 15px; margin-bottom: 22px; }
+  body[data-concept="brand"] .br-hero-row { gap: 18px; }
+  body[data-concept="brand"] .br-cd-cell { padding: 8px 12px 6px; min-width: 58px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 22px; }
+  body[data-concept="brand"] .br-cd-cell span { font-size: 9px; margin-top: 3px; }
+  body[data-concept="brand"] .br-cta-primary { padding: 12px 20px; font-size: 14px; }
+  body[data-concept="brand"] .br-trust { margin-top: 20px; gap: 10px; }
+  body[data-concept="brand"] .br-trust-card { padding: 14px 14px; gap: 4px; }
+  body[data-concept="brand"] .br-trust-num { font-size: 26px; }
+  body[data-concept="brand"] .br-trust-h { font-size: 15px; line-height: 1.2; }
+  body[data-concept="brand"] .br-trust-l { font-size: 11px; line-height: 1.3; }
 }
 
 @media (max-width: 760px) {
@@ -1224,6 +1230,10 @@ body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
   body[data-concept="brand"] .br-logo-sep,
   body[data-concept="brand"] .br-logo-event { display: none; }
   body[data-concept="brand"] .br-logo-img { height: 36px; }
+
+  /* На мобільному прибираємо desktop-only <br> у h1 (перенос перед "бізнесу")
+     — нехай слово саме обтікає природньо */
+  body[data-concept="brand"] .br-h1-desk-only { display: none; }
 
   /* Hero — менший padding, меншi cells */
   body[data-concept="brand"] .br-hero { padding: 44px 24px 40px; border-radius: 24px; }
