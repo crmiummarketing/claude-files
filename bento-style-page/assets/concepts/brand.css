@@ -1113,6 +1113,85 @@ body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
   body[data-concept="brand"] .br-final-grid { grid-template-columns: 1fr; }
 }
 
+/* ===========================================================
+   SHORT-VIEWPORT DESKTOP (MacBook 13" — ~1280×800, ~1440×900)
+   Стискаємо ТІЛЬКИ Hero, щоб перший екран вміщався по висоті.
+   Не чіпаємо інші секції. На високих екранах (>900px) і на
+   мобільному — залишаємо як було.
+   =========================================================== */
+@media (min-width: 1100px) and (max-height: 900px) {
+  body[data-concept="brand"] .br-hero {
+    padding: 36px 48px 32px;
+    border-radius: 28px;
+  }
+  body[data-concept="brand"] .br-eyebrow {
+    margin-bottom: 22px;
+    font-size: 11px;
+    padding: 6px 14px;
+  }
+  body[data-concept="brand"] .br-h1 {
+    font-size: clamp(34px, 4.2vw, 52px);
+    margin-bottom: 18px;
+  }
+  body[data-concept="brand"] .br-lead {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    max-width: 640px;
+  }
+  body[data-concept="brand"] .br-hero-row {
+    margin-bottom: 0;
+    gap: 24px;
+  }
+  body[data-concept="brand"] .br-cd-cell {
+    padding: 10px 14px 8px;
+    min-width: 64px;
+    border-radius: 12px;
+  }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 26px; }
+  body[data-concept="brand"] .br-cd-cell span { font-size: 10px; margin-top: 4px; }
+  body[data-concept="brand"] .br-cd-sep { font-size: 22px; }
+  body[data-concept="brand"] .br-cta-primary {
+    padding: 14px 24px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+  body[data-concept="brand"] .br-cta-sub { font-size: 12px; }
+  body[data-concept="brand"] .br-trust {
+    margin-top: 28px;
+    gap: 12px;
+  }
+  body[data-concept="brand"] .br-trust-card {
+    padding: 16px 16px;
+    border-radius: 14px;
+    gap: 6px;
+  }
+  body[data-concept="brand"] .br-trust-num { font-size: 30px; }
+  body[data-concept="brand"] .br-trust-num span { font-size: 22px; }
+  body[data-concept="brand"] .br-trust-h { font-size: 17px; }
+  body[data-concept="brand"] .br-trust-l { font-size: 12px; line-height: 1.35; }
+  body[data-concept="brand"] .br-trust-tag { font-size: 10px; }
+}
+
+/* Ще коротший viewport — < 760px height (старі MBP 13" 1280×800
+   після відкриття DevTools, або zoomed). Додатково стискаємо. */
+@media (min-width: 1100px) and (max-height: 780px) {
+  body[data-concept="brand"] .br-hero { padding: 28px 44px 28px; }
+  body[data-concept="brand"] .br-eyebrow { margin-bottom: 16px; }
+  body[data-concept="brand"] .br-h1 {
+    font-size: clamp(30px, 3.6vw, 44px);
+    margin-bottom: 14px;
+  }
+  body[data-concept="brand"] .br-lead { margin-bottom: 22px; font-size: 15px; }
+  body[data-concept="brand"] .br-hero-row { gap: 20px; }
+  body[data-concept="brand"] .br-cd-cell { padding: 8px 12px 6px; min-width: 58px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 22px; }
+  body[data-concept="brand"] .br-trust { margin-top: 22px; }
+  body[data-concept="brand"] .br-trust-card { padding: 14px 14px; }
+  body[data-concept="brand"] .br-trust-num { font-size: 26px; }
+  body[data-concept="brand"] .br-trust-h { font-size: 15px; }
+}
+
 @media (max-width: 760px) {
   body[data-concept="brand"] .brand-page { padding: 16px 16px 64px; }
   body[data-concept="brand"] .br-section { padding-top: 64px; }
