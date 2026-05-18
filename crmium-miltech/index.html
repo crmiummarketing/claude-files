@@ -1,0 +1,1394 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Odoo ERP для Miltech · CRMiUM</title>
+<meta name="description" content="Odoo ERP для оборонної промисловості України. On-premise, готовність до AQAP-2110 та ISO 27001, нативна інтеграція з ДОТ, Brave1 Market і Prozorro.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/palettes.css">
+<link rel="stylesheet" href="assets/concepts/brand.css">
+
+<style>
+/* ===========================================================
+   MILTECH OVERRIDES
+   Кастомні правила під специфіку лендингу: модулі-3x3,
+   безпека-bento, інтеграції-логотипи, кейси-placeholder, etc.
+   =========================================================== */
+
+/* HERO без countdown — CTA-блок займає весь ряд */
+body[data-concept="brand"] .br-hero-row.br-hero-row--no-cd {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+body[data-concept="brand"] .br-hero-row--no-cd .br-hero-cta {
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+body[data-concept="brand"] .br-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: transparent;
+  color: var(--c-ink);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 14px;
+  border: 1px solid var(--c-line);
+  transition: border-color .2s, background .2s;
+}
+body[data-concept="brand"] .br-cta-ghost:hover {
+  border-color: var(--c-acc);
+  background: var(--c-acc-soft);
+}
+
+/* Trust-strip між hero і pains — компактна плитка бейджів */
+body[data-concept="brand"] .br-trust-strip {
+  margin-top: 16px;
+  padding: 24px 28px;
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  align-items: center;
+}
+body[data-concept="brand"] .br-trust-strip-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+  margin-right: 8px;
+}
+body[data-concept="brand"] .br-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--c-tint-soft);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-ink-2);
+  transition: border-color .2s, color .2s;
+}
+body[data-concept="brand"] .br-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-acc);
+}
+body[data-concept="brand"] .br-badge:hover {
+  border-color: var(--c-acc-mid);
+  color: var(--c-ink);
+}
+
+/* PAINS — дозволяємо 6 карток (3×2) */
+body[data-concept="brand"] #br-pains .br-pains-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 1100px) {
+  body[data-concept="brand"] #br-pains .br-pains-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  body[data-concept="brand"] #br-pains .br-pain:nth-child(3) {
+    grid-column: auto;
+  }
+}
+@media (max-width: 760px) {
+  body[data-concept="brand"] #br-pains .br-pains-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* WHY ODOO — 3-col grid однакових карток */
+body[data-concept="brand"] .br-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  body[data-concept="brand"] .br-grid-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  body[data-concept="brand"] .br-grid-3 { grid-template-columns: 1fr; }
+}
+
+/* MODULES — 3×3 grid */
+body[data-concept="brand"] .br-grid-modules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  body[data-concept="brand"] .br-grid-modules { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  body[data-concept="brand"] .br-grid-modules { grid-template-columns: 1fr; }
+}
+
+/* SECURITY — велика "герой-картка" + 8 малих, грід 2+3+3 */
+body[data-concept="brand"] #br-security {
+  position: relative;
+}
+body[data-concept="brand"] .br-sec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(140px, auto);
+  gap: 16px;
+}
+body[data-concept="brand"] .br-sec-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  padding: 26px 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-sec-card:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-sec-card--hero {
+  grid-column: span 3;
+  background:
+    radial-gradient(80% 90% at 90% 10%, rgba(239,101,47,0.16) 0%, transparent 60%),
+    var(--c-card);
+  padding: 32px 36px;
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+}
+body[data-concept="brand"] .br-sec-card--hero .br-sec-icon {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--c-acc-soft);
+  color: var(--c-acc);
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+}
+body[data-concept="brand"] .br-sec-card--hero .br-sec-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+body[data-concept="brand"] .br-sec-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+}
+body[data-concept="brand"] .br-sec-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-sec-card--hero .br-sec-h {
+  font-size: 24px;
+  letter-spacing: -0.025em;
+}
+body[data-concept="brand"] .br-sec-p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-sec-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--c-acc-soft);
+  color: var(--c-acc);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+body[data-concept="brand"] .br-sec-cta {
+  margin-top: 28px;
+  padding: 22px 28px;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  border-radius: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+}
+body[data-concept="brand"] .br-sec-cta-text {
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.4;
+  max-width: 680px;
+}
+body[data-concept="brand"] .br-sec-cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: rgba(0,0,0,0.18);
+  color: var(--c-acc-ink);
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 999px;
+  transition: background .2s;
+  white-space: nowrap;
+}
+body[data-concept="brand"] .br-sec-cta a:hover {
+  background: rgba(0,0,0,0.32);
+}
+
+@media (max-width: 1100px) {
+  body[data-concept="brand"] .br-sec-grid { grid-template-columns: 1fr 1fr; }
+  body[data-concept="brand"] .br-sec-card--hero { grid-column: span 2; }
+}
+@media (max-width: 760px) {
+  body[data-concept="brand"] .br-sec-grid { grid-template-columns: 1fr; }
+  body[data-concept="brand"] .br-sec-card--hero {
+    grid-column: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px 24px;
+  }
+  body[data-concept="brand"] .br-sec-card--hero .br-sec-h { font-size: 20px; }
+}
+
+/* ROADMAP — спрощений timeline без break-row */
+body[data-concept="brand"] #br-roadmap .br-schedule-list {
+  grid-template-columns: 180px 1fr;
+}
+body[data-concept="brand"] #br-roadmap .br-schedule-list::before {
+  left: 180px;
+}
+
+/* WHO IS IT FOR — 3-col grid */
+body[data-concept="brand"] .br-who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  body[data-concept="brand"] .br-who-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  body[data-concept="brand"] .br-who-grid { grid-template-columns: 1fr; }
+}
+
+/* CASES — 2x2 cards + NDA strip */
+body[data-concept="brand"] .br-cases-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+body[data-concept="brand"] .br-case-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-case-card:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-case-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+}
+body[data-concept="brand"] .br-case-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-case-h em { font-style: italic; color: var(--c-acc); }
+body[data-concept="brand"] .br-case-p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-case-meta {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--c-line);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-ink-3);
+}
+
+body[data-concept="brand"] .br-nda-strip {
+  margin-top: 24px;
+  padding: 22px 26px;
+  background: var(--c-acc-soft);
+  border: 1px solid var(--c-acc-mid);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-nda-icon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+body[data-concept="brand"] .br-nda-strip b { color: var(--c-acc); font-weight: 700; }
+
+body[data-concept="brand"] .br-case-counters {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 22px 26px;
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+}
+body[data-concept="brand"] .br-case-counter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+body[data-concept="brand"] .br-case-counter b {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-case-counter b span { color: var(--c-acc); }
+body[data-concept="brand"] .br-case-counter small {
+  font-size: 12px;
+  color: var(--c-ink-2);
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+@media (max-width: 1100px) {
+  body[data-concept="brand"] .br-cases-grid { grid-template-columns: 1fr 1fr; }
+  body[data-concept="brand"] .br-case-counters { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  body[data-concept="brand"] .br-cases-grid { grid-template-columns: 1fr; }
+  body[data-concept="brand"] .br-case-counters { grid-template-columns: 1fr 1fr; gap: 18px; }
+  body[data-concept="brand"] .br-case-counter b { font-size: 28px; }
+}
+
+/* FINAL FORM — selector + checkbox + bullet list */
+body[data-concept="brand"] .br-form-row select {
+  background: var(--c-tint-soft);
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-family: var(--font-body);
+  color: var(--c-ink);
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8' fill='none' stroke='%23EF652F' stroke-width='2'><path d='M1 1l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 44px;
+  transition: border-color .2s, background-color .2s;
+}
+body[data-concept="brand"] .br-form-row select:focus {
+  outline: none;
+  border-color: var(--c-acc);
+  background-color: var(--c-tint-bold);
+}
+body[data-concept="brand"] .br-form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-form-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--c-acc);
+  flex: 0 0 auto;
+}
+
+body[data-concept="brand"] .br-final-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+body[data-concept="brand"] .br-final-bullets li {
+  padding-left: 26px;
+  position: relative;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-final-bullets li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+/* Force-no-tilt: спікер-картки не маркуємо data-tilt, але про всяк випадок
+   приберемо preserve-3d, бо в нас немає людських фото */
+body[data-concept="brand"] .br-speaker { transform-style: flat; }
+</style>
+</head>
+<body data-concept="brand" data-palette="A">
+
+<main class="brand-page">
+
+  <!-- TOPBAR -->
+  <header class="br-topbar">
+    <a class="br-logo" href="#" aria-label="CRMiUM">
+      <img class="br-logo-img br-logo-img--dark"
+           src="https://crmium.com/wp-content/uploads/2026/05/logo-white-for-dark-background.png"
+           alt="CRMiUM" loading="eager">
+      <img class="br-logo-img br-logo-img--light"
+           src="https://crmium.com/wp-content/uploads/2026/05/logo-black-for-light-background.png"
+           alt="CRMiUM" loading="eager">
+    </a>
+    <nav class="br-nav" aria-label="Навігація">
+      <a href="#br-pains">Виклики</a>
+      <a href="#br-why">Чому Odoo</a>
+      <a href="#br-modules">Модулі</a>
+      <a href="#br-security">Безпека</a>
+      <a href="#br-roadmap">Етапи</a>
+      <a href="#br-faq">FAQ</a>
+    </nav>
+    <a class="br-topbar-cta" href="#br-register">Замовити консультацію →</a>
+    <button class="br-burger" type="button" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile sliding nav -->
+  <div class="br-mnav" aria-hidden="true">
+    <a href="#br-pains">Виклики</a>
+    <a href="#br-why">Чому Odoo</a>
+    <a href="#br-modules">Модулі</a>
+    <a href="#br-security">Безпека</a>
+    <a href="#br-roadmap">Етапи</a>
+    <a href="#br-faq">FAQ</a>
+    <a class="br-mnav-cta" href="#br-register">Замовити консультацію →</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="br-hero">
+    <div class="br-eyebrow">
+      <span class="br-eyebrow-dot" aria-hidden="true"></span>
+      ODOO ERP · MILTECH UKRAINE · SECURE BY DESIGN
+    </div>
+    <h1 class="br-h1">Odoo ERP для <em>оборонної промисловості</em> України</h1>
+    <p class="br-lead">
+      Масштабуйте виробництво від цеху до серій 80 000+ виробів на місяць.
+      On-premise розгортання, готовність до AQAP-2110 та ISO 27001, нативна
+      інтеграція з ДОТ, Brave1 Market і Prozorro.
+    </p>
+
+    <div class="br-hero-row br-hero-row--no-cd">
+      <div class="br-hero-cta">
+        <a class="br-cta-primary" href="#br-register">Замовити консультацію →</a>
+        <a class="br-cta-ghost" href="#br-security">Як ми вирішуємо питання безпеки</a>
+      </div>
+    </div>
+
+    <!-- Trust strip -->
+    <div class="br-trust">
+      <div class="br-trust-card br-trust-main">
+        <div class="br-trust-tag">SILVER PARTNER</div>
+        <div class="br-trust-h">Офіційний партнер<br>Odoo S.A.</div>
+      </div>
+      <div class="br-trust-card">
+        <div class="br-trust-num" data-counter>10<span>+</span></div>
+        <div class="br-trust-l">років<br>на ринку ERP</div>
+      </div>
+      <div class="br-trust-card">
+        <div class="br-trust-num" data-counter>500<span>+</span></div>
+        <div class="br-trust-l">впроваджень<br>у EMEA</div>
+      </div>
+      <div class="br-trust-card">
+        <div class="br-trust-num" data-counter>80<span>+</span></div>
+        <div class="br-trust-l">експертів<br>у команді</div>
+      </div>
+      <div class="br-trust-card">
+        <div class="br-trust-num" data-counter>36</div>
+        <div class="br-trust-l">країн<br>з клієнтами</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP — стандарти і сумісність -->
+  <div class="br-trust-strip">
+    <span class="br-trust-strip-label">СУМІСНІСТЬ ТА СТАНДАРТИ</span>
+    <span class="br-badge">Odoo Silver Partner</span>
+    <span class="br-badge">AQAP-2110 ready</span>
+    <span class="br-badge">ISO 27001 aligned</span>
+    <span class="br-badge">TISAX-aligned</span>
+    <span class="br-badge">STANAG-friendly</span>
+    <span class="br-badge">NCAGE-сумісний</span>
+    <span class="br-badge">M.E.Doc</span>
+    <span class="br-badge">Keycloak / Azure AD</span>
+  </div>
+
+  <!-- 01 / БОЛІ ОПК -->
+  <section class="br-section" id="br-pains">
+    <div class="br-section-head">
+      <div class="br-num">01 / ВИКЛИКИ ОПК</div>
+      <h2 class="br-h2">Excel і 1С <em>більше не витримують</em><br>темпу оборонної промисловості</h2>
+      <p class="br-section-sub">
+        Виробництво зросло у десятки разів за три роки. Регуляторика стала жорсткішою
+        за фармацевтичну, кооперація — складнішою за авіапром. Класичні інструменти ламаються на масштабуванні.
+      </p>
+    </div>
+
+    <div class="br-pains-grid">
+      <article class="br-pain">
+        <div class="br-pain-tag">CEO · COO · ВЛАСНИКИ</div>
+        <h3 class="br-pain-h">Облік <em>подвійного призначення</em></h3>
+        <ul class="br-pain-list">
+          <li>Єдиний список КМУ, 5-значний альфаноміс на кожну позицію</li>
+          <li>Перевірки ДСЕКУ, експортний контроль на кожну партію</li>
+          <li>Excel-таблиці не проходять аудит контролю над зовнішньоекономічною діяльністю</li>
+        </ul>
+      </article>
+
+      <article class="br-pain">
+        <div class="br-pain-tag">COO · ВИРОБНИЦТВО</div>
+        <h3 class="br-pain-h">Масштабування <em>«гараж → завод»</em></h3>
+        <ul class="br-pain-list">
+          <li>Від 100 до 80 000 виробів на місяць без планування потужностей</li>
+          <li>MRP/APS під постійний дефіцит компонентів</li>
+          <li>Управління чергами і пріоритетами замовлень у режимі реального часу</li>
+        </ul>
+      </article>
+
+      <article class="br-pain">
+        <div class="br-pain-tag">QC · СЕРВІС · ТЕХНОЛОГИ</div>
+        <h3 class="br-pain-h">Батч-трекінг і <em>рекламації з фронту</em></h3>
+        <ul class="br-pain-list">
+          <li>Серіалізація і lot-генеалогія до кожного виробу</li>
+          <li>Швидка локалізація партії, на яку є рекламація</li>
+          <li>Зв'язок партії з оператором, постачальником і ECO-версією</li>
+        </ul>
+      </article>
+
+      <article class="br-pain">
+        <div class="br-pain-tag">PROCUREMENT · R&amp;D</div>
+        <h3 class="br-pain-h">Кооперація на <em>30-80 підрядників</em></h3>
+        <ul class="br-pain-list">
+          <li>Один виріб — десятки постачальників з різною якістю</li>
+          <li>Без єдиного PLM кооперація перетворюється на email-хаос</li>
+          <li>Engineering Change Orders щотижня під фронт-фідбек</li>
+        </ul>
+      </article>
+
+      <article class="br-pain">
+        <div class="br-pain-tag">CFO · FINANCE</div>
+        <h3 class="br-pain-h">Мульти-юрособи <em>UA + EU</em></h3>
+        <ul class="br-pain-list">
+          <li>UA-контур для держконтрактів, EU-контур для НАТО-експорту</li>
+          <li>Мультивалюта USD/EUR/UAH, трансфертне ціноутворення</li>
+          <li>Консолідація фінзвітності в реальному часі, не раз на квартал</li>
+        </ul>
+      </article>
+
+      <article class="br-pain">
+        <div class="br-pain-tag">HR · COO</div>
+        <h3 class="br-pain-h">Бронювання і <em>облік ВОС</em></h3>
+        <ul class="br-pain-list">
+          <li>До 100% бронювання працівників критично важливих підприємств</li>
+          <li>24-годинна процедура бронювання через Дію з грудня 2025</li>
+          <li>Облік військово-облікових спеціальностей, відстрочок, статусів</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="br-pains-summary">
+      Якщо впізнаєте хоч один виклик — поговорімо. На discovery-дзвінку покажемо, як це закривається в єдиній системі.
+    </div>
+  </section>
+
+  <!-- 02 / ЧОМУ ODOO -->
+  <section class="br-section" id="br-why">
+    <div class="br-section-head">
+      <div class="br-num">02 / ПЛАТФОРМА</div>
+      <h2 class="br-h2">Чому саме Odoo <em>підходить ОПК</em>,<br>а не SAP, 1С чи MS Dynamics</h2>
+      <p class="br-section-sub">
+        Шість архітектурних переваг, які роблять Odoo фактичним стандартом
+        для українських miltech-виробників — від стартапів Brave1 до прайм-контракторів НАТО.
+      </p>
+    </div>
+
+    <div class="br-grid-3">
+      <article class="br-what-card">
+        <div class="br-what-tag">OPEN-SOURCE CORE</div>
+        <h3 class="br-what-h">Повний контроль над кодом</h3>
+        <p class="br-sec-p">
+          Аудит безпеки на рівні джерела. Відсутність vendor lock-in і санкційних
+          ризиків. Жодних «чорних скриньок» у критичній системі.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">ON-PREMISE</div>
+        <h3 class="br-what-h">Розгортання у вашому периметрі</h3>
+        <p class="br-sec-p">
+          Власна інфраструктура або сертифікований UA-DC. Без обов'язкової
+          прив'язки до SaaS. Дані не покидають контур замовника.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">МОДУЛЬНІСТЬ</div>
+        <h3 class="br-what-h">50+ застосунків в одній платформі</h3>
+        <p class="br-sec-p">
+          Вмикайте лише те, що використовуєте: MRP, PLM, Quality, WMS, HR.
+          Не платите за модулі SAP, якими ніколи не скористаєтесь.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">UA ЛОКАЛІЗАЦІЯ</div>
+        <h3 class="br-what-h">Бухгалтерія за НП(С)БО з коробки</h3>
+        <p class="br-sec-p">
+          ПДВ, ПН/РК, M.E.Doc, «Вчасно», валютний контроль НБУ,
+          СОТ-номенклатура. IFRS-паралель для EU-юрособи.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">AQAP-READY</div>
+        <h3 class="br-what-h">Готовність до AQAP та ISO</h3>
+        <p class="br-sec-p">
+          Quality-модуль покриває NCR, CAPA, FAI. Audit log з retention
+          5+ років налаштовується нативно під вимоги аудиту НАТО.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">ECONOMICS</div>
+        <h3 class="br-what-h">TCO у 4-7× нижче за SAP</h3>
+        <p class="br-sec-p">
+          За еквівалентного покриття процесів MRP / PLM / QC.
+          Прозорі ліцензії, відсутність прихованих модулів-розширень.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 03 / МОДУЛІ -->
+  <section class="br-section" id="br-modules">
+    <div class="br-section-head">
+      <div class="br-num">03 / ФУНКЦІОНАЛ</div>
+      <h2 class="br-h2">9 модулів, які закривають<br><em>повний контур ОПК</em></h2>
+      <p class="br-section-sub">
+        Від конструкторського бюро до відвантаження за держконтрактом —
+        в одній системі з єдиним BOM, серійним номером і журналом дій.
+      </p>
+    </div>
+
+    <div class="br-grid-modules">
+      <article class="br-what-card">
+        <div class="br-what-tag">MANUFACTURING / MRP</div>
+        <h3 class="br-what-h">Планування виробництва</h3>
+        <p class="br-sec-p">
+          APS-планування під дефіцит, work orders, OEE,
+          sub-contracting на 30-80 підрядників. MTO + MTS гібрид.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">INVENTORY + LOT</div>
+        <h3 class="br-what-h">Серіалізація і lot-tracking</h3>
+        <p class="br-sec-p">
+          FEFO/FIFO, lot-генеалогія для рекламацій з фронту.
+          Серіалізація до борта, контроль експортного класифікатора.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">PLM</div>
+        <h3 class="br-what-h">Версіонування BOM і ECO</h3>
+        <p class="br-sec-p">
+          Engineering Change Orders щотижня під фронт-фідбек.
+          Синхронізація з SolidWorks, Altium, KiCad. Конфігураційне управління.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">QUALITY · AQAP-2110</div>
+        <h3 class="br-what-h">Контроль якості рівня НАТО</h3>
+        <p class="br-sec-p">
+          FAI, in-process QC, NCR, CAPA, контрольні плани.
+          Інтеграція з вимірювальним обладнанням. Готовність до AQAP-аудиту.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">PURCHASE · ДСЕКУ</div>
+        <h3 class="br-what-h">Закупівлі з експортним контролем</h3>
+        <p class="br-sec-p">
+          Перевірка позицій за Єдиним списком КМУ. RFQ, vendor scorecard,
+          dual-use compliance. Контроль походження компонентів.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">ACCOUNTING UA</div>
+        <h3 class="br-what-h">Бухгалтерія з локалізацією</h3>
+        <p class="br-sec-p">
+          План рахунків НП(С)БО, M.E.Doc, «Вчасно», мультивалюта.
+          IFRS-паралель для EU-юрособи. Консолідація в реальному часі.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">CRM ДЕРЖКОНТРАКТІВ</div>
+        <h3 class="br-what-h">Pipeline під ДОТ, Brave1, Prozorro</h3>
+        <p class="br-sec-p">
+          Тендерні досьє, NCAGE/NSN-маркування, life-cycle офсет-контрактів.
+          Історія взаємодій із замовниками від МО до приватних прайм.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">HR + БРОНЮВАННЯ</div>
+        <h3 class="br-what-h">Облік ВОС і відстрочок</h3>
+        <p class="br-sec-p">
+          Військово-облікові спеціальності, статус «критично важливий»,
+          інтеграція з «Резерв+» для 24-годинної процедури бронювання.
+        </p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">STUDIO · DEV MODE</div>
+        <h3 class="br-what-h">No-code кастомізація</h3>
+        <p class="br-sec-p">
+          Власні форми, звіти, workflow без зриву upgrade-циклу.
+          Розробка модулів для специфічних процесів конкретного виробника.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 04 / БЕЗПЕКА -->
+  <section class="br-section" id="br-security">
+    <div class="br-section-head">
+      <div class="br-num">04 / SECURITY · TISAX · ISO 27001</div>
+      <h2 class="br-h2">Безпека рівня <em>оборонного підрядника</em>,<br>не SaaS-стартапу</h2>
+      <p class="br-section-sub">
+        Архітектура Odoo для Miltech проєктується від загроз: інсайдер,
+        ланцюг постачання, експортний контроль, цільова атака на критичну
+        інформаційну інфраструктуру.
+      </p>
+    </div>
+
+    <div class="br-sec-grid">
+      <article class="br-sec-card br-sec-card--hero">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L3 6v6c0 5 3.5 9 9 10 5.5-1 9-5 9-10V6l-9-4z"/></svg>
+        </div>
+        <div class="br-sec-body">
+          <div class="br-sec-tag">FUNDAMENTAL</div>
+          <h3 class="br-sec-h">On-premise або суверенна хмара — з першого дня</h3>
+          <p class="br-sec-p">
+            Повне розгортання у вашому периметрі або в українському дата-центрі
+            з ISO 27001. Без обов'язкового Odoo Online. Це принциповий критерій
+            для AQAP-замовників і прямих контрактів з ДОТ — пояснимо чому на discovery-аудиті.
+          </p>
+        </div>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="br-sec-tag">AUDIT TRAIL</div>
+        <h3 class="br-sec-h">Audit log з retention 5+ років</h3>
+        <p class="br-sec-p">Незмінна копія в WORM-сховищі. Готовий під AQAP-2110 та аудит Мінстратегпрому.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="br-sec-tag">MFA · SSO</div>
+        <h3 class="br-sec-h">WebAuthn / TOTP / SSO</h3>
+        <p class="br-sec-p">Інтеграція з Keycloak, Azure AD, ADFS. Апаратні ключі YubiKey для R&amp;D і фінансів.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+        </div>
+        <div class="br-sec-tag">RBAC</div>
+        <h3 class="br-sec-h">Права доступу до рівня поля</h3>
+        <p class="br-sec-p">Record rules + field-level access. Конструктор бачить креслення, постачальник — лише свій work order.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+        </div>
+        <div class="br-sec-tag">ENCRYPTION</div>
+        <h3 class="br-sec-h">Шифрування at-rest та in-transit</h3>
+        <p class="br-sec-p">LUKS на томах, TDE/pgcrypto у БД, TLS 1.3 + mTLS між сервісами, ротація ключів через Vault.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12V7a2 2 0 012-2h14a2 2 0 012 2v5"/><path d="M3 12v5a2 2 0 002 2h14a2 2 0 002-2v-5"/><path d="M7 12h10"/></svg>
+        </div>
+        <div class="br-sec-tag">BACKUP 3-2-1</div>
+        <h3 class="br-sec-h">Бекапи з гео-розподілом</h3>
+        <p class="br-sec-p">3 копії, 2 носії, 1 поза периметром. RPO ≤ 1 година, RTO ≤ 4 години. Geo-fail-over.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+        </div>
+        <div class="br-sec-tag">GEO-FENCING</div>
+        <h3 class="br-sec-h">Фільтрація доступу за гео і IP</h3>
+        <p class="br-sec-p">Дозволені діапазони UA / EU. Блок RU / BY / CN / IR на edge. WAF Cloudflare або Imperva.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8 8-8M4 20l8-8 8 8"/></svg>
+        </div>
+        <div class="br-sec-tag">DLP · WATERMARK</div>
+        <h3 class="br-sec-h">Контроль документів і креслень</h3>
+        <p class="br-sec-p">Водяні знаки на кресленнях з ID користувача. USB-block, заборона експорту BOM поза доменом.</p>
+      </article>
+
+      <article class="br-sec-card">
+        <div class="br-sec-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h7"/><path d="M16 17h6M19 14l3 3-3 3"/></svg>
+        </div>
+        <div class="br-sec-tag">TISAX-ALIGNED</div>
+        <h3 class="br-sec-h">Шлях до європейських прайм</h3>
+        <p class="br-sec-p">Конфігурація під вимоги TISAX-аудиту для виходу на Rheinmetall, KMW, Hensoldt, Diehl Defence.</p>
+      </article>
+    </div>
+
+    <div class="br-sec-cta">
+      <div class="br-sec-cta-text">
+        Розглядаєте Odoo для свого виробництва?
+        Проведемо безкоштовний security-аудит вашої інфраструктури — без зобов'язань і під взаємний NDA.
+      </div>
+      <a href="#br-register">Запросити security-аудит →</a>
+    </div>
+  </section>
+
+  <!-- 05 / ІНТЕГРАЦІЇ -->
+  <section class="br-section" id="br-integrations">
+    <div class="br-section-head">
+      <div class="br-num">05 / INTEGRATIONS</div>
+      <h2 class="br-h2">Нативні <em>мости</em> до екосистеми<br>оборонних закупівель</h2>
+      <p class="br-section-sub">
+        Готові конектори CRMiUM для держконтрактів, локальних сервісів,
+        корпоративної ідентифікації та конструкторських систем.
+      </p>
+    </div>
+
+    <div class="br-flex-grid">
+      <div class="br-flex-card">
+        <div class="br-flex-icon">◈</div>
+        <h3>Prozorro / Prozorro.Sale</h3>
+        <p>Авто-витяг тендерів, контроль строків, експорт договорів у систему.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">◆</div>
+        <h3>ДОТ / DOT-Chain Defence</h3>
+        <p>Синхронізація номенклатури, статусів постачання, актів приймання.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">⬡</div>
+        <h3>Brave1 Market</h3>
+        <p>Каталог кодифікованих зразків, кодифікація НАТО-номенклатури.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">●</div>
+        <h3>DELTA / єБали</h3>
+        <p>Обмін даними щодо застосування зразків через посередницький шар.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">⧉</div>
+        <h3>M.E.Doc / «Вчасно»</h3>
+        <p>ПН, РК, КЕП-підписання, обмін документами з контрагентами.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">⇄</div>
+        <h3>Міграція з 1С / BAS</h3>
+        <p>ETL-конвеєр номенклатури, залишків, контрагентів, відкритих документів.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">⊞</div>
+        <h3>Keycloak / Azure AD</h3>
+        <p>SSO через OIDC/SAML. Групи доступу синхронно з корпоративним AD.</p>
+      </div>
+      <div class="br-flex-card">
+        <div class="br-flex-icon">▣</div>
+        <h3>CAD · PLM конектори</h3>
+        <p>SolidWorks, Altium, KiCad. Двостороння синхронізація BOM з конструкторськими системами.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 / ROADMAP -->
+  <section class="br-section" id="br-roadmap">
+    <div class="br-section-head">
+      <div class="br-num">06 / ROADMAP</div>
+      <h2 class="br-h2">Від discovery до релізу — <em>4-9 місяців</em></h2>
+      <p class="br-section-sub">
+        Прозорий план впровадження з фіксованими етапами, чек-поінтами
+        та зрозумілим скоупом на кожен спринт. Без сюрпризів і без open-ended бюджетів.
+      </p>
+    </div>
+
+    <div class="br-schedule-list">
+
+      <div class="br-tl-time">КРОК 01<span>2-3 тижні</span></div>
+      <article class="br-tl-card">
+        <div class="br-tl-tag">DISCOVERY · SECURITY ASSESSMENT</div>
+        <h3 class="br-tl-h">Discovery та <em>threat model</em></h3>
+        <p class="br-tl-speaker">Стейкхолдери: власник · COO · CTO · Security officer</p>
+        <ul class="br-tl-points">
+          <li>Інтерв'ю з ключовими ролями, BPMN-карта as-is процесів</li>
+          <li>Threat model з акцентом на інсайдер, ланцюг постачання, експортний контроль</li>
+          <li>Оцінка готовності під AQAP-2110 і ISO 27001 — gap-аналіз</li>
+          <li>Підписання NDA до початку дзвінка, фіксований бюджет discovery</li>
+        </ul>
+      </article>
+
+      <div class="br-tl-time">КРОК 02<span>2-4 тижні</span></div>
+      <article class="br-tl-card">
+        <div class="br-tl-tag">АРХІТЕКТУРА · ІНФРАСТРУКТУРА</div>
+        <h3 class="br-tl-h">Дизайн <em>цільової архітектури</em></h3>
+        <p class="br-tl-speaker">Виконавці: солюшен-архітектор · DevOps · Security engineer</p>
+        <ul class="br-tl-points">
+          <li>On-prem або суверенна хмара — дизайн інфраструктури</li>
+          <li>RBAC-матриця і модель прав до рівня поля</li>
+          <li>SSO-стратегія, бекап-план 3-2-1, geo-fail-over</li>
+          <li>Інтеграційна архітектура з ДОТ, Brave1, Prozorro, M.E.Doc</li>
+        </ul>
+      </article>
+
+      <div class="br-tl-time">КРОК 03<span>4-8 тижнів</span></div>
+      <article class="br-tl-card">
+        <div class="br-tl-tag">НАЛАШТУВАННЯ ЯДРА ODOO</div>
+        <h3 class="br-tl-h">Розгортання <em>стандартних модулів</em></h3>
+        <p class="br-tl-speaker">Виконавці: команда консультантів CRMiUM</p>
+        <ul class="br-tl-points">
+          <li>Manufacturing, Inventory, PLM, Quality, Purchase, Accounting</li>
+          <li>UA-локалізація: НП(С)БО, ПН/РК, валютний контроль НБУ</li>
+          <li>HR-модуль з обліком ВОС, відстрочок, статусів</li>
+          <li>Базова інтеграція з M.E.Doc та «Вчасно»</li>
+        </ul>
+      </article>
+
+      <div class="br-tl-time">КРОК 04<span>4-12 тижнів</span></div>
+      <article class="br-tl-card br-tl-card--demo">
+        <div class="br-tl-tag">КАСТОМІЗАЦІЯ ПІД ОПК</div>
+        <h3 class="br-tl-h">Специфічні <em>процеси оборонки</em></h3>
+        <p class="br-tl-speaker">Виконавці: розробники · бізнес-аналітики · QA</p>
+        <ul class="br-tl-points">
+          <li>Експортний контроль і Єдиний список КМУ у Purchase</li>
+          <li>Інтеграції з ДОТ, Brave1 Market, Prozorro</li>
+          <li>ECO-процедури з версіонуванням BOM під PLM</li>
+          <li>Tender pipeline у CRM з тендерними досьє і NCAGE-маркуванням</li>
+        </ul>
+      </article>
+
+      <div class="br-tl-time">КРОК 05<span>3-6 тижнів</span></div>
+      <article class="br-tl-card">
+        <div class="br-tl-tag">МІГРАЦІЯ ДАНИХ · UAT</div>
+        <h3 class="br-tl-h">Перенесення з <em>1С / Excel</em></h3>
+        <p class="br-tl-speaker">Виконавці: data engineer · бізнес-аналітик · ключові користувачі</p>
+        <ul class="br-tl-points">
+          <li>ETL-конвеєр для номенклатури, залишків, контрагентів, документів</li>
+          <li>Паралельний run 1-2 місяці зі старою системою</li>
+          <li>Пілотний цех або юрособа, навчання key-користувачів</li>
+          <li>User Acceptance Testing з фіксацією критеріїв приймання</li>
+        </ul>
+      </article>
+
+      <div class="br-tl-time">КРОК 06<span>постійно</span></div>
+      <article class="br-tl-card br-tl-card--demo">
+        <div class="br-tl-tag">GO-LIVE · HYPERCARE · AMS</div>
+        <h3 class="br-tl-h">Запуск і <em>безперервна підтримка</em></h3>
+        <p class="br-tl-speaker">Виконавці: AMS-команда CRMiUM · черговий security-engineer</p>
+        <ul class="br-tl-points">
+          <li>Hypercare 60 днів з посиленим реагуванням на інциденти</li>
+          <li>SLA 24/7 у форматах L1 / L2 / L3 за обраним тарифом</li>
+          <li>Регулярні апгрейди ядра без зриву кастомізацій</li>
+          <li>Квартальні security-аудити і ревізія прав доступу</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 07 / КОМУ ПІДХОДИТЬ -->
+  <section class="br-section" id="br-who">
+    <div class="br-section-head">
+      <div class="br-num">07 / INDUSTRY FIT</div>
+      <h2 class="br-h2">Профілі компаній, де Odoo<br>дає <em>максимальний приріст</em></h2>
+      <p class="br-section-sub">
+        Шість сегментів оборонної промисловості, де ми вже маємо досвід
+        впровадження або готові методології під специфіку.
+      </p>
+    </div>
+
+    <div class="br-who-grid">
+      <article class="br-what-card">
+        <div class="br-what-tag">БпЛА · FPV</div>
+        <h3 class="br-what-h">Виробники безпілотних авіаційних комплексів</h3>
+        <p class="br-sec-p">Серії від 1 тис до 100 тис на місяць. Sub-contracting, батч-трекінг, ECO під щотижневі зміни.</p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">РЕБ · РТР</div>
+        <h3 class="br-what-h">Радіоелектронна боротьба і розвідка</h3>
+        <p class="br-sec-p">Складні BOM, контроль експорту електронних компонентів, R&amp;D-цикли з версіонуванням.</p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">UGV · НРК</div>
+        <h3 class="br-what-h">Наземна робототехніка</h3>
+        <p class="br-sec-p">Механіка + електроніка + ПЗ в одному виробі. PLM критичний для конфігураційного управління.</p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">ОПТИКА</div>
+        <h3 class="br-what-h">Тепловізори, приціли, лазерні системи</h3>
+        <p class="br-sec-p">Серіалізація, калібрувальні протоколи, експорт у НАТО-країни з повним документообігом.</p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">БОЄПРИПАСИ</div>
+        <h3 class="br-what-h">Артилерійські та малі калібри</h3>
+        <p class="br-sec-p">Суворі QC-стандарти, lot-трекінг, НАТО-номенклатура, особливі режими зберігання.</p>
+      </article>
+      <article class="br-what-card">
+        <div class="br-what-tag">EU-ПРАЙМИ · ПЗ</div>
+        <h3 class="br-what-h">Контрактори для НАТО і розробники defence-ПЗ</h3>
+        <p class="br-sec-p">Мульти-юрособи UA + EU. AQAP-2310, офсет-контракти, кооперація з Rheinmetall / KMW / Hensoldt.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 08 / КЕЙСИ -->
+  <section class="br-section" id="br-cases">
+    <div class="br-section-head">
+      <div class="br-num">08 / PROOF</div>
+      <h2 class="br-h2">Реальні впровадження у <em>виробничому секторі</em></h2>
+      <p class="br-section-sub">
+        Реальні цифри з реальних впроваджень — у форматі, який не порушує
+        вимоги до конфіденційності оборонного підрядника.
+      </p>
+    </div>
+
+    <div class="br-cases-grid">
+      <article class="br-case-card">
+        <div class="br-case-tag">КЕЙС · ВИРОБНИК БпЛА</div>
+        <h3 class="br-case-h">Масштабування з 200 до <em>12 000 виробів</em>/міс</h3>
+        <p class="br-case-p">
+          Запровадження MRP/APS, серіалізації, sub-contracting на 40+ постачальників.
+          Розгортання on-premise за 7 місяців з нульовою зупинкою виробництва.
+        </p>
+        <div class="br-case-meta">60× обсяг · 7 місяців · on-prem</div>
+      </article>
+
+      <article class="br-case-card">
+        <div class="br-case-tag">КЕЙС · EMS-ВИРОБНИК</div>
+        <h3 class="br-case-h">Міграція з 1С: closing з 14 до <em>3 днів</em></h3>
+        <p class="br-case-p">
+          Контрактне виробництво електроніки. Перенесення даних, паралельний run,
+          UA + PL юрособи з консолідацією. Період закриття місяця скорочено майже у 5 разів.
+        </p>
+        <div class="br-case-meta">2 юрособи · мультивалюта · IFRS</div>
+      </article>
+
+      <article class="br-case-card">
+        <div class="br-case-tag">КЕЙС · ОПТИЧНЕ ВИРОБНИЦТВО</div>
+        <h3 class="br-case-h">PLM + Quality: <em>AQAP-аудит</em> з першої спроби</h3>
+        <p class="br-case-p">
+          Конфігураційне управління, FAI, NCR/CAPA, інтеграція з калібрувальним
+          обладнанням. Документообіг повністю готовий до зовнішнього сертифікаційного аудиту.
+        </p>
+        <div class="br-case-meta">AQAP-2110 · PLM · QC</div>
+      </article>
+
+      <article class="br-case-card">
+        <div class="br-case-tag">КЕЙС · EU-ПРАЙМ ОФІС</div>
+        <h3 class="br-case-h">Мульти-юрособа для <em>експорту в НАТО</em></h3>
+        <p class="br-case-p">
+          UA-юрособа для держконтрактів, польська — для кооперації з Rheinmetall.
+          Трансфертне ціноутворення, експортний контроль, TISAX-aligned конфігурація з нуля.
+        </p>
+        <div class="br-case-meta">UA + PL · TISAX-aligned · ЗЕД</div>
+      </article>
+    </div>
+
+    <div class="br-nda-strip">
+      <div class="br-nda-icon" aria-hidden="true">NDA</div>
+      <div>
+        <b>Більшість кейсів Miltech — під NDA.</b>
+        На discovery-дзвінку готові надати анонімізовані метрики та референси з конкретних впроваджень
+        під взаємний NDA. Цифри вище — реальні, без публічних назв компаній.
+      </div>
+    </div>
+
+    <div class="br-case-counters">
+      <div class="br-case-counter">
+        <b data-counter>500<span>+</span></b>
+        <small>Впроваджень</small>
+      </div>
+      <div class="br-case-counter">
+        <b data-counter>80<span>+</span></b>
+        <small>Експертів</small>
+      </div>
+      <div class="br-case-counter">
+        <b data-counter>36</b>
+        <small>Країн</small>
+      </div>
+      <div class="br-case-counter">
+        <b data-counter>12</b>
+        <small>Років з Odoo</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 / FAQ -->
+  <section class="br-section" id="br-faq">
+    <div class="br-section-head">
+      <div class="br-num">09 / FAQ</div>
+      <h2 class="br-h2">Питання, які ставлять<br><em>CTO і власники</em> оборонних виробництв</h2>
+    </div>
+
+    <div class="br-faq-list">
+      <details class="br-faq-item">
+        <summary>Чим Odoo кращий за 1С, SAP S/4HANA чи MS Dynamics для оборонної промисловості?</summary>
+        <p>
+          Open-source ядро без санкційних ризиків і vendor lock-in.
+          On-premise розгортання з першого дня, без обов'язкової хмари у чужій юрисдикції.
+          TCO у 4-7 разів нижчий за SAP S/4HANA за еквівалентного покриття процесів MRP / PLM / QC.
+          На відміну від 1С:УПП — повноцінний MRP-II і PLM з версіонуванням BOM. На відміну від
+          MS Dynamics — без прив'язки до екосистеми, яка може мати обмеження за гео.
+        </p>
+      </details>
+
+      <details class="br-faq-item">
+        <summary>Чи можна розгорнути виключно on-premise, без хмари?</summary>
+        <p>
+          Так. Це стандартний сценарій для замовників ДОТ і виробників 2-3 рівня кооперації НАТО.
+          Розгортаємо у вашому дата-центрі або в українському DC з ISO 27001
+          (De Novo, GigaCloud, Eucalyptus). Інфраструктурний blueprint подаємо на discovery
+          разом із кошторисом серверного парку.
+        </p>
+      </details>
+
+      <details class="br-faq-item">
+        <summary>Як інтегрується з ДОТ, Brave1 Market і Prozorro?</summary>
+        <p>
+          Через готові конектори CRMiUM: REST API для ДОТ і Brave1 Market,
+          парсер тендерів для Prozorro. Двостороння синхронізація номенклатури,
+          статусів постачання, актів приймання. У pipeline тендерів — автоматичне
+          формування досьє з NCAGE/NSN-маркуванням.
+        </p>
+      </details>
+
+      <details class="br-faq-item">
+        <summary>Чи відповідає Odoo вимогам AQAP-2110 та ISO 27001?</summary>
+        <p>
+          Quality-модуль покриває NCR, CAPA, FAI, контрольні плани — все, що потрібно
+          для AQAP-2110 / 2131. Audit log з retention, RBAC до рівня поля, MFA, шифрування
+          at-rest і in-transit конфігуруються під ISO 27001. Допомагаємо з документуванням
+          процесів під зовнішній сертифікаційний аудит. Сертифікат отримує компанія
+          у акредитованого органу — ми готуємо систему до проходження.
+        </p>
+      </details>
+
+      <details class="br-faq-item">
+        <summary>Який бюджет і строки впровадження?</summary>
+        <p>
+          Discovery — від 2 тижнів, фіксований бюджет.
+          MVP-релізи — від 4 місяців. Повне впровадження з кастомізаціями під ОПК і
+          інтеграціями з ДОТ — 6-9 місяців. Типовий діапазон для Miltech: $80k–$450k
+          за перший рік (платформа + впровадження + кастомізації + AMS). Конкретний кошторис
+          даємо після discovery з фіксованим скоупом.
+        </p>
+      </details>
+
+      <details class="br-faq-item">
+        <summary>Як відбувається міграція з 1С або Excel?</summary>
+        <p>
+          ETL-конвеєр CRMiUM: мапінг номенклатури, контрагентів, залишків, відкритих документів.
+          Паралельний run зі старою системою 1-2 місяці, поетапне відключення модулів.
+          За 12 років ми перенесли понад 60 клієнтів з 1С — як з УПП, так і з BAS і самописних рішень.
+        </p>
+      </details>
+
+      <details class="br-faq-item">
+        <summary>Як ERP допомагає з бронюванням військовозобовʼязаних співробітників?</summary>
+        <p>
+          HR-модуль веде облік військово-облікових спеціальностей, дат відстрочок,
+          статусу «критично важливий» для підприємства. Синхронізується з «Резерв+» і Дією
+          для 24-годинної процедури бронювання працівників критично важливих підприємств,
+          що діє з грудня 2025 року. Документація формується автоматично — від подання до Мінстратегпрому
+          до повідомлень про звільнення для розбронювання.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 10 / РЕЄСТРАЦІЯ -->
+  <section class="br-section" id="br-register">
+    <div class="br-section-head">
+      <div class="br-num">10 / LET'S TALK SECURELY</div>
+    </div>
+
+    <div class="br-final-grid">
+      <div class="br-final-info">
+        <div class="br-final-eyebrow">
+          <span class="br-eyebrow-dot" aria-hidden="true"></span>
+          DISCOVERY · 45 ХВ · NDA
+        </div>
+        <h2 class="br-final-h">Безкоштовний аудит<br>вашого <em>ERP-контуру</em></h2>
+        <p class="br-final-sub">
+          За 45 хвилин розберемо as-is процеси, ризики експортного контролю
+          і складемо чернетку roadmap впровадження. NDA підписуємо до початку дзвінка.
+        </p>
+
+        <ul class="br-final-bullets">
+          <li>Звіт по as-is процесам і вузьких місцях</li>
+          <li>Security gap analysis на рівні архітектури</li>
+          <li>Roadmap-чернетка з етапами і строками</li>
+          <li>Орієнтовний кошторис впровадження</li>
+        </ul>
+
+        <div class="br-final-meta">Discovery · 45 хв · Online · NDA · Безкоштовно</div>
+      </div>
+
+      <div class="br-form-wrap">
+        <div class="br-form-eyebrow">ФОРМА ЗАЯВКИ</div>
+        <form class="br-form" onsubmit="event.preventDefault();">
+          <div class="br-form-row">
+            <label for="br-name">Імʼя</label>
+            <input id="br-name" type="text" placeholder="Як до вас звертатися?" required>
+          </div>
+          <div class="br-form-row">
+            <label for="br-company">Компанія</label>
+            <input id="br-company" type="text" placeholder="Назва підприємства" required>
+          </div>
+          <div class="br-form-row">
+            <label for="br-email">Корпоративний email</label>
+            <input id="br-email" type="email" placeholder="ваш@домен.com" required>
+          </div>
+          <div class="br-form-row">
+            <label for="br-phone">Телефон</label>
+            <input id="br-phone" type="tel" placeholder="+380" required>
+          </div>
+          <div class="br-form-row">
+            <label for="br-industry">Сфера виробництва</label>
+            <select id="br-industry" required>
+              <option value="" selected disabled>Оберіть зі списку</option>
+              <option value="bpla">БпЛА / FPV</option>
+              <option value="reb">РЕБ / РТР</option>
+              <option value="ugv">Наземна робототехніка (UGV)</option>
+              <option value="optics">Оптика / тепловізори / приціли</option>
+              <option value="ammo">Боєприпаси / піротехніка</option>
+              <option value="software">ПЗ для МО / defence-tech</option>
+              <option value="prime">EU-прайм / контрактор НАТО</option>
+              <option value="other">Інше</option>
+            </select>
+          </div>
+          <div class="br-form-row">
+            <label for="br-size">Кількість співробітників</label>
+            <select id="br-size">
+              <option value="" selected disabled>Оберіть діапазон</option>
+              <option value="s">До 50</option>
+              <option value="m">50–250</option>
+              <option value="l">250–1000</option>
+              <option value="xl">Понад 1000</option>
+            </select>
+          </div>
+          <div class="br-form-row">
+            <label for="br-comment">Коментар (необовʼязково)</label>
+            <input id="br-comment" type="text" placeholder="Що зараз пече найбільше?">
+          </div>
+          <label class="br-form-check">
+            <input type="checkbox" required>
+            <span>Готовий підписати взаємний NDA до початку дзвінка. Погоджуюсь на обробку персональних даних згідно з політикою CRMiUM.</span>
+          </label>
+          <button type="submit" class="br-form-submit">Хочу безкоштовний аудит →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="br-foot">
+    <div>CRMiUM · <b>Odoo Silver Partner</b> · Miltech Practice</div>
+    <div>© 2026 · Odoo ERP для оборонної промисловості України</div>
+  </footer>
+
+</main>
+
+<script src="assets/page.js" defer></script>
+</body>
+</html>
