@@ -289,6 +289,29 @@ body[data-concept="brand"] #br-roadmap .br-schedule-list {
 body[data-concept="brand"] #br-roadmap .br-schedule-list::before {
   left: 180px;
 }
+@media (max-width: 760px) {
+  body[data-concept="brand"] #br-roadmap .br-schedule-list {
+    grid-template-columns: 1fr;
+  }
+  body[data-concept="brand"] #br-roadmap .br-schedule-list::before {
+    display: none;
+  }
+  body[data-concept="brand"] #br-roadmap .br-tl-time {
+    text-align: left;
+    padding: 16px 0 8px;
+    border-top: 1px solid var(--c-acc-mid);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  body[data-concept="brand"] #br-roadmap .br-tl-time span {
+    display: inline;
+    margin-top: 0;
+  }
+  body[data-concept="brand"] #br-roadmap .br-tl-card {
+    margin: 0 0 18px 0;
+  }
+}
 
 /* WHO IS IT FOR — 3-col grid */
 body[data-concept="brand"] .br-who-grid {
