@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post-event Flow — Zoho Summit 2026</title>
+<style>
+  :root {
+    --green: #16a34a; --purple: #9333ea; --blue: #0284c7;
+    --slate: #64748b; --red: #dc2626; --cyan: #0891b2;
+    --teal: #0d9488; --dark: #1e293b; --pink: #be185d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f8fafc; color: #0f172a; line-height: 1.55;
+    padding: 24px; font-size: 14px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  header.page-header {
+    background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+    color: white; padding: 32px; border-radius: 12px;
+    margin-bottom: 28px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+  }
+  header.page-header h1 { font-size: 26px; margin-bottom: 8px; font-weight: 700; }
+  header.page-header p { font-size: 15px; opacity: 0.95; }
+  header.page-header .subtitle {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.2); font-size: 13px;
+  }
+
+  .legend {
+    background: white; padding: 20px; border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 24px;
+  }
+  .legend h3 {
+    font-size: 13px; margin-bottom: 12px; color: #64748b;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .legend-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+
+  .nav-bar {
+    position: sticky; top: 0; background: white; border-radius: 8px;
+    padding: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 24px; z-index: 100;
+    display: flex; gap: 8px; overflow-x: auto;
+  }
+  .nav-bar a {
+    color: #0d9488; text-decoration: none; padding: 6px 12px;
+    border-radius: 6px; font-size: 12px; font-weight: 500;
+    white-space: nowrap; background: #ccfbf1; flex-shrink: 0;
+  }
+  .nav-bar a:hover { background: #99f6e4; }
+
+  h2 {
+    font-size: 22px; margin: 50px 0 8px; color: #1e293b;
+    border-left: 5px solid #0d9488; padding-left: 14px;
+  }
+  h2:first-of-type { margin-top: 30px; }
+
+  .section-meta {
+    background: #ccfbf1; border-left: 4px solid #0d9488;
+    padding: 10px 14px; margin-bottom: 20px;
+    font-size: 13px; color: #134e4a; border-radius: 4px;
+  }
+  .section-meta strong { color: #042f2e; }
+  .section-meta code {
+    background: white; padding: 1px 5px; border-radius: 3px;
+    font-family: ui-monospace, monospace; font-size: 11px; color: #be185d;
+  }
+
+  h3.flow-sub {
+    font-size: 15px; color: #475569; margin: 28px 0 12px;
+    padding: 8px 12px; background: #f1f5f9; border-radius: 6px; font-weight: 600;
+  }
+
+  .block {
+    background: white; border-radius: 8px; margin: 0 auto;
+    max-width: 520px; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;
+  }
+  .block-header {
+    padding: 8px 14px; color: white; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 6px; justify-content: space-between;
+  }
+  .block-header-left { display: flex; align-items: center; gap: 6px; }
+  .block-msg .block-header { background: var(--green); }
+  .block-action .block-header { background: var(--purple); }
+  .block-filter .block-header { background: var(--blue); }
+  .block-wait .block-header { background: var(--teal); }
+  .block-trigger .block-header { background: var(--dark); }
+  .block-campaign .block-header { background: var(--pink); }
+
+  .copy-btn {
+    background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5);
+    color: white; padding: 2px 10px; border-radius: 4px;
+    cursor: pointer; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.35); }
+  .copy-btn.success { background: #fbbf24; color: #78350f; }
+
+  .block-content {
+    padding: 14px 16px; font-size: 13.5px; white-space: pre-wrap;
+    color: #1f2937; user-select: text;
+  }
+  .block-content var, .var {
+    background: #ddd6fe; color: #5b21b6; padding: 1px 5px;
+    border-radius: 3px; font-family: ui-monospace, monospace;
+    font-size: 12px; font-style: normal; font-weight: 600;
+  }
+  .block-content .b { font-weight: 600; }
+  .block-content .tc {
+    background: #fef3c7; color: #92400e; padding: 1px 4px;
+    border-radius: 3px; font-family: ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    text-decoration: none;
+  }
+  .block-content .tc:hover { background: #fde68a; }
+
+  .block-settings {
+    background: #f8fafc; border-top: 1px dashed #cbd5e1;
+    padding: 10px 14px; font-size: 12px; color: #475569;
+  }
+  .block-settings strong { color: #1e293b; }
+  .block-settings code {
+    background: #e2e8f0; padding: 1px 5px; border-radius: 3px;
+    font-family: ui-monospace, monospace; font-size: 11px; color: #be185d;
+  }
+  .quick-replies {
+    padding: 0 14px 14px; display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .qr {
+    background: #eff6ff; border: 1px solid #3b82f6; color: #1e40af;
+    padding: 5px 12px; border-radius: 14px; font-size: 12px; font-weight: 500;
+  }
+  .qr.url { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+
+  .arrow { text-align: center; color: #94a3b8; font-size: 24px; margin: 6px 0; line-height: 1; }
+  .arrow-label {
+    color: #64748b; font-size: 11px; font-weight: 500;
+    background: white; padding: 2px 8px; border-radius: 12px;
+    border: 1px solid #e2e8f0; display: inline-block;
+  }
+
+  .branch-divider {
+    text-align: center; margin: 24px 0; padding: 14px;
+    background: #fef3c7; border-radius: 8px;
+    color: #78350f; font-weight: 600; font-size: 14px;
+  }
+  .branch-divider .small {
+    font-size: 12px; font-weight: 400; color: #92400e; margin-top: 4px;
+  }
+
+  .role-tag {
+    display: inline-block; background: #fce7f3; color: #9f1239;
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 700; font-family: ui-monospace, monospace;
+  }
+  .variant-card {
+    background: white; border: 1px solid #e2e8f0; border-radius: 8px;
+    margin-bottom: 16px; overflow: hidden;
+  }
+  .variant-card-header {
+    background: #f1f5f9; padding: 10px 14px; border-bottom: 1px solid #e2e8f0;
+    font-size: 13px; font-weight: 600; color: #1e293b;
+    display: flex; align-items: center; gap: 10px; justify-content: space-between;
+  }
+
+  .info-box {
+    background: #ecfeff; border-left: 4px solid #06b6d4;
+    padding: 14px 16px; margin: 20px auto; max-width: 520px;
+    border-radius: 6px; font-size: 13px; color: #164e63;
+  }
+  .info-box strong { color: #083344; }
+
+  .footer-info {
+    margin-top: 50px; padding: 24px; background: #f1f5f9;
+    border-radius: 10px; font-size: 13px; color: #475569;
+  }
+  .footer-info h3 { font-size: 14px; color: #1e293b; margin-bottom: 10px; }
+  .footer-info ul { padding-left: 20px; }
+  .footer-info li { margin-bottom: 6px; }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #16a34a; color: white; padding: 12px 20px;
+    border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    opacity: 0; transform: translateY(20px); transition: all 0.25s;
+    z-index: 1000; font-weight: 500;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    header.page-header { padding: 20px; }
+    header.page-header h1 { font-size: 20px; }
+    h2 { font-size: 18px; }
+    .block { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="page-header">
+    <h1>🎬 Post-event Flow — Zoho Summit 2026</h1>
+    <p>Повідомлення з повним записом і персональними тайм-кодами для кожної ролі.</p>
+    <div class="subtitle">
+      📺 <strong>Повний запис:</strong> https://www.youtube.com/watch?v=lawo-3Ic90c<br>
+      ⏱ <strong>Тривалість:</strong> 5 годин 35 хвилин &nbsp;·&nbsp; 🎙 <strong>Дата:</strong> 27.05.2026
+    </div>
+  </header>
+
+  <section class="legend">
+    <h3>Легенда блоків SendPulse</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background: var(--green)"></div>Повідомлення</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--purple)"></div>Дія (Action)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--blue)"></div>Фільтр</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--teal)"></div>Очікування відповіді</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--dark)"></div>Тригер</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--pink)"></div>Кампанія</div>
+    </div>
+    <div style="margin-top: 14px; padding: 10px 12px; background: #f1f5f9; border-radius: 6px; font-size: 12px; color: #475569;">
+      <b>Жовті тайм-коди</b> у тексті — це гіперпосилання на конкретний момент відео. У SendPulse записуються як markdown: <code>[13:19](URL?t=799s)</code>
+    </div>
+  </section>
+
+  <nav class="nav-bar">
+    <a href="#flow">Нова реєстрація</a>
+    <a href="#roles">Програма за роллю</a>
+    <a href="#broadcast">Розсилка зареєстрованим</a>
+    <a href="#notes">Нотатки</a>
+  </nav>
+
+  <!-- ========== FLOW: NEW REGISTRATION ========== -->
+  <h2 id="flow">📋 Flow: Нова реєстрація після саміту</h2>
+  <div class="section-meta">
+    <strong>Замінює попередній Welcome flow.</strong> Активується замість старого «Welcome message» після 28.05.2026.<br>
+    <strong>Логіка:</strong> людина приходить у бот з лендингу/реклами вже після саміту → отримує запис + персональні тайм-коди.
+  </div>
+
+  <!-- TRIGGER -->
+  <div class="block block-trigger">
+    <div class="block-header">
+      <div class="block-header-left">▶ Тригер — Welcome message (оновлений)</div>
+    </div>
+    <div class="block-content">Стандартний Welcome message. Запускається на /start у бот.</div>
+    <div class="block-settings">
+      <strong>Дія перед запуском:</strong> старий Welcome flow деактивувати або замінити цим.
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- M1: Welcome -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Вітання</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">👋 Вітаю!
+
+Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> — але повний 5-годинний запис доступний.
+
+6 тематичних блоків: для CEO, COO, CFO, CTO, керівників відділів. Можна дивитись з будь-якого місця — тайм-коди готові.
+
+Підберу для вас найкорисніші моменти за 3 кроки. Поїхали?</div>
+    <div class="quick-replies">
+      <span class="qr">✅ Так, давайте</span>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- M2: Ask name -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Запит імені</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Як до вас звертатись?
+
+Напишіть, будь ласка, ім'я.</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="block block-wait">
+    <div class="block-header">
+      <div class="block-header-left">⏳ Очікування відповіді → <span class="var">{{name}}</span></div>
+    </div>
+    <div class="block-content">Зберегти відповідь у змінну <code>name</code>.</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- M3: Ask email -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Запит email</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="var">{{name}}</span>, на яку пошту продублювати посилання і тайм-коди?
+
+Зручно мати в email — щоб потім відкрити з ноутбука.</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="block block-wait">
+    <div class="block-header">
+      <div class="block-header-left">⏳ Очікування відповіді → <span class="var">{{email}}</span></div>
+    </div>
+    <div class="block-content">Поле <code>email</code> · тип <code>Email</code> (валідація вмикається автоматично).</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- M4: Ask role -->
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Вибір ролі</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content">Залишилось обрати вашу роль — щоб виділити саме ті моменти запису, що максимально для вас.</div>
+    <div class="quick-replies">
+      <span class="qr">👔 CEO / Власник</span>
+      <span class="qr">📊 COO</span>
+      <span class="qr">💰 CFO</span>
+      <span class="qr">💻 CTO / IT</span>
+      <span class="qr">🎯 Керівник відділу</span>
+      <span class="qr">➕ Інше</span>
+    </div>
+  </div>
+
+  <div class="branch-divider">
+    🔀 Розгалуження за натиснутою кнопкою — 6 гілок
+    <div class="small">Структура далі ідентична: Action (теги + webhook) → Повідомлення з персональними тайм-кодами.</div>
+  </div>
+
+  <!-- ACTION -->
+  <div class="block block-action">
+    <div class="block-header">
+      <div class="block-header-left">⚡ Дія — Теги і webhook</div>
+    </div>
+    <div class="block-content">Зафіксувати роль і відправити лід у Zoho CRM.</div>
+    <div class="block-settings">
+      <strong>Призначити теги:</strong> <code>role_ceo</code> (або відповідний за натиснутою кнопкою) + <code>registered_post_event</code><br>
+      <strong>Записати змінну:</strong> <code>role</code> = текст обраної ролі<br>
+      <strong>Webhook:</strong> POST у Make → створення ліда у Zoho CRM з тегом «зареєстрований після саміту»
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="block block-msg">
+    <div class="block-header">
+      <div class="block-header-left">💬 Повідомлення — Запис з тайм-кодами під роль</div>
+    </div>
+    <div class="block-content"><span style="color: #6b7280; font-style: italic;">📌 Текст залежить від обраної ролі — 6 варіантів у наступній секції.</span></div>
+  </div>
+
+
+  <!-- ========== 6 ROLE VARIANTS ========== -->
+  <h2 id="roles">🎯 6 варіантів повідомлення з тайм-кодами</h2>
+  <div class="section-meta">
+    <strong>Кожен варіант:</strong> вступ + кнопка повного запису + перелік тайм-кодів під роль.<br>
+    Жовтим виділені <span class="tc">тайм-коди</span> — у SendPulse вставити як markdown-посилання на конкретний момент.
+  </div>
+
+  <!-- CEO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_ceo</span> &nbsp; Для CEO / Власника</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none; max-width: 100%;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось ваш запис саміту з персональними тайм-кодами для CEO.</span>
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+<span class="b">🚀 Стратегічний блок — Павло Яковенко, CEO CRMiUM</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=799s" class="tc">13:19</a> — Zoho як екосистема (вступ)
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=890s" class="tc">14:50</a> — «Зоопарк систем» vs екосистема
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=1817s" class="tc">30:17</a> — Унікальна модель Zoho: без IPO та інвесторів
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=2114s" class="tc">35:14</a> — 100+ млн користувачів і власна інфраструктура
+
+<span class="b">💼 Панельна дискусія — Нова Пошта Global + Юніток</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3133s" class="tc">52:13</a> — Початок дискусії
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3939s" class="tc">1:05:39</a> — Чому Zoho а не Bitrix
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=4729s" class="tc">1:18:49</a> — Складнощі впровадження
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=6404s" class="tc">1:46:44</a> — Довгострокове бачення Zoho як платформи
+
+<span class="b">📚 Кейси і підсумки</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18964s" class="tc">5:16:04</a> — 11+ реальних кейсів (Анна Бабаєва, CBDO)
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=19987s" class="tc">5:33:07</a> — Фінальна думка: Zoho — це інструмент, а не мета
+
+Якщо після перегляду виникнуть конкретні питання щодо вашого бізнесу — напишіть, з'єднаю з нашим бізнес-аналітиком на 30 хв.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Відкрити повний запис</span>
+        <span class="qr">💬 Записатись на консультацію</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_coo</span> &nbsp; Для COO / Операційний директор</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none; max-width: 100%;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось запис саміту з персональними тайм-кодами для COO.</span>
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+<span class="b">🚀 Операційний контекст</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=890s" class="tc">14:50</a> — «Зоопарк систем» vs екосистема (Павло)
+
+<span class="b">💼 Панельна дискусія — реальні COO про впровадження</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3480s" class="tc">58:00</a> — Що привело Нову Пошту Global і Юніток до Zoho
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=4729s" class="tc">1:18:49</a> — Як проходили складнощі впровадження
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=5678s" class="tc">1:34:38</a> — Які модулі плануємо розвивати далі
+
+<span class="b">💰 Live-демо: автоматизація операційки</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12839s" class="tc">3:33:59</a> — Blueprint, SLA-таймери, Sales KPI dashboard
+
+<span class="b">🎧 Сервіс як другий відділ продажів</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14994s" class="tc">4:09:54</a> — Чому саппорт приносить грошей не менше
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15113s" class="tc">4:11:53</a> — Один клієнт, три канали, три різні відповіді
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15486s" class="tc">4:18:06</a> — Цифра-пунч: 5 хв × 500 тікетів = 40 годин на місяць
+
+<span class="b">👥 HR-блок</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18263s" class="tc">5:04:23</a> — Performance review, відпустки, чек-листи керівника
+
+<span class="b">📚 Кейси з впроваджень</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18964s" class="tc">5:16:04</a> — 11+ кейсів (Анна Бабаєва)
+
+Якщо хочете обговорити, як ці процеси адаптувати під вашу операційку — напишіть, домовимось на 30-хв розмову з аналітиком.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Відкрити повний запис</span>
+        <span class="qr">💬 Записатись на консультацію</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CFO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_cfo</span> &nbsp; Для CFO / Фінансовий директор</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none; max-width: 100%;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось запис саміту з тайм-кодами під фінансову оптику.</span>
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+Зразу обмовлюсь: окремого фінансового блоку на саміті не було. Зібрав моменти, де говорили про ROI, метрики і стратегічну вартість платформи.
+
+<span class="b">🚀 Економіка платформи</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=799s" class="tc">13:19</a> — Zoho як екосистема: одна оплата vs зоопарк ліцензій
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=1817s" class="tc">30:17</a> — Без IPO та інвесторів — стратегічна стабільність ціни
+
+<span class="b">💼 Як інші компанії обґрунтовували вибір Zoho</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3939s" class="tc">1:05:39</a> — Чому Zoho а не Bitrix чи інша платформа
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=6404s" class="tc">1:46:44</a> — Бачення Zoho як довгострокової платформи (ROI на роки)
+
+<span class="b">💰 Метрики і дашборди</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12839s" class="tc">3:33:59</a> — Blueprint, SLA-таймери, Sales KPI dashboard
+
+<span class="b">🎧 Конкретний фінансовий розрахунок</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15486s" class="tc">4:18:06</a> — 5 хв × 500 тікетів = 40 годин на місяць (вартість ручного саппорту)
+
+<span class="b">📚 Кейси з впроваджень</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18964s" class="tc">5:16:04</a> — 11+ реальних кейсів (Анна Бабаєва)
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=19097s" class="tc">5:18:17</a> — Кейс 1: B2B контроль ризиків і перевірка контрагентів
+
+Якщо потрібна окрема оцінка ROI впровадження під вашу компанію — напишіть, проведемо консультацію з нашим аналітиком.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Відкрити повний запис</span>
+        <span class="qr">💬 Записатись на консультацію</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTO -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_cto</span> &nbsp; Для CTO / IT-директор</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none; max-width: 100%;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, технічний блок саміту — повністю для вас.</span>
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+<span class="b">🛡 Основне: технічний блок з Антоном Ріміним (Head of Zoho Practice)</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7445s" class="tc">2:04:05</a> — Вступ і основна теза
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7850s" class="tc">2:10:50</a> — Безпека та контроль даних — чи хмара справді надійна
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=9796s" class="tc">2:43:16</a> — AI-агенти та MCP: робимо свого асистента
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=10712s" class="tc">2:58:32</a> — Міграція даних: як не переїхати «зі сміттям»
+
+<span class="b">🚀 Стратегічний контекст (для рішення про платформу)</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=1817s" class="tc">30:17</a> — Модель Zoho без IPO та зовнішніх інвесторів
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=2114s" class="tc">35:14</a> — 100+ млн користувачів і власна інфраструктура (масштаб і незалежність)
+
+<span class="b">💰 Low-code на практиці</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12839s" class="tc">3:33:59</a> — Blueprint як приклад low-code автоматизації
+
+<span class="b">💼 Підхід до інтеграцій у реальних кейсах</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=4729s" class="tc">1:18:49</a> — Складнощі впровадження у Новій Пошті Global і Юнітку
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=19171s" class="tc">5:19:31</a> — Кейс: месенджери і чатботи в єдиній системі
+
+Якщо у вас на руках архітектурне рішення про CRM/ERP і хочете обговорити з Антоном напряму — напишіть, домовимось.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Відкрити повний запис</span>
+        <span class="qr">💬 Поспілкуватись з Антоном</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEAD OF DEPT -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_head</span> &nbsp; Для керівника відділу</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none; max-width: 100%;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось всі live-демо блоки саміту — по кожному відділу.</span>
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+Live-демо — інтерактивна частина саміту. Можна дивитись тільки той відділ, який вас цікавить.
+
+<span class="b">💰 Продажі — Руслан Шастун (CCO)</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=11963s" class="tc">3:19:23</a> — Початок live-демо
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12023s" class="tc">3:20:23</a> — 3 типові болі продажів і як Zoho їх закриває
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12839s" class="tc">3:33:59</a> — Blueprint, SLA-таймери, Sales KPI dashboard
+
+<span class="b">📣 Маркетинг — Ігор Притула</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14401s" class="tc">4:00:01</a> — Сегментація клієнтів і ретаргетинг
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14600s" class="tc">4:03:20</a> — NPS-опитування через Zoho Survey
+
+<span class="b">🎧 Сервіс — Надія Мартинюк + Яна Куян</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14890s" class="tc">4:08:10</a> — «Саппорт як другий відділ продажів» (вступ)
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14994s" class="tc">4:09:54</a> — Чому саппорт приносить грошей не менше
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15113s" class="tc">4:11:53</a> — Один клієнт, три канали, три різні відповіді
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15486s" class="tc">4:18:06</a> — 5 хв × 500 тікетів = 40 годин на місяць
+
+<span class="b">👥 HR — Zoho People</span>
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=16868s" class="tc">4:41:08</a> — Вступ HR-блоку
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=17401s" class="tc">4:50:01</a> — Тур по Zoho People: онбординг і навчання
+• <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18263s" class="tc">5:04:23</a> — Performance review, відпустки, чек-листи керівника
+
+Якщо хочете побачити, як це можна налаштувати саме для вашого відділу — напишіть, домовимось на demo з аналітиком.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Відкрити повний запис</span>
+        <span class="qr">💬 Записатись на demo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTHER -->
+  <div class="variant-card">
+    <div class="variant-card-header">
+      <span><span class="role-tag">role_other</span> &nbsp; Для «Інше» — узагальнений варіант</span>
+    </div>
+    <div class="block block-msg" style="margin: 0; border-radius: 0; box-shadow: none; border: none; max-width: 100%;">
+      <div class="block-header">
+        <div class="block-header-left">💬 Повідомлення</div>
+        <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+      </div>
+      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось запис саміту з тайм-кодами на основні блоки.</span>
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+Тематичні блоки — можна дивитись з будь-якого:
+
+🚀 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=799s" class="tc">13:19</a> — <span class="b">Zoho як екосистема</span> (стратегічний блок з Павлом)
+
+💼 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3133s" class="tc">52:13</a> — <span class="b">Панельна дискусія</span> з Новою Поштою Global і Юнітком
+
+🛡 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7445s" class="tc">2:04:05</a> — <span class="b">Zoho для CTO</span>: архітектура, безпека, AI-агенти
+
+💰 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=11963s" class="tc">3:19:23</a> — <span class="b">Live-демо</span> Sales + Marketing
+
+🎧 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14890s" class="tc">4:08:10</a> — <span class="b">Сервіс</span> як другий відділ продажів
+
+👥 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=16868s" class="tc">4:41:08</a> — <span class="b">HR-блок</span>: Zoho People
+
+📚 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18964s" class="tc">5:16:04</a> — <span class="b">11+ реальних кейсів</span> з впроваджень
+
+🏆 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=19802s" class="tc">5:30:02</a> — <span class="b">Підсумки</span> і фінальна думка Павла
+
+Якщо щось зачепить і виникнуть конкретні питання — напишіть, з'єднаю з аналітиком.</div>
+      <div class="quick-replies">
+        <span class="qr url">🎬 Відкрити повний запис</span>
+        <span class="qr">💬 Поставити питання</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========== BROADCAST ========== -->
+  <h2 id="broadcast">📢 Розсилка для зареєстрованих (attended + no_show)</h2>
+  <div class="section-meta">
+    <strong>Тип:</strong> одноразова Кампанія SendPulse<br>
+    <strong>Дата відправки:</strong> 28.05.2026, 11:00 (наступний день після саміту)<br>
+    <strong>Сегмент:</strong> усі з тегом <code>registered</code> (без розділення за роллю)<br>
+    <strong>Логіка:</strong> Filter element перед повідомленням розділяє <code>attended</code> і <code>no_show</code> — змінюється лише перший рядок.
+  </div>
+
+  <div class="info-box">
+    💡 <strong>Чому одне повідомлення для обох сегментів:</strong> зміст і тайм-коди однакові — це загальний підсумок з усіма блоками саміту. Різниця тільки в одному рядку вступу (м'якший тон для тих, хто не дійшов). Це робиться одним Filter, без дублювання кампаній.
+  </div>
+
+  <!-- FILTER -->
+  <div class="block block-filter">
+    <div class="block-header">
+      <div class="block-header-left">🔀 Фільтр — Сегментація за участю</div>
+    </div>
+    <div class="block-content">Розгалуження за тегами для зміни вступного рядка.</div>
+    <div class="block-settings">
+      <strong>Гілка А:</strong> якщо тег <code>attended</code> → вступ «Дякуємо, що були з нами»<br>
+      <strong>Гілка Б:</strong> якщо тег <code>no_show</code> → вступ «Шкода, що не вдалося потрапити»<br>
+      <strong>Далі</strong> — однакове тіло повідомлення з тайм-кодами на всі основні блоки.
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- BROADCAST: ATTENDED -->
+  <h3 class="flow-sub">📨 Версія для тих, хто був (тег <code>attended</code>)</h3>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — Розсилка attended</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="b"><span class="var">{{name}}</span>, дякуємо, що були з нами на Zoho Summit 2026.</span>
+
+Як і обіцяв — повний запис і тайм-коди на всі блоки, щоб переглянути цікаве ще раз або поділитися з колегами.
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+<span class="b">Програма за тайм-кодами:</span>
+
+🚀 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=799s" class="tc">13:19</a> — Zoho як екосистема (Павло Яковенко, CEO CRMiUM)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=890s" class="tc">14:50</a> «Зоопарк систем» vs екосистема
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=1817s" class="tc">30:17</a> Без IPO та інвесторів
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=2114s" class="tc">35:14</a> 100+ млн користувачів і інфраструктура
+
+💼 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3133s" class="tc">52:13</a> — Панельна дискусія: Нова Пошта Global + Юніток
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3480s" class="tc">58:00</a> Що привело компанії до Zoho
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3939s" class="tc">1:05:39</a> Чому Zoho, а не Bitrix
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=4729s" class="tc">1:18:49</a> Складнощі впровадження
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=6404s" class="tc">1:46:44</a> Бачення Zoho довгостроково
+
+🛡 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7445s" class="tc">2:04:05</a> — Zoho для CTO (Антон Рімін)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7850s" class="tc">2:10:50</a> Безпека та контроль даних
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=9796s" class="tc">2:43:16</a> AI-агенти та MCP
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=10712s" class="tc">2:58:32</a> Міграція даних
+
+💰 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=11963s" class="tc">3:19:23</a> — Live-демо: Sales + Marketing (Руслан, Ігор)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12023s" class="tc">3:20:23</a> 3 болі продажів
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12839s" class="tc">3:33:59</a> Blueprint, SLA, KPI dashboard
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14401s" class="tc">4:00:01</a> Сегментація і ретаргетинг
+
+🎧 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14890s" class="tc">4:08:10</a> — Сервіс як другий відділ продажів (Надія, Яна)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15113s" class="tc">4:11:53</a> Один клієнт, три канали
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15486s" class="tc">4:18:06</a> 5 хв × 500 тікетів = 40 годин/міс
+
+👥 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=16868s" class="tc">4:41:08</a> — HR-блок: Zoho People (Вікторія, Антон)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=17401s" class="tc">4:50:01</a> Онбординг і навчання
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18263s" class="tc">5:04:23</a> Performance review
+
+📚 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18964s" class="tc">5:16:04</a> — 11+ кейсів з впроваджень (Анна Бабаєва)
+
+🏆 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=19802s" class="tc">5:30:02</a> — Підсумки і фінальна думка
+
+Якщо саміт викликав конкретні питання по вашому бізнесу — напишіть, з'єднаю з аналітиком.</div>
+    <div class="quick-replies">
+      <span class="qr url">🎬 Відкрити повний запис</span>
+      <span class="qr">💬 Записатись на консультацію</span>
+    </div>
+  </div>
+
+
+  <!-- BROADCAST: NO_SHOW -->
+  <h3 class="flow-sub">📨 Версія для тих, хто не дійшов (тег <code>no_show</code>)</h3>
+
+  <div class="block block-campaign">
+    <div class="block-header">
+      <div class="block-header-left">📅 Кампанія — Розсилка no_show</div>
+      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
+    </div>
+    <div class="block-content"><span class="b"><span class="var">{{name}}</span>, шкода, що не вдалося потрапити на саміт.</span>
+
+День буває непередбачуваним — розумію. Тому залишаю повний запис і тайм-коди, щоб ви могли подивитись лише ті блоки, що актуальні для вас.
+
+🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
+
+<span class="b">Програма за тайм-кодами:</span>
+
+🚀 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=799s" class="tc">13:19</a> — Zoho як екосистема (Павло Яковенко, CEO CRMiUM)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=890s" class="tc">14:50</a> «Зоопарк систем» vs екосистема
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=1817s" class="tc">30:17</a> Без IPO та інвесторів
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=2114s" class="tc">35:14</a> 100+ млн користувачів і інфраструктура
+
+💼 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3133s" class="tc">52:13</a> — Панельна дискусія: Нова Пошта Global + Юніток
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3480s" class="tc">58:00</a> Що привело компанії до Zoho
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=3939s" class="tc">1:05:39</a> Чому Zoho, а не Bitrix
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=4729s" class="tc">1:18:49</a> Складнощі впровадження
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=6404s" class="tc">1:46:44</a> Бачення Zoho довгостроково
+
+🛡 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7445s" class="tc">2:04:05</a> — Zoho для CTO (Антон Рімін)
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=7850s" class="tc">2:10:50</a> Безпека та контроль даних
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=9796s" class="tc">2:43:16</a> AI-агенти та MCP
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=10712s" class="tc">2:58:32</a> Міграція даних
+
+💰 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=11963s" class="tc">3:19:23</a> — Live-демо: Sales + Marketing
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12023s" class="tc">3:20:23</a> 3 болі продажів
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=12839s" class="tc">3:33:59</a> Blueprint, SLA, KPI dashboard
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14401s" class="tc">4:00:01</a> Сегментація і ретаргетинг
+
+🎧 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=14890s" class="tc">4:08:10</a> — Сервіс як другий відділ продажів
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15113s" class="tc">4:11:53</a> Один клієнт, три канали
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=15486s" class="tc">4:18:06</a> 5 хв × 500 тікетів = 40 годин/міс
+
+👥 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=16868s" class="tc">4:41:08</a> — HR-блок: Zoho People
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=17401s" class="tc">4:50:01</a> Онбординг і навчання
+   • <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18263s" class="tc">5:04:23</a> Performance review
+
+📚 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=18964s" class="tc">5:16:04</a> — 11+ кейсів з впроваджень
+
+🏆 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c&t=19802s" class="tc">5:30:02</a> — Підсумки і фінальна думка
+
+Якщо щось зачепить і захочете обговорити персонально — напишіть, домовимось на 30-хв розмову.</div>
+    <div class="quick-replies">
+      <span class="qr url">🎬 Відкрити повний запис</span>
+      <span class="qr">💬 Записатись на консультацію</span>
+    </div>
+  </div>
+
+
+  <!-- ========== NOTES ========== -->
+  <h2 id="notes">📌 Нотатки для запуску в SendPulse</h2>
+
+  <div class="footer-info">
+    <h3>Що зробити перед запуском</h3>
+    <ul>
+      <li><b>Деактивувати старий Welcome flow</b> (з квитком). Новий Welcome flow для пост-евент аудиторії замінює його.</li>
+      <li><b>Якщо хочете зберегти старий flow як архів</b> — у SendPulse можна вимкнути його (toggle), не видаляючи. Тоді ви матимете обидва на майбутні івенти.</li>
+      <li><b>Розсилка для зареєстрованих (attended + no_show)</b> створюється як одна Кампанія на 28.05 з Filter element всередині — без дублювання логіки.</li>
+    </ul>
+
+    <h3 style="margin-top: 18px;">Формат тайм-кодів</h3>
+    <ul>
+      <li>Усі тайм-коди в текстах — це <b>markdown-посилання</b> на конкретний момент відео.</li>
+      <li>Формат у SendPulse: <code>[13:19](https://www.youtube.com/watch?v=lawo-3Ic90c&t=799s)</code> — у месенджері виглядатиме як клікабельне «13:19».</li>
+      <li>При копіюванні текстів через кнопку «Копіювати» — markdown-посилання зберігаються коректно.</li>
+    </ul>
+
+    <h3 style="margin-top: 18px;">Тег <code>registered_post_event</code></h3>
+    <ul>
+      <li>Окремий тег для тих, хто реєструється <b>після</b> саміту — щоб не плутати з тими, хто був на самому саміті.</li>
+      <li>Дозволяє у майбутньому окремо комунікувати з цією аудиторією (наприклад, запрошувати на наступний саміт).</li>
+    </ul>
+
+    <h3 style="margin-top: 18px;">Кнопка «Записатись на консультацію»</h3>
+    <ul>
+      <li>Натискання кнопки → тег <code>wants_consultation</code> + webhook у Zoho CRM (оновити стадію ліда на «Sales-ready»).</li>
+      <li>Окремий короткий flow для записи: запит зручного часу, передача в Calendly або Zoho Bookings.</li>
+      <li>Можна додати окремим завданням пізніше — поки що достатньо отримувати тег.</li>
+    </ul>
+  </div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+function copyText(button) {
+  const block = button.closest('.block') || button.closest('.variant-card');
+  const contentEl = block.querySelector('.block-content');
+
+  // Build copy text with markdown-style links preserved
+  const clone = contentEl.cloneNode(true);
+  clone.querySelectorAll('a.tc').forEach(a => {
+    const replacement = document.createTextNode(`[${a.textContent}](${a.href})`);
+    a.parentNode.replaceChild(replacement, a);
+  });
+  let text = clone.innerText.trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    const original = button.textContent;
+    button.textContent = '✓ Скопійовано';
+    button.classList.add('success');
+    showToast('Скопійовано (markdown-посилання збережено)');
+    setTimeout(() => {
+      button.textContent = original;
+      button.classList.remove('success');
+    }, 2000);
+  }).catch(() => showToast('Помилка копіювання'));
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+document.querySelectorAll('.nav-bar a').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
