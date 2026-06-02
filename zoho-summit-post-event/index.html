@@ -225,12 +225,12 @@
       <div class="legend-item"><div class="legend-dot" style="background: var(--green)"></div>Повідомлення</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--purple)"></div>Дія (Action)</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--blue)"></div>Фільтр</div>
-      <div class="legend-item"><div class="legend-dot" style="background: var(--teal)"></div>Очікування відповіді</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--dark)"></div>Тригер</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--pink)"></div>Кампанія</div>
     </div>
     <div style="margin-top: 14px; padding: 10px 12px; background: #f1f5f9; border-radius: 6px; font-size: 12px; color: #475569;">
-      <b>Жовті тайм-коди</b> у тексті — це гіперпосилання на конкретний момент відео. У SendPulse записуються як markdown: <code>[13:19](URL?t=799s)</code>
+      <b>Жовті тайм-коди</b> у тексті — це гіперпосилання на конкретний момент відео. У SendPulse записуються як markdown: <code>[13:19](URL?t=799s)</code><br>
+      <b>Змінна імені</b> — <code>{{first_name}}</code> (стандартна змінна SendPulse Telegram, береться з профілю користувача автоматично).
     </div>
   </section>
 
@@ -245,7 +245,8 @@
   <h2 id="flow">📋 Flow: Нова реєстрація після саміту</h2>
   <div class="section-meta">
     <strong>Замінює попередній Welcome flow.</strong> Активується замість старого «Welcome message» після 28.05.2026.<br>
-    <strong>Логіка:</strong> людина приходить у бот з лендингу/реклами вже після саміту → отримує запис + персональні тайм-коди.
+    <strong>Логіка:</strong> людина приходить у бот з лендингу/реклами вже після саміту → одразу вибирає роль → отримує запис з персональними тайм-кодами.<br>
+    <strong>Без збору особистих даних</strong> — ім'я береться з Telegram-профілю автоматично.
   </div>
 
   <!-- TRIGGER -->
@@ -261,77 +262,19 @@
 
   <div class="arrow">↓</div>
 
-  <!-- M1: Welcome -->
+  <!-- M1: Welcome + role -->
   <div class="block block-msg">
     <div class="block-header">
-      <div class="block-header-left">💬 Повідомлення — Вітання</div>
+      <div class="block-header-left">💬 Повідомлення — Вітання і вибір ролі</div>
       <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
     </div>
-    <div class="block-content">👋 Вітаю!
+    <div class="block-content">👋 Вітаю, <span class="var">{{first_name}}</span>!
 
 Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> — але повний 5-годинний запис доступний.
 
 6 тематичних блоків: для CEO, COO, CFO, CTO, керівників відділів. Можна дивитись з будь-якого місця — тайм-коди готові.
 
-Підберу для вас найкорисніші моменти за 3 кроки. Поїхали?</div>
-    <div class="quick-replies">
-      <span class="qr">✅ Так, давайте</span>
-    </div>
-  </div>
-
-  <div class="arrow">↓</div>
-
-  <!-- M2: Ask name -->
-  <div class="block block-msg">
-    <div class="block-header">
-      <div class="block-header-left">💬 Повідомлення — Запит імені</div>
-      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
-    </div>
-    <div class="block-content">Як до вас звертатись?
-
-Напишіть, будь ласка, ім'я.</div>
-  </div>
-
-  <div class="arrow">↓</div>
-
-  <div class="block block-wait">
-    <div class="block-header">
-      <div class="block-header-left">⏳ Очікування відповіді → <span class="var">{{name}}</span></div>
-    </div>
-    <div class="block-content">Зберегти відповідь у змінну <code>name</code>.</div>
-  </div>
-
-  <div class="arrow">↓</div>
-
-  <!-- M3: Ask email -->
-  <div class="block block-msg">
-    <div class="block-header">
-      <div class="block-header-left">💬 Повідомлення — Запит email</div>
-      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
-    </div>
-    <div class="block-content"><span class="var">{{name}}</span>, на яку пошту продублювати посилання і тайм-коди?
-
-Зручно мати в email — щоб потім відкрити з ноутбука.</div>
-  </div>
-
-  <div class="arrow">↓</div>
-
-  <div class="block block-wait">
-    <div class="block-header">
-      <div class="block-header-left">⏳ Очікування відповіді → <span class="var">{{email}}</span></div>
-    </div>
-    <div class="block-content">Поле <code>email</code> · тип <code>Email</code> (валідація вмикається автоматично).</div>
-  </div>
-
-  <div class="arrow">↓</div>
-
-  <!-- M4: Ask role -->
-  <div class="block block-msg">
-    <div class="block-header">
-      <div class="block-header-left">💬 Повідомлення — Вибір ролі</div>
-      <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
-    </div>
-    <div class="block-content">Залишилось обрати вашу роль — щоб виділити саме ті моменти запису, що максимально для вас.</div>
+Оберіть свою роль — і я надішлю запис з виділеними моментами саме для вас:</div>
     <div class="quick-replies">
       <span class="qr">👔 CEO / Власник</span>
       <span class="qr">📊 COO</span>
@@ -356,7 +299,8 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
     <div class="block-settings">
       <strong>Призначити теги:</strong> <code>role_ceo</code> (або відповідний за натиснутою кнопкою) + <code>registered_post_event</code><br>
       <strong>Записати змінну:</strong> <code>role</code> = текст обраної ролі<br>
-      <strong>Webhook:</strong> POST у Make → створення ліда у Zoho CRM з тегом «зареєстрований після саміту»
+      <strong>Webhook у Zoho CRM:</strong> POST у Make з полями <code>telegram_id</code>, <code>first_name</code>, <code>username</code>, <code>role</code>, <code>utm_source</code><br>
+      <strong>Контактні дані (email/телефон)</strong> збираються пізніше у flow консультації, коли користувач сам захоче зв'язатись.
     </div>
   </div>
 
@@ -374,7 +318,7 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
   <h2 id="roles">🎯 6 варіантів повідомлення з тайм-кодами</h2>
   <div class="section-meta">
     <strong>Кожен варіант:</strong> вступ + кнопка повного запису + перелік тайм-кодів під роль.<br>
-    Жовтим виділені <span class="tc">тайм-коди</span> — у SendPulse вставити як markdown-посилання на конкретний момент.
+    Жовтим виділені <span class="tc">тайм-коди</span> — у SendPulse вставляються як markdown-посилання на конкретний момент.
   </div>
 
   <!-- CEO -->
@@ -387,7 +331,7 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
         <div class="block-header-left">💬 Повідомлення</div>
         <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
       </div>
-      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось ваш запис саміту з персональними тайм-кодами для CEO.</span>
+      <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, ось ваш запис саміту з персональними тайм-кодами для CEO.</span>
 
 🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
 
@@ -425,7 +369,7 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
         <div class="block-header-left">💬 Повідомлення</div>
         <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
       </div>
-      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось запис саміту з персональними тайм-кодами для COO.</span>
+      <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, ось запис саміту з персональними тайм-кодами для COO.</span>
 
 🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
 
@@ -469,7 +413,7 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
         <div class="block-header-left">💬 Повідомлення</div>
         <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
       </div>
-      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось запис саміту з тайм-кодами під фінансову оптику.</span>
+      <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, ось запис саміту з тайм-кодами під фінансову оптику.</span>
 
 🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
 
@@ -511,7 +455,7 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
         <div class="block-header-left">💬 Повідомлення</div>
         <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
       </div>
-      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, технічний блок саміту — повністю для вас.</span>
+      <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, технічний блок саміту — повністю для вас.</span>
 
 🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
 
@@ -550,7 +494,7 @@ Zoho Summit 2026 вже відбувся <span class="b">27 травня</span> 
         <div class="block-header-left">💬 Повідомлення</div>
         <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
       </div>
-      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось всі live-демо блоки саміту — по кожному відділу.</span>
+      <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, ось всі live-демо блоки саміту — по кожному відділу.</span>
 
 🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
 
@@ -594,7 +538,7 @@ Live-демо — інтерактивна частина саміту. Можн
         <div class="block-header-left">💬 Повідомлення</div>
         <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
       </div>
-      <div class="block-content"><span class="b"><span class="var">{{name}}</span>, ось запис саміту з тайм-кодами на основні блоки.</span>
+      <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, ось запис саміту з тайм-кодами на основні блоки.</span>
 
 🎬 <a href="https://www.youtube.com/watch?v=lawo-3Ic90c" class="tc">Повний запис на YouTube</a> · 5 годин 35 хвилин
 
@@ -661,7 +605,7 @@ Live-демо — інтерактивна частина саміту. Можн
       <div class="block-header-left">📅 Кампанія — Розсилка attended</div>
       <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
     </div>
-    <div class="block-content"><span class="b"><span class="var">{{name}}</span>, дякуємо, що були з нами на Zoho Summit 2026.</span>
+    <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, дякуємо, що були з нами на Zoho Summit 2026.</span>
 
 Як і обіцяв — повний запис і тайм-коди на всі блоки, щоб переглянути цікаве ще раз або поділитися з колегами.
 
@@ -718,7 +662,7 @@ Live-демо — інтерактивна частина саміту. Можн
       <div class="block-header-left">📅 Кампанія — Розсилка no_show</div>
       <button class="copy-btn" onclick="copyText(this)">Копіювати</button>
     </div>
-    <div class="block-content"><span class="b"><span class="var">{{name}}</span>, шкода, що не вдалося потрапити на саміт.</span>
+    <div class="block-content"><span class="b"><span class="var">{{first_name}}</span>, шкода, що не вдалося потрапити на саміт.</span>
 
 День буває непередбачуваним — розумію. Тому залишаю повний запис і тайм-коди, щоб ви могли подивитись лише ті блоки, що актуальні для вас.
 
@@ -778,6 +722,13 @@ Live-демо — інтерактивна частина саміту. Можн
       <li><b>Розсилка для зареєстрованих (attended + no_show)</b> створюється як одна Кампанія на 28.05 з Filter element всередині — без дублювання логіки.</li>
     </ul>
 
+    <h3 style="margin-top: 18px;">Дані користувача</h3>
+    <ul>
+      <li><b>Ім'я</b> — береться автоматично з Telegram-профілю через змінну <code>{{first_name}}</code>. Окремо не запитуємо.</li>
+      <li><b>Email</b> — не збираємо на етапі реєстрації в боті. Запитується пізніше, якщо користувач сам захоче зв'язатися (натисне «Записатись на консультацію»).</li>
+      <li><b>У Zoho CRM</b> лід створюється з telegram_id як унікальним ідентифікатором, first_name і username (якщо є в Telegram).</li>
+    </ul>
+
     <h3 style="margin-top: 18px;">Формат тайм-кодів</h3>
     <ul>
       <li>Усі тайм-коди в текстах — це <b>markdown-посилання</b> на конкретний момент відео.</li>
@@ -793,9 +744,9 @@ Live-демо — інтерактивна частина саміту. Можн
 
     <h3 style="margin-top: 18px;">Кнопка «Записатись на консультацію»</h3>
     <ul>
-      <li>Натискання кнопки → тег <code>wants_consultation</code> + webhook у Zoho CRM (оновити стадію ліда на «Sales-ready»).</li>
-      <li>Окремий короткий flow для записи: запит зручного часу, передача в Calendly або Zoho Bookings.</li>
-      <li>Можна додати окремим завданням пізніше — поки що достатньо отримувати тег.</li>
+      <li>Натискання кнопки → тег <code>wants_consultation</code>. Тут вже можна попросити email/телефон, якщо потрібен для зворотного зв'язку.</li>
+      <li>Окремий короткий flow для записи: запит контактних даних, передача в Calendly або Zoho Bookings.</li>
+      <li>Окремим завданням пізніше.</li>
     </ul>
   </div>
 
