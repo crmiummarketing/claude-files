@@ -72,6 +72,8 @@ body[data-concept="brand"] .br-hero--photo .br-lead {
 }
 body[data-concept="brand"] .br-hero-cta {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
@@ -138,9 +140,11 @@ body[data-concept="brand"] .br-hero-metric--main b {
 /* Короткі екрани (MacBook 14" ~900px і нижче) — стискаємо hero */
 @media (min-width: 1100px) and (max-height: 920px) {
   body[data-concept="brand"] .br-hero--photo {
-    /* На MacBook 14"/13" дрон-блок заповнює увесь перший екран */
+    /* На MacBook 14"/13" дрон-блок заповнює увесь перший екран,
+       контент — угорі (без великого порожнього простору над eyebrow) */
     min-height: calc(100vh - 122px);
-    padding: 44px 52px;
+    justify-content: flex-start;
+    padding: 48px 52px;
   }
   body[data-concept="brand"] .br-hero--photo .br-h1 { font-size: clamp(36px, 4.2vw, 52px); margin-bottom: 16px; }
   body[data-concept="brand"] .br-hero--photo .br-lead { font-size: 17px; margin-bottom: 26px; }
