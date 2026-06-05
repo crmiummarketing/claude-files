@@ -177,8 +177,30 @@ body[data-concept="brand"] .br-hero-metric--main b {
     width: 100%;
     height: auto;
     border-radius: 16px;
+    /* Опущена нижче від sticky-topbar — щоб не зливалась з ним */
+    margin-top: 40px;
     margin-bottom: 24px;
   }
+  /* Кнопка CTA у випадаючому меню — повноцінна кнопка, не вузька смужка
+     (працює і для <a>, і для <button> у PHP) */
+  body[data-concept="brand"] .br-mnav-cta {
+    display: block !important;
+    width: 100% !important;
+    padding: 16px 20px !important;
+    margin-top: 12px !important;
+    background: var(--c-acc) !important;
+    color: var(--c-acc-ink) !important;
+    font-family: var(--font-display) !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    border: none !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+  }
+  body[data-concept="brand"] .br-mnav-cta:hover { background: var(--c-acc-hover) !important; }
   body[data-concept="brand"] .br-hero--photo .br-eyebrow { margin-bottom: 18px; }
   body[data-concept="brand"] .br-hero--photo .br-h1,
   body[data-concept="brand"] .br-hero--photo .br-lead { max-width: 100%; }
