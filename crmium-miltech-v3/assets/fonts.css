@@ -1,0 +1,10 @@
+/* =========================================================
+   FONTS · ONEST + JETBRAINS MONO
+   Onest — display + body (ваги 300–800)
+   JetBrains Mono — мономонодані: дати, eyebrow, мітки
+   ========================================================= */
+body {
+  --font-display: 'Onest', system-ui, sans-serif;
+  --font-body:    'Onest', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+}

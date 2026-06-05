@@ -1,0 +1,1474 @@
+/* =========================================================
+   CONCEPT · CRMiUM BRAND EDITION
+   Фірмові кольори: #EF652F + #15171C + #FFFFFF.
+   Текст на помаранчевому — ЗАВЖДИ білий.
+   Дві окремі картки на першому екрані: pill-меню + rounded hero.
+   ========================================================= */
+
+body[data-concept="brand"] .brand-page { display: block; }
+
+/* ---------- BASE ---------- */
+body[data-concept="brand"] {
+  background: var(--c-dark);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  font-feature-settings: 'ss01';
+}
+
+body[data-concept="brand"] .brand-page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 24px 96px;
+}
+
+body[data-concept="brand"] a { text-decoration: none; }
+
+/* ===========================================================
+   TOPBAR — окрема pill-картка над hero
+   =========================================================== */
+body[data-concept="brand"] .br-topbar {
+  /* Липкий — прокручується разом зі сторінкою */
+  position: sticky;
+  top: 12px;
+  z-index: 300;
+  background: rgba(21,23,28,0.85);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  padding: 14px 16px 14px 28px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+body[data-concept="brand"] .br-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-logo-img {
+  height: 44px;
+  width: auto;
+}
+/* За замовчуванням показуємо dark-bg логотип (білі букви), світлий — приховано.
+   Світлі палітри (Editorial, Minimalist) переключають це у своїх .css. */
+body[data-concept="brand"] .br-logo-img--light { display: none; }
+body[data-concept="brand"] .br-logo-sep {
+  color: var(--c-ink-2);
+  font-size: 18px;
+}
+body[data-concept="brand"] .br-logo-event {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-nav {
+  display: flex;
+  gap: 32px;
+  justify-self: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-nav a { transition: color .2s; }
+body[data-concept="brand"] .br-nav a:hover { color: var(--c-acc); }
+
+body[data-concept="brand"] .br-topbar-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 999px;
+  transition: background .2s, transform .15s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+body[data-concept="brand"] .br-topbar-cta:hover {
+  background: var(--c-acc-hover);
+  transform: translateY(-1px);
+}
+body[data-concept="brand"] .br-topbar-cta:active { transform: translateY(0) scale(.98); }
+
+/* Hamburger button — desktop hidden */
+body[data-concept="brand"] .br-burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background: var(--c-tint-soft);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+body[data-concept="brand"] .br-burger span {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--c-ink);
+  border-radius: 2px;
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1), opacity .2s, top .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body[data-concept="brand"] .br-burger span:nth-child(1) { top: 14px; }
+body[data-concept="brand"] .br-burger span:nth-child(2) { top: 21px; }
+body[data-concept="brand"] .br-burger span:nth-child(3) { top: 28px; }
+body[data-concept="brand"] .br-burger.is-open span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+body[data-concept="brand"] .br-burger.is-open span:nth-child(2) { opacity: 0; }
+body[data-concept="brand"] .br-burger.is-open span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+
+/* Mobile sliding menu — desktop hidden.
+   У закритому стані ВЕСЬ контейнер невидимий: border/padding/margin = 0.
+   У відкритому — повертаються з плавним переходом. */
+body[data-concept="brand"] .br-mnav {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--c-bg);
+  border: 0 solid var(--c-line);
+  border-radius: 24px;
+  padding: 0;
+  margin-bottom: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s cubic-bezier(0.16, 1, 0.3, 1),
+              padding .2s,
+              border-width .2s,
+              margin-bottom .2s;
+}
+body[data-concept="brand"] .br-mnav.is-open {
+  max-height: 500px;
+  padding: 16px;
+  border-width: 1px;
+  margin-bottom: 16px;
+}
+body[data-concept="brand"] .br-mnav a {
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--c-ink);
+  border-radius: 12px;
+  transition: background .15s;
+}
+body[data-concept="brand"] .br-mnav a:hover { background: var(--c-tint-soft); }
+body[data-concept="brand"] .br-mnav-cta {
+  margin-top: 8px;
+  background: var(--c-acc) !important;
+  color: var(--c-acc-ink) !important;
+  text-align: center;
+  font-weight: 700 !important;
+}
+
+/* ===========================================================
+   HERO — окрема rounded картка з glow всередині
+   =========================================================== */
+body[data-concept="brand"] .br-hero {
+  position: relative;
+  background:
+    radial-gradient(120% 90% at 90% -10%, rgba(239,101,47,0.22) 0%, transparent 55%),
+    radial-gradient(80% 70% at -10% 110%, rgba(239,101,47,0.06) 0%, transparent 55%),
+    var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 32px;
+  padding: 56px 56px 48px;
+  overflow: hidden;
+  isolation: isolate;
+}
+body[data-concept="brand"] .br-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+
+body[data-concept="brand"] .br-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+  margin-bottom: 36px;
+  padding: 8px 16px;
+  background: var(--c-tint-soft);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+}
+body[data-concept="brand"] .br-eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-acc);
+  box-shadow: 0 0 0 4px var(--c-acc-soft);
+  animation: brPulse 2s ease-in-out infinite;
+}
+@keyframes brPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+body[data-concept="brand"] .br-h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  /* Зменшено для MacBook 13" — раніше було clamp(40, 6.6vw, 88).
+     Тепер max 68px замість 88, і scaling factor нижче 5vw. */
+  font-size: clamp(36px, 5vw, 68px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  /* На малих екранах "Трансформація" — довге слово, дозволяємо переносити */
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  color: var(--c-ink);
+  margin-bottom: 28px;
+  max-width: 1080px;
+}
+body[data-concept="brand"] .br-h1 em {
+  font-style: normal;
+  color: var(--c-acc);
+  font-weight: 800;
+}
+
+body[data-concept="brand"] .br-lead {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+  max-width: 720px;
+  margin-bottom: 44px;
+}
+
+body[data-concept="brand"] .br-hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+
+body[data-concept="brand"] .br-countdown {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  font-family: var(--font-display);
+}
+body[data-concept="brand"] .br-cd-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  padding: 14px 18px 10px;
+  min-width: 78px;
+}
+body[data-concept="brand"] .br-cd-cell b {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--c-ink);
+  font-variant-numeric: tabular-nums;
+}
+body[data-concept="brand"] .br-cd-cell span {
+  font-size: 11px;
+  color: var(--c-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 6px;
+}
+body[data-concept="brand"] .br-cd-sep {
+  font-size: 28px;
+  color: var(--c-ink-2);
+  align-self: center;
+  font-weight: 700;
+}
+
+body[data-concept="brand"] .br-hero-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+body[data-concept="brand"] .br-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 28px;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 14px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: background .2s, transform .15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body[data-concept="brand"] .br-cta-primary:hover {
+  background: var(--c-acc-hover);
+  transform: translateY(-2px);
+}
+body[data-concept="brand"] .br-cta-primary:active { transform: translateY(0) scale(.98); }
+body[data-concept="brand"] .br-cta-sub {
+  font-size: 13px;
+  color: var(--c-ink-2);
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+/* TRUST GRID */
+body[data-concept="brand"] .br-trust {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 48px;
+}
+body[data-concept="brand"] .br-trust-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-trust-card:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-trust-main {
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  border-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+body[data-concept="brand"] .br-trust-tag {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-trust-main .br-trust-tag { color: var(--c-acc-ink-2); }
+body[data-concept="brand"] .br-trust-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+body[data-concept="brand"] .br-trust-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 38px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-trust-num span {
+  color: var(--c-acc);
+  font-size: 28px;
+}
+body[data-concept="brand"] .br-trust-l {
+  font-size: 13px;
+  color: var(--c-ink-2);
+  line-height: 1.4;
+}
+
+/* ===========================================================
+   SECTION HEAD (shared)
+   =========================================================== */
+body[data-concept="brand"] .br-section { padding: 80px 0 0; }
+body[data-concept="brand"] .br-section-head {
+  margin-bottom: 44px;
+  max-width: 920px;
+}
+body[data-concept="brand"] .br-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+body[data-concept="brand"] .br-h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  /* Зменшено з max 64px до 52px для MacBook 13" */
+  font-size: clamp(28px, 3.8vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-h2 em {
+  font-style: normal;
+  color: var(--c-acc);
+  font-weight: 800;
+}
+body[data-concept="brand"] .br-section-sub {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+  margin-top: 18px;
+  max-width: 700px;
+}
+
+/* ===========================================================
+   PAINS
+   =========================================================== */
+body[data-concept="brand"] .br-pains-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+body[data-concept="brand"] .br-pain {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-pain:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-pain-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+}
+body[data-concept="brand"] .br-pain-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-pain-h em {
+  font-style: italic;
+  color: var(--c-acc);
+}
+body[data-concept="brand"] .br-pain-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-pain-list li {
+  padding-left: 18px;
+  position: relative;
+}
+body[data-concept="brand"] .br-pain-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--c-acc);
+}
+
+body[data-concept="brand"] .br-pains-summary {
+  margin-top: 32px;
+  padding: 28px 32px;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  border-radius: 18px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* ===========================================================
+   WHAT (Bento grid про Zoho) — більший шрифт у categories
+   =========================================================== */
+body[data-concept="brand"] .br-what-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-auto-rows: minmax(180px, auto);
+  gap: 16px;
+}
+body[data-concept="brand"] .br-what-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  padding: 28px 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-what-card:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-what-big {
+  grid-row: span 2;
+  justify-content: space-between;
+}
+/* Bento accent card "100M+" — ВИКЛЮЧЕННЯ: тут текст ТЕМНИЙ на помаранчі.
+   На відміну від інших accent-поверхонь, які використовують білий. */
+body[data-concept="brand"] .br-what-card--accent {
+  background: var(--c-acc);
+  color: #15171C;
+  border-color: transparent;
+}
+body[data-concept="brand"] .br-what-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 68px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-what-card--accent .br-what-num { color: #15171C; }
+body[data-concept="brand"] .br-what-num span {
+  font-size: 48px;
+  color: var(--c-acc);
+}
+body[data-concept="brand"] .br-what-card--accent .br-what-num span { color: #15171C; opacity: 0.85; }
+body[data-concept="brand"] .br-what-l {
+  font-size: 16px;
+  color: var(--c-ink-2);
+  line-height: 1.45;
+}
+body[data-concept="brand"] .br-what-card--accent .br-what-l { color: var(--c-acc-ink-2); }
+/* Categories — більший шрифт за фідбеком */
+body[data-concept="brand"] .br-what-cats {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--c-ink);
+  font-weight: 600;
+  margin-top: auto;
+  letter-spacing: -0.01em;
+}
+body[data-concept="brand"] .br-what-cats b {
+  color: var(--c-acc);
+  font-weight: 600;
+}
+body[data-concept="brand"] .br-what-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+}
+body[data-concept="brand"] .br-what-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-what-ai .br-what-tag { color: var(--c-acc); }
+
+/* ===========================================================
+   FLEXIBILITY
+   =========================================================== */
+body[data-concept="brand"] .br-flex-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+body[data-concept="brand"] .br-flex-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-flex-card:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-flex-card--accent {
+  grid-column: span 2;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  border-color: transparent;
+}
+body[data-concept="brand"] .br-flex-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--c-acc-soft);
+  color: var(--c-acc);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+body[data-concept="brand"] .br-flex-card--accent .br-flex-icon {
+  background: var(--c-acc-ink-tint);
+  color: var(--c-acc-ink);
+}
+body[data-concept="brand"] .br-flex-card h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-flex-card--accent h3 { color: var(--c-acc-ink); }
+body[data-concept="brand"] .br-flex-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-ink-2);
+}
+/* ПРИКЛАД-картка — більший шрифт, БІЛИЙ текст. */
+body[data-concept="brand"] .br-flex-card--accent p {
+  color: #FFFFFF;
+  font-size: 16px;
+  line-height: 1.5;
+}
+body[data-concept="brand"] .br-flex-card--accent p b {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+body[data-concept="brand"] .br-flex-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--c-acc-ink-2);
+}
+
+/* ===========================================================
+   SCHEDULE (timeline) — з bullet-points замість grid
+   =========================================================== */
+body[data-concept="brand"] .br-schedule-list {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 0;
+  position: relative;
+}
+body[data-concept="brand"] .br-schedule-list::before {
+  content: '';
+  position: absolute;
+  left: 130px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, var(--c-acc-mid) 12%, var(--c-acc-mid) 88%, transparent 100%);
+}
+body[data-concept="brand"] .br-tl-time {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-ink);
+  padding: 32px 24px 32px 0;
+  text-align: right;
+  align-self: start;
+}
+body[data-concept="brand"] .br-tl-time span {
+  display: block;
+  font-size: 11px;
+  color: var(--c-ink-2);
+  letter-spacing: 0.12em;
+  margin-top: 4px;
+}
+body[data-concept="brand"] .br-tl-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+  padding: 28px 32px;
+  margin: 12px 0 12px 36px;
+  position: relative;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-tl-card:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-tl-card::before {
+  content: '';
+  position: absolute;
+  left: -42px;
+  top: 36px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--c-bg);
+  border: 2px solid var(--c-acc);
+}
+body[data-concept="brand"] .br-tl-card--demo {
+  background: var(--c-acc-soft);
+  border-color: var(--c-acc-mid);
+}
+body[data-concept="brand"] .br-tl-card--qa {
+  background: var(--c-acc-soft);
+}
+body[data-concept="brand"] .br-tl-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+body[data-concept="brand"] .br-tl-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+  margin-bottom: 8px;
+}
+body[data-concept="brand"] .br-tl-h em {
+  font-style: italic;
+  color: var(--c-acc);
+}
+body[data-concept="brand"] .br-tl-speaker {
+  font-size: 14px;
+  color: var(--c-ink-2);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+body[data-concept="brand"] .br-tl-speaker b { color: var(--c-ink); font-weight: 600; }
+
+/* Bullet-список тем в карточці */
+body[data-concept="brand"] .br-tl-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--c-line);
+}
+body[data-concept="brand"] .br-tl-points li {
+  padding-left: 24px;
+  position: relative;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-tl-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 12px;
+  height: 2px;
+  background: var(--c-acc);
+  border-radius: 1px;
+}
+
+/* Break row */
+body[data-concept="brand"] .br-tl-break {
+  grid-column: 2;
+  margin: 8px 0 8px 36px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  background: transparent;
+  border: 1px dashed var(--c-line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--c-ink-2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  width: max-content;
+}
+body[data-concept="brand"] .br-tl-break-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--c-acc);
+}
+
+/* ===========================================================
+   SPEAKERS — 3 col desktop, 2 col tablet, 2 col phone (smaller)
+   =========================================================== */
+body[data-concept="brand"] .br-speakers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  perspective: 1200px;
+}
+body[data-concept="brand"] .br-speaker {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .55s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+body[data-concept="brand"] .br-speaker:hover {
+  border-color: var(--c-acc-mid);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-speaker-photo-wrap {
+  position: relative;
+  /* Square (1/1) — фото компактні, картка вміщається на 13" MacBook
+     разом з біо нижче. Object-position top-center зберігає обличчя у фокусі. */
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--c-tint-soft);
+}
+body[data-concept="brand"] .br-speaker-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body[data-concept="brand"] .br-speaker:hover .br-speaker-photo { transform: scale(1.045); }
+body[data-concept="brand"] .br-speaker-photo-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50%;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, var(--c-card) 100%);
+}
+body[data-concept="brand"] .br-speaker-body {
+  padding: 22px 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+body[data-concept="brand"] .br-speaker-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-speaker-role {
+  font-size: 14px;
+  color: var(--c-acc);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+body[data-concept="brand"] .br-speaker-bio {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+}
+
+/* ===========================================================
+   FAQ
+   =========================================================== */
+body[data-concept="brand"] .br-faq-list { display: flex; flex-direction: column; gap: 12px; }
+body[data-concept="brand"] .br-faq-item {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  padding: 22px 26px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-faq-item:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-faq-item summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+body[data-concept="brand"] .br-faq-item summary::-webkit-details-marker { display: none; }
+body[data-concept="brand"] .br-faq-item summary::after {
+  content: '+';
+  color: var(--c-acc);
+  font-size: 22px;
+  font-weight: 700;
+  transition: transform .25s;
+}
+body[data-concept="brand"] .br-faq-item[open] summary::after { transform: rotate(45deg); }
+body[data-concept="brand"] .br-faq-item p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-ink-2);
+}
+
+/* ===========================================================
+   FORM
+   =========================================================== */
+body[data-concept="brand"] .br-final-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: stretch;
+}
+body[data-concept="brand"] .br-final-info {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 24px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-final-info:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-final-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+}
+body[data-concept="brand"] .br-final-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--c-ink);
+}
+body[data-concept="brand"] .br-final-h em { font-style: italic; color: var(--c-acc); }
+body[data-concept="brand"] .br-final-sub {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--c-ink-2);
+}
+body[data-concept="brand"] .br-final-meta {
+  margin-top: auto;
+  font-size: 14px;
+  color: var(--c-ink-2);
+  padding-top: 18px;
+  border-top: 1px solid var(--c-line);
+}
+
+body[data-concept="brand"] .br-form-wrap {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 24px;
+  padding: 40px;
+  transition: border-color .3s cubic-bezier(.22,1,.36,1),
+              transform .3s cubic-bezier(.22,1,.36,1),
+              box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+body[data-concept="brand"] .br-form-wrap:hover {
+  border-color: var(--c-acc-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(239,101,47,0.14);
+}
+body[data-concept="brand"] .br-form-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-acc);
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+body[data-concept="brand"] .br-form { display: flex; flex-direction: column; gap: 16px; }
+body[data-concept="brand"] .br-form-row { display: flex; flex-direction: column; gap: 8px; }
+body[data-concept="brand"] .br-form-row label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-ink-2);
+  letter-spacing: 0.02em;
+}
+body[data-concept="brand"] .br-form-row input,
+body[data-concept="brand"] .br-form-row textarea {
+  background: var(--c-tint-soft);
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-family: var(--font-body);
+  color: var(--c-ink);
+  transition: border-color .2s, background .2s;
+  width: 100%;
+}
+body[data-concept="brand"] .br-form-row input::placeholder,
+body[data-concept="brand"] .br-form-row textarea::placeholder { color: var(--c-ink-3); }
+body[data-concept="brand"] .br-form-row input:focus,
+body[data-concept="brand"] .br-form-row textarea:focus {
+  outline: none;
+  border-color: var(--c-acc);
+  background: var(--c-tint-bold);
+}
+body[data-concept="brand"] .br-form-submit {
+  margin-top: 8px;
+  background: var(--c-acc);
+  color: var(--c-acc-ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  padding: 18px 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background .2s, transform .15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body[data-concept="brand"] .br-form-submit:hover {
+  background: var(--c-acc-hover);
+  transform: translateY(-2px);
+}
+body[data-concept="brand"] .br-form-submit:active { transform: translateY(0) scale(.98); }
+
+/* ===========================================================
+   FOOTER
+   =========================================================== */
+body[data-concept="brand"] .br-foot {
+  margin-top: 96px;
+  padding: 48px 0 24px;
+  border-top: 1px solid var(--c-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--c-ink-2);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+body[data-concept="brand"] .br-foot b { color: var(--c-ink); font-weight: 600; }
+
+/* ===========================================================
+   RESPONSIVE
+   =========================================================== */
+@media (max-width: 1100px) {
+  body[data-concept="brand"] .br-trust { grid-template-columns: 1fr 1fr 1fr; }
+  body[data-concept="brand"] .br-trust-main { grid-column: 1 / -1; }
+  body[data-concept="brand"] .br-pains-grid { grid-template-columns: 1fr 1fr; }
+  body[data-concept="brand"] .br-pain:nth-child(3) { grid-column: 1 / -1; }
+  body[data-concept="brand"] .br-what-grid { grid-template-columns: 1fr 1fr; }
+  body[data-concept="brand"] .br-what-big { grid-row: span 2; grid-column: 1 / -1; }
+  body[data-concept="brand"] .br-flex-grid { grid-template-columns: 1fr 1fr; }
+  body[data-concept="brand"] .br-flex-card--accent { grid-column: 1 / -1; }
+  body[data-concept="brand"] .br-speakers-grid { grid-template-columns: repeat(2, 1fr); }
+  body[data-concept="brand"] .br-final-grid { grid-template-columns: 1fr; }
+}
+
+/* ===========================================================
+   SHORT-VIEWPORT DESKTOP (MacBook 13" — типово 1280-1440 × 720-900)
+   Hero займає ~весь viewport через min-height: calc(100vh - 96px),
+   тож наступна секція гарантовано починається ЗА фолдом.
+   Контент стискається помірно, дорогу пустоту знизу заповнює
+   радіальний glow картки.
+   =========================================================== */
+@media (min-width: 1100px) and (max-height: 900px) {
+  body[data-concept="brand"] .br-hero {
+    /* Hero card заповнює viewport від topbar до низу.
+       96px = topbar (~64) + page-padding-top + safety. */
+    min-height: calc(100vh - 96px);
+    padding: 44px 56px 40px;
+  }
+  body[data-concept="brand"] .br-eyebrow {
+    margin-bottom: 22px;
+  }
+  body[data-concept="brand"] .br-h1 {
+    font-size: clamp(36px, 4.2vw, 54px);
+    margin-bottom: 20px;
+  }
+  body[data-concept="brand"] .br-lead {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    max-width: 660px;
+  }
+  body[data-concept="brand"] .br-hero-row {
+    margin-bottom: 0;
+    gap: 24px;
+  }
+  body[data-concept="brand"] .br-cd-cell {
+    padding: 11px 15px 8px;
+    min-width: 66px;
+  }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 28px; }
+  body[data-concept="brand"] .br-cta-primary {
+    padding: 15px 24px;
+    font-size: 15px;
+  }
+  body[data-concept="brand"] .br-trust {
+    margin-top: 28px;
+    gap: 14px;
+  }
+  body[data-concept="brand"] .br-trust-card {
+    padding: 18px 18px;
+    border-radius: 16px;
+  }
+  body[data-concept="brand"] .br-trust-num { font-size: 32px; }
+  body[data-concept="brand"] .br-trust-num span { font-size: 22px; }
+  body[data-concept="brand"] .br-trust-h { font-size: 18px; }
+  body[data-concept="brand"] .br-trust-l { font-size: 12px; line-height: 1.4; }
+}
+
+/* Ще тісніший контент для коротших MBP (~720-820px height) */
+@media (min-width: 1100px) and (max-height: 820px) {
+  body[data-concept="brand"] .br-hero { padding: 32px 48px 32px; }
+  body[data-concept="brand"] .br-eyebrow { margin-bottom: 16px; }
+  body[data-concept="brand"] .br-h1 {
+    font-size: clamp(30px, 3.4vw, 44px);
+    margin-bottom: 14px;
+  }
+  body[data-concept="brand"] .br-lead { font-size: 15px; margin-bottom: 22px; }
+  body[data-concept="brand"] .br-hero-row { gap: 18px; }
+  body[data-concept="brand"] .br-cd-cell { padding: 8px 12px 6px; min-width: 58px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 22px; }
+  body[data-concept="brand"] .br-cd-cell span { font-size: 9px; margin-top: 3px; }
+  body[data-concept="brand"] .br-cta-primary { padding: 12px 20px; font-size: 14px; }
+  body[data-concept="brand"] .br-trust { margin-top: 20px; gap: 10px; }
+  body[data-concept="brand"] .br-trust-card { padding: 14px 14px; gap: 4px; }
+  body[data-concept="brand"] .br-trust-num { font-size: 26px; }
+  body[data-concept="brand"] .br-trust-h { font-size: 15px; line-height: 1.2; }
+  body[data-concept="brand"] .br-trust-l { font-size: 11px; line-height: 1.3; }
+}
+
+@media (max-width: 760px) {
+  body[data-concept="brand"] .brand-page { padding: 16px 16px 64px; }
+  body[data-concept="brand"] .br-section { padding-top: 64px; }
+
+  /* Topbar — show burger, hide CTA + nav */
+  body[data-concept="brand"] .br-topbar {
+    grid-template-columns: 1fr auto;
+    padding: 10px 12px 10px 18px;
+  }
+  body[data-concept="brand"] .br-nav { display: none; }
+  body[data-concept="brand"] .br-topbar-cta { display: none; }
+  body[data-concept="brand"] .br-burger { display: block; }
+  /* Mobile menu — fixed-позиція щоб з'являвся ПІД topbar незалежно
+     від поточного scroll-position. Закритий стан: невидимий. */
+  body[data-concept="brand"] .br-mnav {
+    display: flex;
+    position: fixed;
+    top: 88px;
+    left: 16px;
+    right: 16px;
+    z-index: 299;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-12px);
+    background: rgba(21,23,28,0.92);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    transition: opacity .25s cubic-bezier(.22,1,.36,1),
+                transform .25s cubic-bezier(.22,1,.36,1),
+                max-height .35s cubic-bezier(.22,1,.36,1),
+                padding .2s,
+                border-width .2s;
+  }
+  body[data-concept="brand"] .br-mnav.is-open {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* На мобільному ховаємо текст біля лого — лишається тільки лого-картинка */
+  body[data-concept="brand"] .br-logo-sep,
+  body[data-concept="brand"] .br-logo-event { display: none; }
+  body[data-concept="brand"] .br-logo-img { height: 36px; }
+
+  /* На мобільному прибираємо desktop-only <br> у h1 (перенос перед "бізнесу")
+     — нехай слово саме обтікає природньо */
+  body[data-concept="brand"] .br-h1-desk-only { display: none; }
+
+  /* Hero — менший padding, меншi cells */
+  body[data-concept="brand"] .br-hero { padding: 44px 24px 40px; border-radius: 24px; }
+  body[data-concept="brand"] .br-eyebrow { font-size: 10px; padding: 6px 12px; gap: 8px; }
+  /* Більший gap між countdown і CTA-блоком */
+  body[data-concept="brand"] .br-hero-row { gap: 28px; }
+  body[data-concept="brand"] .br-cd-cell { min-width: 64px; padding: 12px 12px 8px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 26px; }
+  body[data-concept="brand"] .br-cd-sep { font-size: 22px; }
+  /* Більший gap між orange CTA-кнопкою і sub-текстом під нею */
+  body[data-concept="brand"] .br-hero-cta { width: 100%; gap: 14px; }
+  /* CTA: одна лінія, менший шрифт + nowrap */
+  body[data-concept="brand"] .br-cta-primary {
+    width: 100%;
+    font-size: 14px;
+    padding: 16px 20px;
+    white-space: nowrap;
+  }
+  body[data-concept="brand"] .br-trust { grid-template-columns: 1fr 1fr; }
+  body[data-concept="brand"] .br-trust-main { grid-column: 1 / -1; }
+  body[data-concept="brand"] .br-trust-num { font-size: 36px; }
+
+  body[data-concept="brand"] .br-pains-grid,
+  body[data-concept="brand"] .br-what-grid,
+  body[data-concept="brand"] .br-flex-grid { grid-template-columns: 1fr; }
+  body[data-concept="brand"] .br-pain:nth-child(3),
+  body[data-concept="brand"] .br-what-big,
+  body[data-concept="brand"] .br-flex-card--accent { grid-column: auto; }
+  body[data-concept="brand"] .br-what-num { font-size: 64px; }
+  body[data-concept="brand"] .br-what-num span { font-size: 36px; }
+
+  /* Schedule — час над карткою, без вертикальної лінії */
+  body[data-concept="brand"] .br-schedule-list { grid-template-columns: 1fr; }
+  body[data-concept="brand"] .br-schedule-list::before { display: none; }
+  body[data-concept="brand"] .br-tl-time {
+    text-align: left;
+    padding: 16px 0 8px;
+    border-top: 1px solid var(--c-acc-mid);
+  }
+  body[data-concept="brand"] .br-tl-card { margin: 0 0 18px 0; padding: 24px 22px; }
+  body[data-concept="brand"] .br-tl-card::before { display: none; }
+  body[data-concept="brand"] .br-tl-break { grid-column: auto; margin: 4px 0; }
+  body[data-concept="brand"] .br-tl-h { font-size: 19px; }
+  body[data-concept="brand"] .br-tl-points li { font-size: 14px; }
+
+  /* Speakers — 2 col на мобілі, фото 4/5 щоб картки були поряд і не гігантські */
+  body[data-concept="brand"] .br-speakers-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  body[data-concept="brand"] .br-speaker-photo-wrap { aspect-ratio: 3 / 4; }
+  body[data-concept="brand"] .br-speaker-body { padding: 14px 16px 18px; gap: 4px; }
+  body[data-concept="brand"] .br-speaker-name { font-size: 16px; }
+  body[data-concept="brand"] .br-speaker-role { font-size: 12px; }
+  body[data-concept="brand"] .br-speaker-bio { font-size: 13px; }
+
+  body[data-concept="brand"] .br-final-info,
+  body[data-concept="brand"] .br-form-wrap { padding: 28px 22px; }
+
+  /* Footer — стек */
+  body[data-concept="brand"] .br-foot { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 420px) {
+  /* Дуже вузькі екрани — уникаємо стиснутих написів */
+  body[data-concept="brand"] .br-cta-primary {
+    font-size: 13px;
+    padding: 14px 16px;
+  }
+  body[data-concept="brand"] .br-cd-cell { min-width: 58px; padding: 10px 10px 6px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 22px; }
+}
+
+@media (max-width: 360px) {
+  /* iPhone SE / маленькі Android — countdown і hero мусять вміщатися без overflow.
+     Зменшуємо hero padding, h1 font-size, і робимо countdown компактним. */
+  body[data-concept="brand"] .brand-page { padding: 0 16px 64px; }
+  body[data-concept="brand"] .br-hero { padding: 36px 18px 32px; }
+  body[data-concept="brand"] .br-section { padding-left: 4px; padding-right: 4px; }
+  body[data-concept="brand"] .br-h1 { font-size: 34px; }
+  body[data-concept="brand"] .br-countdown {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  body[data-concept="brand"] .br-cd-cell { min-width: 52px; padding: 8px 8px 5px; }
+  body[data-concept="brand"] .br-cd-cell b { font-size: 20px; }
+  body[data-concept="brand"] .br-cd-cell span { font-size: 9px; }
+  body[data-concept="brand"] .br-cd-sep { font-size: 18px; }
+}
+
+/* ===========================================================
+   ENTRANCE ANIMATIONS — choreography
+   =========================================================== */
+@keyframes brInLeft {
+  from { opacity: 0; transform: translate3d(-48px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes brInRight {
+  from { opacity: 0; transform: translate3d(48px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes brInUp {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-concept="brand"] .br-eyebrow,
+  body[data-concept="brand"] .br-h1,
+  body[data-concept="brand"] .br-lead,
+  body[data-concept="brand"] .br-hero-row,
+  body[data-concept="brand"] .br-trust-card {
+    opacity: 0;
+    will-change: transform, opacity;
+    animation-duration: 900ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-fill-mode: forwards;
+  }
+  body[data-concept="brand"] .br-eyebrow  { animation-name: brInLeft;  animation-delay: 100ms; }
+  body[data-concept="brand"] .br-h1       { animation-name: brInLeft;  animation-delay: 220ms; }
+  body[data-concept="brand"] .br-lead     { animation-name: brInRight; animation-delay: 480ms; }
+  body[data-concept="brand"] .br-hero-row { animation-name: brInUp;    animation-delay: 700ms; }
+  body[data-concept="brand"] .br-trust-card:nth-child(1) { animation-name: brInUp; animation-delay: 880ms; }
+  body[data-concept="brand"] .br-trust-card:nth-child(2) { animation-name: brInUp; animation-delay: 960ms; }
+  body[data-concept="brand"] .br-trust-card:nth-child(3) { animation-name: brInUp; animation-delay: 1040ms; }
+  body[data-concept="brand"] .br-trust-card:nth-child(4) { animation-name: brInUp; animation-delay: 1120ms; }
+  body[data-concept="brand"] .br-trust-card:nth-child(5) { animation-name: brInUp; animation-delay: 1200ms; }
+
+  body[data-concept="brand"] .brand-page > .br-section .br-section-head {
+    opacity: 0;
+    transform: translate3d(-40px, 0, 0);
+    transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  body[data-concept="brand"] .brand-page > .br-section:nth-of-type(even) .br-section-head {
+    transform: translate3d(40px, 0, 0);
+  }
+  body[data-concept="brand"] .brand-page > .br-section.is-revealed .br-section-head {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* На мобільному — ШВИДШІ затримки і коротша тривалість анімацій,
+   щоб блоки залітали різко й не запізнювались. */
+@media (max-width: 760px) {
+  /* Hero waterfall — затримки мінімальні */
+  body[data-concept="brand"] .br-eyebrow  { animation-delay:   0ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-h1       { animation-delay:  60ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-lead     { animation-delay: 140ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-hero-row { animation-delay: 220ms !important; animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-trust-card { animation-duration: 500ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(1) { animation-delay: 280ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(2) { animation-delay: 320ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(3) { animation-delay: 360ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(4) { animation-delay: 400ms !important; }
+  body[data-concept="brand"] .br-trust-card:nth-child(5) { animation-delay: 440ms !important; }
+
+  /* Card scroll-reveal — коротша тривалість slideUp на мобільному */
+  body[data-concept="brand"] .br-section .br-pain,
+  body[data-concept="brand"] .br-section .br-what-card,
+  body[data-concept="brand"] .br-section .br-flex-card,
+  body[data-concept="brand"] .br-section .br-tl-card,
+  body[data-concept="brand"] .br-section .br-speaker,
+  body[data-concept="brand"] .br-section .br-faq-item,
+  body[data-concept="brand"] .br-section .br-final-info,
+  body[data-concept="brand"] .br-section .br-form-wrap {
+    animation-duration: 480ms !important;
+  }
+}
+
+/* ===========================================================
+   STAGGERED CARD REVEAL — точно як у референсному шаблоні.
+   Використовуємо @keyframes brSlideUp з translateY(40px) start,
+   тривалість 0.72s, cubic-bezier(.22,1,.36,1).
+   Animation спочатку pause-нута через JS, при появі секції —
+   running. Stagger через :nth-child / :nth-of-type → animation-delay.
+   Працює і на десктопі, і на мобільному.
+   =========================================================== */
+@keyframes brSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Кожна картка стартує у паузі. Її animation-play-state="running"
+   ставить ВЛАСНИЙ IntersectionObserver у page.js індивідуально,
+   коли саме ця картка з'являється у viewport (як у референсі).
+   Це дає правильний "fly-in" по-черзі при скролі, особливо на мобільному. */
+body[data-concept="brand"] .br-section .br-pain,
+body[data-concept="brand"] .br-section .br-what-card,
+body[data-concept="brand"] .br-section .br-flex-card,
+body[data-concept="brand"] .br-section .br-tl-card,
+body[data-concept="brand"] .br-section .br-speaker,
+body[data-concept="brand"] .br-section .br-faq-item,
+body[data-concept="brand"] .br-section .br-final-info,
+body[data-concept="brand"] .br-section .br-form-wrap {
+  opacity: 0;
+  /* Прискорено з 0.72s до 0.5s — щоб картки не "залипали" при скролі. */
+  animation: brSlideUp .5s cubic-bezier(.22, 1, .36, 1) forwards;
+  animation-play-state: paused;
+}
+
+/* Staggered delay для form section: info-блок з'являється першим, форма другим */
+body[data-concept="brand"] .br-section .br-final-info { animation-delay: .02s; }
+body[data-concept="brand"] .br-section .br-form-wrap  { animation-delay: .08s; }
+
+/* Stagger через :nth-child / :nth-of-type — затримки скорочено на 50% */
+body[data-concept="brand"] .br-section .br-pain:nth-child(1),
+body[data-concept="brand"] .br-section .br-what-card:nth-child(1),
+body[data-concept="brand"] .br-section .br-flex-card:nth-child(1),
+body[data-concept="brand"] .br-section .br-speaker:nth-child(1),
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(1) { animation-delay: .02s; }
+body[data-concept="brand"] .br-section .br-pain:nth-child(2),
+body[data-concept="brand"] .br-section .br-what-card:nth-child(2),
+body[data-concept="brand"] .br-section .br-flex-card:nth-child(2),
+body[data-concept="brand"] .br-section .br-speaker:nth-child(2),
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(2) { animation-delay: .07s; }
+body[data-concept="brand"] .br-section .br-pain:nth-child(3),
+body[data-concept="brand"] .br-section .br-what-card:nth-child(3),
+body[data-concept="brand"] .br-section .br-flex-card:nth-child(3),
+body[data-concept="brand"] .br-section .br-speaker:nth-child(3),
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(3) { animation-delay: .12s; }
+body[data-concept="brand"] .br-section .br-what-card:nth-child(4),
+body[data-concept="brand"] .br-section .br-flex-card:nth-child(4),
+body[data-concept="brand"] .br-section .br-speaker:nth-child(4),
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(4) { animation-delay: .17s; }
+body[data-concept="brand"] .br-section .br-what-card:nth-child(5),
+body[data-concept="brand"] .br-section .br-speaker:nth-child(5),
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(5) { animation-delay: .22s; }
+body[data-concept="brand"] .br-section .br-speaker:nth-child(6),
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(6) { animation-delay: .27s; }
+body[data-concept="brand"] .br-section .br-faq-item:nth-child(7) { animation-delay: .32s; }
+
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(1) { animation-delay: .02s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(2) { animation-delay: .06s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(3) { animation-delay: .10s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(4) { animation-delay: .14s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(5) { animation-delay: .18s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(6) { animation-delay: .22s; }
+body[data-concept="brand"] .br-section .br-tl-card:nth-of-type(7) { animation-delay: .26s; }

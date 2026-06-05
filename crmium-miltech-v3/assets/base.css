@@ -1,0 +1,39 @@
+/* =========================================================
+   BASE · Скидання + дефолти
+   Усе візуальне — у concepts/brand.css.
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--c-bg, #15171C);
+  color: var(--c-ink, #FFFFFF);
+  font-family: var(--font-body, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Safety net: жоден елемент не повинен тягнути сторінку вбік на маленьких
+     екранах. overflow-x: clip — не ламає position: sticky (на відміну від hidden). */
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  color-scheme: dark;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; }
+
+button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+
+select { font: inherit; color: inherit; }
+
+ul { list-style: none; }
+
+/* Доступність: focus-visible для клавіатури */
+:focus-visible {
+  outline: 2px solid var(--c-acc, #EF652F);
+  outline-offset: 2px;
+}
