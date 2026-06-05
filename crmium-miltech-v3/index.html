@@ -65,6 +65,11 @@ body[data-concept="brand"] .br-hero--photo .br-eyebrow { margin-bottom: 22px; }
 body[data-concept="brand"] .br-hero--photo .br-h1 {
   max-width: 600px;
   margin-bottom: 18px;
+  /* Без переносу слів зі знаком дефіса — рядок ламається лише по пробілах */
+  overflow-wrap: normal;
+  word-break: keep-all;
+  -webkit-hyphens: none;
+  hyphens: none;
 }
 body[data-concept="brand"] .br-hero--photo .br-lead {
   max-width: 520px;
