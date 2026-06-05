@@ -164,7 +164,9 @@ body[data-concept="brand"] .br-hero-metric--main b {
   /* Mobile: картинка зверху окремим блоком, текст і кнопка — нижче */
   body[data-concept="brand"] .br-hero--photo {
     min-height: 0;
-    padding: 16px 16px 28px;
+    /* Великий padding-top, щоб картинка точно йшла НИЖЧЕ за sticky-topbar
+       (включно з його blur-ефектом). Padding надійніший за margin-top на дитині. */
+    padding: 80px 16px 28px;
     background: var(--c-bg);
     border-radius: 24px;
     display: flex;
@@ -177,8 +179,7 @@ body[data-concept="brand"] .br-hero-metric--main b {
     width: 100%;
     height: auto;
     border-radius: 16px;
-    /* Опущена нижче від sticky-topbar — щоб не зливалась з ним */
-    margin-top: 40px;
+    margin-top: 0;
     margin-bottom: 24px;
   }
   /* Кнопка CTA у випадаючому меню — повноцінна кнопка, не вузька смужка

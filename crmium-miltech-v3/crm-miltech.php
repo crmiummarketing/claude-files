@@ -1664,7 +1664,9 @@ body.page-template-crm-miltech .br-hero-metric--main b {
   /* Mobile: картинка зверху окремим блоком, текст і кнопка — нижче */
   body.page-template-crm-miltech .br-hero--photo {
     min-height: 0;
-    padding: 16px 16px 28px;
+    /* Великий padding-top, щоб картинка точно йшла НИЖЧЕ за sticky/fixed-topbar
+       (включно з його blur-ефектом). Padding надійніший за margin-top на дитині. */
+    padding: 80px 16px 28px;
     background: var(--c-bg);
     border-radius: 24px;
     display: flex;
@@ -1677,8 +1679,7 @@ body.page-template-crm-miltech .br-hero-metric--main b {
     width: 100%;
     height: auto;
     border-radius: 16px;
-    /* Опущена нижче від sticky/fixed-topbar — щоб не зливалась з ним */
-    margin-top: 40px;
+    margin-top: 0;
     margin-bottom: 24px;
   }
   body.page-template-crm-miltech .br-hero--photo .br-eyebrow { margin-bottom: 18px; }
