@@ -32,9 +32,10 @@ body[data-concept="brand"] .br-hero--photo {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Заповнює перший екран: висота viewport мінус topbar+відступи (~122px).
-     Метрики (Gold Partner) лишаються під фолдом. Cap 920px на дуже високих моніторах. */
-  min-height: clamp(460px, calc(100vh - 122px), 920px);
+  /* Великі екрани/монітори — компактний банер (метрики Gold Partner видно нижче).
+     Заповнення на весь екран — ЛИШЕ для малих екранів/ноутбуків
+     (див. @media max-height: 920px нижче). */
+  min-height: clamp(440px, 52vh, 560px);
   padding: 48px 56px;
   border: 1px solid var(--c-line);
   border-radius: 32px;
