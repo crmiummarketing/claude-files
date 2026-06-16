@@ -45,10 +45,10 @@ URL прев'ю (Pages): https://crmiummarketing.github.io/claude-files/crmium-m
 $popup_title     = 'Консультація щодо Odoo для виробництва'; // заголовок попапа
 $popup_btn_label = 'Замовити консультацію';                  // кнопка попапа
 $popup_ordertype = 'Odoo ERP Miltech';                       // → Zoho Registration_Form (мітка ліда)
-$cf7_key         = 'vnutrennyaya-stranycza-crm-ukr';         // стандартна UA-форма (ім'я/телефон/email)
+$cf7_key         = 'bez-nazvy-2';                            // ТА САМА форма, що у попапі (3 поля: Ім'я/Телефон/E-mail)
 $form_position   = 'miltech-konsultatsiya';                  // мітка місця форми у Zoho
 ```
-- **`$cf7_key`** — стандартна форма внутрішніх UA-сторінок CRMiUM. Якщо для Miltech потрібна окрема форма — створи її у Contact Form 7 і заміни slug тут.
+- **`$cf7_key = 'bez-nazvy-2'`** — це та сама форма, що відкривається у попапі «Замовити консультацію» (Ім'я / Телефон / E-mail). Якщо для Miltech потрібна окрема форма — створи її у Contact Form 7 і заміни slug тут.
 - Поле `order_type` у CF7 **lowercase** — JS теми сам мапить його в `Registration_Form` для Zoho. Не міняти на PascalCase.
 - Перевір тестовим сабмітом: у Zoho має прийти лід з `Registration_Form = Odoo ERP Miltech`.
 

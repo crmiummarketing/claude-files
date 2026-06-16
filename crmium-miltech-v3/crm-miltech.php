@@ -12,8 +12,9 @@ $popup_ordertype   = 'Odoo ERP Miltech';
 $popup_ga_event    = 'zakaz-cl';
 $popup_ga_category = 'zakaz';
 
-/* === КОНФІГ ВБУДОВАНОЇ CF7-ФОРМИ (нижній блок) === */
-$cf7_key       = 'vnutrennyaya-stranycza-crm-ukr';
+/* === КОНФІГ ВБУДОВАНОЇ CF7-ФОРМИ (нижній блок) ===
+   bez-nazvy-2 — та сама форма, що у попапі "Замовити консультацію" (3 поля: Ім'я / Телефон / E-mail). */
+$cf7_key       = 'bez-nazvy-2';
 $form_position = 'miltech-konsultatsiya';
 ?>
 
@@ -33,8 +34,7 @@ body.page-template-crm-miltech {
   --c-acc-ink:#FFFFFF; --c-acc-ink-2:rgba(255,255,255,0.82); --c-acc-ink-3:rgba(255,255,255,0.60); --c-acc-ink-tint:rgba(255,255,255,0.20);
   --font-display:'Onest',system-ui,sans-serif; --font-body:'Onest',system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
 }
-
-/* ====== RESET (scoped до .brand-page, щоб не чіпати тему/попап) ====== */
+/* ====== RESET (scoped до .brand-page) ====== */
 .brand-page, .brand-page *, .brand-page *::before, .brand-page *::after { box-sizing: border-box; }
 .brand-page * { margin: 0; padding: 0; }
 .brand-page img, .brand-page svg { display: block; max-width: 100%; }
@@ -42,15 +42,13 @@ body.page-template-crm-miltech {
 .brand-page button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
 .brand-page ul { list-style: none; }
 .brand-page :focus-visible { outline: 2px solid var(--c-acc); outline-offset: 2px; }
-
-/* ====== BODY + .brand-page (фон #0E1015, колір/шрифт ТІЛЬКИ на .brand-page) ====== */
+/* ====== BODY + .brand-page ====== */
 body.page-template-crm-miltech { background:#0E1015 !important; background-color:#0E1015 !important; background-image:none !important; overflow-x: clip; max-width:100%; min-height:100vh; }
 body.page-template-crm-miltech .brand-page {
   display:block; background:#0E1015 !important; background-color:#0E1015 !important; background-image:none !important;
   color: var(--c-ink); font-family: var(--font-body); font-feature-settings:'ss01';
   max-width:1320px; margin:0 auto; padding:100px 24px 96px; position:relative;
 }
-
 /* ====== BRAND.CSS (inline, prefix → page-template) ====== */
 /* =========================================================
    CONCEPT · CRMiUM BRAND EDITION
@@ -1515,7 +1513,7 @@ body.page-template-crm-miltech .br-section .br-tl-card:nth-of-type(5) { animatio
 body.page-template-crm-miltech .br-section .br-tl-card:nth-of-type(6) { animation-delay: .22s; }
 body.page-template-crm-miltech .br-section .br-tl-card:nth-of-type(7) { animation-delay: .26s; }
 
-/* ====== V3 OVERRIDES (inline, prefix → page-template, image → uploads) ====== */
+/* ====== V3 OVERRIDES ====== */
 /* ===========================================================
    MILTECH OVERRIDES
    Кастомні правила під специфіку лендингу: модулі-3x3,
@@ -1532,7 +1530,7 @@ body.page-template-crm-miltech .br-hero--photo {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Великі екрани/монітори — компактний банер (метрики Gold Partner видно нижче).
+  /* Великі екрани/монітори — компактний банер (метрики Silver Partner видно нижче).
      Заповнення на весь екран — ЛИШЕ для малих екранів/ноутбуків
      (див. @media max-height: 920px нижче). */
   min-height: clamp(500px, 58vh, 660px);
@@ -1664,7 +1662,7 @@ body.page-template-crm-miltech .br-hero-metric--main b {
   /* Mobile: картинка зверху окремим блоком, текст і кнопка — нижче */
   body.page-template-crm-miltech .br-hero--photo {
     min-height: 0;
-    /* Великий padding-top, щоб картинка точно йшла НИЖЧЕ за sticky/fixed-topbar
+    /* Великий padding-top, щоб картинка точно йшла НИЖЧЕ за sticky-topbar
        (включно з його blur-ефектом). Padding надійніший за margin-top на дитині. */
     padding: 80px 16px 28px;
     background: var(--c-bg);
@@ -1682,13 +1680,8 @@ body.page-template-crm-miltech .br-hero-metric--main b {
     margin-top: 0;
     margin-bottom: 24px;
   }
-  body.page-template-crm-miltech .br-hero--photo .br-eyebrow { margin-bottom: 18px; }
-  body.page-template-crm-miltech .br-hero--photo .br-h1,
-  body.page-template-crm-miltech .br-hero--photo .br-lead { max-width: 100%; }
-  body.page-template-crm-miltech .br-hero-cta { width: 100%; }
-  body.page-template-crm-miltech .br-hero-cta .br-cta-primary { width: 100%; justify-content: center; }
-  body.page-template-crm-miltech .br-hero-metrics { grid-template-columns: 1fr 1fr; gap: 16px 18px; }
-  /* Кнопка CTA у випадаючому меню — повноцінна кнопка (для <button> у PHP) */
+  /* Кнопка CTA у випадаючому меню — повноцінна кнопка, не вузька смужка
+     (працює і для <a>, і для <button> у PHP) */
   body.page-template-crm-miltech .br-mnav-cta {
     display: block !important;
     width: 100% !important;
@@ -1707,6 +1700,12 @@ body.page-template-crm-miltech .br-hero-metric--main b {
     box-sizing: border-box !important;
   }
   body.page-template-crm-miltech .br-mnav-cta:hover { background: var(--c-acc-hover) !important; }
+  body.page-template-crm-miltech .br-hero--photo .br-eyebrow { margin-bottom: 18px; }
+  body.page-template-crm-miltech .br-hero--photo .br-h1,
+  body.page-template-crm-miltech .br-hero--photo .br-lead { max-width: 100%; }
+  body.page-template-crm-miltech .br-hero-cta { width: 100%; }
+  body.page-template-crm-miltech .br-hero-cta .br-cta-primary { width: 100%; justify-content: center; }
+  body.page-template-crm-miltech .br-hero-metrics { grid-template-columns: 1fr 1fr; gap: 16px 18px; }
 }
 
 /* Trust-strip між hero і pains — компактна плитка бейджів */
@@ -2302,7 +2301,7 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
   <!-- Метрики — тонка смужка під hero -->
   <div class="br-hero-metrics">
     <div class="br-hero-metric br-hero-metric--main">
-      <b>Gold Partner Odoo</b>
+      <b>Silver Partner Odoo</b>
       <small>офіційний партнер в Україні</small>
     </div>
     <div class="br-hero-metric">
@@ -2323,9 +2322,11 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
   <div class="br-trust-strip">
     <span class="br-trust-strip-label">З ЧИМ ПРАЦЮЄ</span>
     <span class="br-badge">Хмара або власний сервер</span>
-    <span class="br-badge">Українська бухгалтерія</span>
-    <span class="br-badge">M.E.Doc / Вчасно</span>
     <span class="br-badge">ДОТ · Prozorro · Brave1</span>
+    <span class="br-badge">M.E.Doc / Вчасно</span>
+    <span class="br-badge">Корпоративний вхід (SSO)</span>
+    <span class="br-badge">CAD / інженерні програми</span>
+    <span class="br-badge">Перенесення з 1С</span>
   </div>
 
   <!-- 01 / БОЛІ ОПК -->
@@ -2691,65 +2692,10 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
     </div>
   </section>
 
-  <!-- 05 / ІНТЕГРАЦІЇ -->
-  <section class="br-section" id="br-integrations">
-    <div class="br-section-head">
-      <div class="br-num">05 / ІНТЕГРАЦІЇ</div>
-      <h2 class="br-h2">Працює разом із сервісами,<br>якими ви <em>вже користуєтесь</em></h2>
-      <p class="br-section-sub">
-        Готові з'єднання з державними майданчиками закупівель, українськими сервісами
-        документів та інженерними програмами. Дані ходять автоматично, без подвійного введення.
-      </p>
-    </div>
-
-    <div class="br-flex-grid">
-      <div class="br-flex-card">
-        <div class="br-flex-icon">◈</div>
-        <h3>Prozorro</h3>
-        <p>Тендери самі підтягуються в систему, контроль строків, договори під рукою.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">◆</div>
-        <h3>ДОТ</h3>
-        <p>Обмін даними з Агенцією оборонних закупівель: номенклатура, статуси, акти.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">⬡</div>
-        <h3>Brave1 Market</h3>
-        <p>Каталог зразків і кодифікація озброєння за стандартами НАТО.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">●</div>
-        <h3>DELTA / єБали</h3>
-        <p>Обмін даними про застосування зразків на фронті.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">⧉</div>
-        <h3>M.E.Doc / «Вчасно»</h3>
-        <p>Податкові накладні та електронний документообіг з контрагентами.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">⇄</div>
-        <h3>Перенесення з 1С</h3>
-        <p>Переносимо товари, залишки, контрагентів і відкриті документи зі старої системи.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">⊞</div>
-        <h3>Корпоративний вхід</h3>
-        <p>Єдиний логін через робочий акаунт (Google, Microsoft) для всіх співробітників.</p>
-      </div>
-      <div class="br-flex-card">
-        <div class="br-flex-icon">▣</div>
-        <h3>Інженерні програми</h3>
-        <p>SolidWorks, Altium, KiCad — специфікації виробів синхронізуються автоматично.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- 06 / ROADMAP -->
   <section class="br-section" id="br-roadmap">
     <div class="br-section-head">
-      <div class="br-num">06 / ЕТАПИ</div>
+      <div class="br-num">05 / ЕТАПИ</div>
       <h2 class="br-h2">Від першої зустрічі до запуску — <em>4-9 місяців</em></h2>
       <p class="br-section-sub">
         Прозорий план з чіткими етапами і зрозумілим обсягом робіт на кожному кроці.
@@ -2843,7 +2789,7 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
   <!-- 07 / КОМУ ПІДХОДИТЬ -->
   <section class="br-section" id="br-who">
     <div class="br-section-head">
-      <div class="br-num">07 / КОМУ ПІДХОДИТЬ</div>
+      <div class="br-num">06 / КОМУ ПІДХОДИТЬ</div>
       <h2 class="br-h2">Кому Odoo дає <em>найбільше користі</em></h2>
       <p class="br-section-sub">
         Незалежно від того, що саме ви виробляєте для оборони — Odoo налаштовується
@@ -2885,86 +2831,10 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
     </div>
   </section>
 
-  <!-- 08 / КЕЙСИ -->
-  <section class="br-section" id="br-cases">
-    <div class="br-section-head">
-      <div class="br-num">08 / НАШ ДОСВІД</div>
-      <h2 class="br-h2">Що ми допомагаємо <em>налагодити</em></h2>
-      <p class="br-section-sub">
-        Понад 10 років впроваджуємо Odoo у виробничих і торгових компаніях.
-        Ось типові задачі, які закриваємо для виробників:
-      </p>
-    </div>
-
-    <div class="br-cases-grid">
-      <article class="br-case-card">
-        <div class="br-case-tag">ЗРОСТАННЯ ОБСЯГІВ</div>
-        <h3 class="br-case-h">Виробництво, що <em>не тоне в хаосі</em></h3>
-        <p class="br-case-p">
-          Налаштовуємо планування й облік так, щоб компанія витримувала зростання
-          замовлень — без ручних таблиць і втрати контролю.
-        </p>
-      </article>
-
-      <article class="br-case-card">
-        <div class="br-case-tag">ПЕРЕХІД З 1С / EXCEL</div>
-        <h3 class="br-case-h">Порядок у даних і <em>швидке закриття місяця</em></h3>
-        <p class="br-case-p">
-          Переносимо дані зі старих систем і налаштовуємо облік за українськими
-          правилами — без зупинки роботи компанії.
-        </p>
-      </article>
-
-      <article class="br-case-card">
-        <div class="br-case-tag">КОНТРОЛЬ ЯКОСТІ</div>
-        <h3 class="br-case-h">Прозора історія <em>по кожній партії</em></h3>
-        <p class="br-case-p">
-          Вибудовуємо перевірки якості на кожному етапі — від компонента до готового
-          виробу. Видно, з чого зібрано кожну партію і хто її робив.
-        </p>
-      </article>
-
-      <article class="br-case-card">
-        <div class="br-case-tag">КІЛЬКА КОМПАНІЙ</div>
-        <h3 class="br-case-h">Облік для <em>українського та експортного</em> напрямів</h3>
-        <p class="br-case-p">
-          Налаштовуємо роботу кількох юросіб (українська + європейська), кілька валют
-          і зведену звітність для держзамовлень та експорту.
-        </p>
-      </article>
-    </div>
-
-    <div class="br-nda-strip">
-      <div class="br-nda-icon" aria-hidden="true">NDA</div>
-      <div>
-        <b>Маємо досвід впроваджень у виробничих компаніях, зокрема в оборонній сфері.</b>
-      </div>
-    </div>
-
-    <div class="br-case-counters">
-      <div class="br-case-counter">
-        <b data-counter>10<span>+</span></b>
-        <small>Років досвіду</small>
-      </div>
-      <div class="br-case-counter">
-        <b data-counter>500<span>+</span></b>
-        <small>Проєктів</small>
-      </div>
-      <div class="br-case-counter">
-        <b data-counter>80<span>+</span></b>
-        <small>Спеціалістів</small>
-      </div>
-      <div class="br-case-counter">
-        <b data-counter>36</b>
-        <small>Країн</small>
-      </div>
-    </div>
-  </section>
-
   <!-- 09 / FAQ -->
   <section class="br-section" id="br-faq">
     <div class="br-section-head">
-      <div class="br-num">09 / ПИТАННЯ І ВІДПОВІДІ</div>
+      <div class="br-num">07 / ПИТАННЯ І ВІДПОВІДІ</div>
       <h2 class="br-h2">Що найчастіше запитують<br><em>керівники й власники</em> виробництв</h2>
     </div>
 
@@ -3038,7 +2908,7 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
   <!-- 10 / РЕЄСТРАЦІЯ -->
   <section class="br-section" id="br-register">
     <div class="br-section-head">
-      <div class="br-num">10 / КОНСУЛЬТАЦІЯ</div>
+      <div class="br-num">08 / КОНСУЛЬТАЦІЯ</div>
     </div>
 
     <div class="br-final-grid">
@@ -3066,9 +2936,8 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
       <div class="br-form-wrap" data-ordertype="<?php echo esc_attr($popup_ordertype); ?>">
         <div class="br-form-eyebrow">ЗАЛИШТЕ ЗАЯВКУ</div>
         <?php
-          /* CF7: використовуємо існуючу форму сайту; через preg_replace
-             перезаписуємо hidden order_type / form_position.
-             order_type (lowercase) → JS теми мапить у Registration_Form для Zoho. */
+          /* CF7: та сама форма, що у попапі (bez-nazvy-2) — 3 поля: Ім'я / Телефон / E-mail.
+             order_type (lowercase) перезаписуємо → JS теми мапить у Registration_Form для Zoho. */
           $form_html = do_shortcode('[cf7form cf7key="' . esc_attr($cf7_key) . '"]');
           $form_html = preg_replace('/<input[^>]+name="(order_type|form_position)"[^>]*>/i', '', $form_html);
           $injected_inputs =
@@ -3077,7 +2946,6 @@ body.page-template-crm-miltech .br-speaker { transform-style: flat; }
           $form_html = preg_replace('/(<form[^>]*>)/i', '${1}' . $injected_inputs, $form_html, 1);
           echo $form_html;
         ?>
-        <p style="font-size:12px;color:var(--c-ink-3);line-height:1.5;margin-top:4px;">Менше хвилини. Дані передаємо лише нашій команді (Zoho CRM, юрисдикція ЄС).</p>
       </div>
     </div>
   </section>
@@ -3383,7 +3251,9 @@ body.page-template-crm-miltech .topBar,
 body.page-template-crm-miltech .breadcrumbs,
 body.page-template-crm-miltech .breadcrumb { display: none !important; }
 
-/* Reset тематичних обгорток */
+/* Reset тематичних обгорток.
+   ВАЖЛИВО: .container-fluid скидаємо лише ПОЗА футером — футер сайту
+   використовує .siteWidth.container-fluid, тож :not(.siteWidth) береже його від "розлізання". */
 html, body.page-template-crm-miltech { margin-top:0 !important; padding-top:0 !important; margin-bottom:0 !important; }
 body.page-template-crm-miltech .site,
 body.page-template-crm-miltech .site-content,
@@ -3391,7 +3261,7 @@ body.page-template-crm-miltech #content,
 body.page-template-crm-miltech #page,
 body.page-template-crm-miltech #primary,
 body.page-template-crm-miltech .content-wrap,
-body.page-template-crm-miltech .container-fluid,
+body.page-template-crm-miltech .container-fluid:not(.siteWidth),
 body.page-template-crm-miltech > .wrapper,
 body.page-template-crm-miltech > main {
   margin:0 !important; padding:0 !important; max-width:none !important;
@@ -3461,6 +3331,8 @@ body.page-template-crm-miltech .br-form-wrap .btnWrap { display:block !important
 .brand-page .br-form-wrap .wpcf7-not-valid-tip { color:var(--c-acc) !important; font-size:12px; margin-top:4px; font-family:var(--font-mono); letter-spacing:0.04em; }
 .brand-page .br-form-wrap .wpcf7-response-output { margin:14px 0 0 !important; padding:12px 16px !important; border-radius:10px !important; background:var(--c-tint-soft) !important; border:1px solid var(--c-line) !important; color:var(--c-ink) !important; font-size:14px; }
 .brand-page .br-form-wrap input[type="hidden"] { display:none !important; }
+/* CF7-honeypot (surname) ховаємо */
+.brand-page .br-form-wrap .surname-wrap { display:none !important; }
 </style>
 
 <?php get_footer(); ?>
