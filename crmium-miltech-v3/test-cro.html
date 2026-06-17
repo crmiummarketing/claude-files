@@ -858,49 +858,82 @@ body[data-concept="brand"] .br-quote-ph .br-quote-text { color: var(--c-ink-2); 
   body[data-concept="brand"] .br-quotes-grid { grid-template-columns: 1fr; }
 }
 
-/* КОМПАКТНІ ЕТАПИ — горизонтальна стрічка, 1 рядок на крок */
-body[data-concept="brand"] .br-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  counter-reset: step;
-}
-body[data-concept="brand"] .br-step {
-  background: var(--c-card);
-  border: 1px solid var(--c-line);
-  border-radius: 18px;
-  padding: 24px 24px 22px;
+/* ЕТАПИ — горизонтальний таймлайн із чергуванням карток зверху/знизу */
+body[data-concept="brand"] .br-htl {
   position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin-top: 8px;
+}
+/* горизонтальна лінія через центр (рівень кружечків) */
+body[data-concept="brand"] .br-htl::before {
+  content: '';
+  position: absolute;
+  left: 7%; right: 7%; top: 50%;
+  height: 2px; transform: translateY(-1px);
+  background: linear-gradient(90deg, transparent 0%, var(--c-acc-mid) 7%, var(--c-acc-mid) 93%, transparent 100%);
+  z-index: 0;
+}
+body[data-concept="brand"] .br-htl-col {
+  position: relative;
+  min-height: 340px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 0 10px;
+}
+body[data-concept="brand"] .br-htl-node {
+  position: relative; z-index: 2;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--c-bg); border: 2px solid var(--c-acc);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--c-acc);
+  flex: 0 0 auto;
+  transition: background .25s, transform .25s;
+}
+body[data-concept="brand"] .br-htl-col:hover .br-htl-node { background: var(--c-acc); color: var(--c-acc-ink); transform: scale(1.08); }
+body[data-concept="brand"] .br-htl-card {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 14px); max-width: 210px;
+  background: var(--c-card); border: 1px solid var(--c-line); border-radius: 16px;
+  padding: 16px 18px; text-align: center;
   transition: border-color .3s, transform .3s;
 }
-body[data-concept="brand"] .br-step:hover { border-color: var(--c-acc-mid); transform: translateY(-3px); }
-body[data-concept="brand"] .br-step-n {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 30px;
-  line-height: 1;
-  color: var(--c-acc);
-  letter-spacing: -0.03em;
+body[data-concept="brand"] .br-htl-col:hover .br-htl-card { border-color: var(--c-acc-mid); }
+/* вертикальний конектор від кружечка до картки */
+body[data-concept="brand"] .br-htl-card::after {
+  content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 22px; background: var(--c-acc-mid);
 }
-body[data-concept="brand"] .br-step-dur {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-ink-3);
-  margin: 10px 0 6px;
+/* непарні (1,3,5) — картка ЗВЕРХУ; парні (2,4,6) — ЗНИЗУ */
+body[data-concept="brand"] .br-htl-col:nth-child(odd) .br-htl-card { bottom: calc(50% + 35px); }
+body[data-concept="brand"] .br-htl-col:nth-child(odd) .br-htl-card::after { bottom: -22px; }
+body[data-concept="brand"] .br-htl-col:nth-child(even) .br-htl-card { top: calc(50% + 35px); }
+body[data-concept="brand"] .br-htl-col:nth-child(even) .br-htl-card::after { top: -22px; }
+body[data-concept="brand"] .br-htl-h {
+  font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1.2;
+  letter-spacing: -0.01em; color: var(--c-ink); margin-bottom: 6px;
 }
-body[data-concept="brand"] .br-step-h {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 17px;
-  letter-spacing: -0.01em;
-  color: var(--c-ink);
-  margin-bottom: 6px;
+body[data-concept="brand"] .br-htl-p { font-size: 12.5px; line-height: 1.45; color: var(--c-ink-2); }
+
+/* Планшет/мобільний — вертикальний таймлайн (лінія зліва, картки справа) */
+@media (max-width: 1000px) {
+  body[data-concept="brand"] .br-htl { grid-template-columns: 1fr; margin-top: 4px; padding-left: 4px; }
+  body[data-concept="brand"] .br-htl::before {
+    left: 25px; right: auto; top: 6px; bottom: 6px; width: 2px; height: auto; transform: none;
+    background: linear-gradient(180deg, transparent 0%, var(--c-acc-mid) 4%, var(--c-acc-mid) 96%, transparent 100%);
+  }
+  body[data-concept="brand"] .br-htl-col {
+    min-height: 0; flex-direction: row; align-items: flex-start; justify-content: flex-start;
+    gap: 18px; padding: 0 0 20px 0;
+  }
+  body[data-concept="brand"] .br-htl-node { width: 50px; height: 50px; font-size: 19px; }
+  body[data-concept="brand"] .br-htl-card,
+  body[data-concept="brand"] .br-htl-col:nth-child(odd) .br-htl-card,
+  body[data-concept="brand"] .br-htl-col:nth-child(even) .br-htl-card {
+    position: static; transform: none; width: auto; max-width: none; flex: 1 1 auto; text-align: left;
+    top: auto; bottom: auto; margin-top: 2px;
+  }
+  body[data-concept="brand"] .br-htl-card::after { display: none; }
 }
-body[data-concept="brand"] .br-step-p { font-size: 14px; line-height: 1.5; color: var(--c-ink-2); }
-@media (max-width: 1100px) { body[data-concept="brand"] .br-steps { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 620px) { body[data-concept="brand"] .br-steps { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body data-concept="brand" data-palette="A">
@@ -1354,49 +1387,55 @@ body[data-concept="brand"] .br-step-p { font-size: 14px; line-height: 1.5; color
   <section class="br-section" id="br-roadmap">
     <div class="br-section-head">
       <div class="br-num">05 / ЕТАПИ</div>
-      <h2 class="br-h2">Від першої зустрічі до запуску — <em>4-9 місяців</em></h2>
+      <h2 class="br-h2">Від першої зустрічі до запуску — <em>1-12 місяців</em></h2>
       <p class="br-section-sub">
-        Прозорий план з чіткими етапами і зрозумілим обсягом робіт на кожному кроці.
-        Без сюрпризів і без безкінечних бюджетів.
+        Точний строк залежить від розміру проєкту. Але план завжди прозорий —
+        з чіткими етапами і зрозумілим обсягом робіт на кожному.
       </p>
     </div>
 
-    <div class="br-steps">
-      <div class="br-step">
-        <div class="br-step-n">01</div>
-        <div class="br-step-dur">2-3 тижні</div>
-        <h3 class="br-step-h">Знайомство з процесами</h3>
-        <p class="br-step-p">Вивчаємо ваше виробництво, знаходимо вузькі місця, фіксуємо обсяг і вартість. Підписуємо NDA.</p>
+    <div class="br-htl">
+      <div class="br-htl-col">
+        <div class="br-htl-card">
+          <h3 class="br-htl-h">Знайомство з процесами</h3>
+          <p class="br-htl-p">Вивчаємо виробництво, знаходимо вузькі місця, NDA</p>
+        </div>
+        <div class="br-htl-node">1</div>
       </div>
-      <div class="br-step">
-        <div class="br-step-n">02</div>
-        <div class="br-step-dur">2-4 тижні</div>
-        <h3 class="br-step-h">План і сервер</h3>
-        <p class="br-step-p">Проєктуємо рішення: де розгортати, хто має доступ, резервні копії, інтеграції з ДОТ/Prozorro.</p>
+      <div class="br-htl-col">
+        <div class="br-htl-card">
+          <h3 class="br-htl-h">План і сервер</h3>
+          <p class="br-htl-p">Проєктуємо рішення, доступи, інтеграції</p>
+        </div>
+        <div class="br-htl-node">2</div>
       </div>
-      <div class="br-step">
-        <div class="br-step-n">03</div>
-        <div class="br-step-dur">4-8 тижнів</div>
-        <h3 class="br-step-h">Налаштування системи</h3>
-        <p class="br-step-p">Запускаємо основні модулі й українську локалізацію (бухгалтерія, кадри, бронювання).</p>
+      <div class="br-htl-col">
+        <div class="br-htl-card">
+          <h3 class="br-htl-h">Налаштування системи</h3>
+          <p class="br-htl-p">Основні модулі + українська локалізація</p>
+        </div>
+        <div class="br-htl-node">3</div>
       </div>
-      <div class="br-step">
-        <div class="br-step-n">04</div>
-        <div class="br-step-dur">4-12 тижнів</div>
-        <h3 class="br-step-h">Доопрацювання під вас</h3>
-        <p class="br-step-p">Налаштовуємо під оборонку: контроль матеріалів (ДСЕКУ), тендери, версії документації.</p>
+      <div class="br-htl-col">
+        <div class="br-htl-card">
+          <h3 class="br-htl-h">Доопрацювання під вас</h3>
+          <p class="br-htl-p">Оборонна специфіка: ДСЕКУ, ДОТ, документація</p>
+        </div>
+        <div class="br-htl-node">4</div>
       </div>
-      <div class="br-step">
-        <div class="br-step-n">05</div>
-        <div class="br-step-dur">3-6 тижнів</div>
-        <h3 class="br-step-h">Перенесення і навчання</h3>
-        <p class="br-step-p">Переносимо дані з 1С/Excel, місяць-два працюємо паралельно, навчаємо команду.</p>
+      <div class="br-htl-col">
+        <div class="br-htl-card">
+          <h3 class="br-htl-h">Перенесення і навчання</h3>
+          <p class="br-htl-p">Переходимо з 1С/Excel, навчаємо команду</p>
+        </div>
+        <div class="br-htl-node">5</div>
       </div>
-      <div class="br-step">
-        <div class="br-step-n">06</div>
-        <div class="br-step-dur">постійно</div>
-        <h3 class="br-step-h">Запуск і підтримка</h3>
-        <p class="br-step-p">Посилена підтримка після старту, регулярні оновлення, перевірка безпеки і прав доступу.</p>
+      <div class="br-htl-col">
+        <div class="br-htl-card">
+          <h3 class="br-htl-h">Запуск і підтримка</h3>
+          <p class="br-htl-p">Старт, оновлення, перевірка безпеки</p>
+        </div>
+        <div class="br-htl-node">6</div>
       </div>
     </div>
   </section>
