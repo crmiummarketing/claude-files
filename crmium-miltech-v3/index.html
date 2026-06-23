@@ -721,6 +721,12 @@ body[data-concept="brand"] .br-final-bullets li::before {
 /* Force-no-tilt: спікер-картки не маркуємо data-tilt, але про всяк випадок
    приберемо preserve-3d, бо в нас немає людських фото */
 body[data-concept="brand"] .br-speaker { transform-style: flat; }
+
+/* Більші відступи між блоками (за фідбеком) */
+body[data-concept="brand"] .br-section { padding-top: 120px; }
+@media (max-width: 760px) {
+  body[data-concept="brand"] .br-section { padding-top: 88px; }
+}
 </style>
 </head>
 <body data-concept="brand" data-palette="A">
