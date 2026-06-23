@@ -438,7 +438,7 @@ body.page-template-crm-miltech .br-trust-l {
 /* ===========================================================
    SECTION HEAD (shared)
    =========================================================== */
-body.page-template-crm-miltech .br-section { padding: 120px 0 0; }
+body.page-template-crm-miltech .br-section { padding: 150px 0 0; }
 body.page-template-crm-miltech .br-section-head {
   margin-bottom: 44px;
   max-width: 920px;
@@ -1230,7 +1230,7 @@ body.page-template-crm-miltech .br-foot b { color: var(--c-ink); font-weight: 60
 
 @media (max-width: 760px) {
   body.page-template-crm-miltech .brand-page { padding: 16px 16px 64px; }
-  body.page-template-crm-miltech .br-section { padding-top: 88px; }
+  body.page-template-crm-miltech .br-section { padding-top: 104px; }
 
   /* Topbar — show burger, hide CTA + nav */
   body.page-template-crm-miltech .br-topbar {
