@@ -1,0 +1,608 @@
+<style>
+  :root{
+    --accent:#EF652F; --accent-ink:#fff; --accent-soft:rgba(239,101,47,.10); --accent-mid:rgba(239,101,47,.30);
+    --bg:#d5d7dc;                /* фон (найтемніший сірий) */
+    --letter:#edeef1;           /* лист (світліший за фон) */
+    --field:#ffffff;            /* поле (біле) */
+    --field-line:#d8dade; --letter-line:#cfd1d6;
+    --field-shadow:0 1px 2px rgba(20,22,28,.06),0 5px 16px rgba(20,22,28,.08);
+    --letter-shadow:0 2px 8px rgba(20,22,28,.06),0 14px 40px rgba(20,22,28,.10);
+    --ink:#1b1d22; --ink-2:#565b64; --ink-3:#868b95;
+    --line:#c3c5cb; --link:#2563EB; --tg:#2AABEE; --ok:#1f9d55;
+    --radius:14px; --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#0a0c10; --letter:#151820; --field:#20242d; --field-line:#30343e; --letter-line:#242832;
+      --field-shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.4); --letter-shadow:0 2px 10px rgba(0,0,0,.4),0 18px 46px rgba(0,0,0,.5);
+      --ink:#f2f3f5; --ink-2:#a6acb6; --ink-3:#6f7480; --line:#2c313b; --link:#7aa7ff; }
+  }
+  :root[data-theme="light"]{ --bg:#d5d7dc; --letter:#edeef1; --field:#fff; --field-line:#d8dade; --letter-line:#cfd1d6;
+    --field-shadow:0 1px 2px rgba(20,22,28,.06),0 5px 16px rgba(20,22,28,.08); --letter-shadow:0 2px 8px rgba(20,22,28,.06),0 14px 40px rgba(20,22,28,.10);
+    --ink:#1b1d22; --ink-2:#565b64; --ink-3:#868b95; --line:#c3c5cb; --link:#2563EB; }
+  :root[data-theme="dark"]{ --bg:#0a0c10; --letter:#151820; --field:#20242d; --field-line:#30343e; --letter-line:#242832;
+    --field-shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.4); --letter-shadow:0 2px 10px rgba(0,0,0,.4),0 18px 46px rgba(0,0,0,.5);
+    --ink:#f2f3f5; --ink-2:#a6acb6; --ink-3:#6f7480; --line:#2c313b; --link:#7aa7ff; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .shell{max-width:1180px;margin:0 auto;padding:0 20px;}
+  header.top{padding:34px 0 18px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 9px;}
+  h1{font-size:clamp(21px,3vw,28px);letter-spacing:-.02em;margin:0 0 8px;text-wrap:balance;}
+  .sub{color:var(--ink-2);font-size:14.5px;margin:0 0 14px;max-width:72ch;}
+  .legend{display:flex;flex-wrap:wrap;gap:7px 15px;font-size:12.5px;color:var(--ink-3);}
+  .legend b{color:var(--ink-2);font-weight:600;}
+  .legend code{font-family:var(--mono);font-size:11.5px;background:var(--field);border:1px solid var(--field-line);padding:1px 6px;border-radius:6px;color:var(--ink-2);}
+
+  .grid{display:grid;grid-template-columns:250px 1fr;gap:26px;align-items:start;padding-bottom:80px;}
+  aside{position:sticky;top:16px;background:var(--field);border:1px solid var(--field-line);border-radius:var(--radius);box-shadow:var(--field-shadow);padding:14px;max-height:calc(100vh - 32px);overflow:auto;}
+  .tabset{display:flex;gap:6px;margin-bottom:14px;}
+  .tab{flex:1;padding:9px 10px;border-radius:10px;border:1px solid var(--field-line);background:transparent;color:var(--ink-2);font-weight:600;font-size:13px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .tab:hover{border-color:var(--accent-mid);color:var(--ink);}
+  .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .tab .cnt{font-family:var(--mono);font-size:11px;opacity:.85;}
+  .navlist{display:flex;flex-direction:column;gap:2px;}
+  .navlist a{display:flex;gap:9px;align-items:baseline;padding:8px 9px;border-radius:8px;color:var(--ink-2);font-size:13px;text-decoration:none;transition:.13s;border-left:2px solid transparent;}
+  .navlist a:hover{background:var(--bg);color:var(--ink);}
+  .navlist a.active{background:var(--accent-soft);color:var(--ink);border-left-color:var(--accent);font-weight:600;}
+  .navlist a .k{font-family:var(--mono);font-size:11px;color:var(--accent);flex:0 0 auto;}
+  .navlist a .t{min-width:0;}
+  main{min-width:0;}
+
+  /* лист = картка на фоні (світліша за фон) */
+  .letter{background:var(--letter);border:1px solid var(--letter-line);border-radius:20px;box-shadow:var(--letter-shadow);
+    padding:22px 22px 8px;scroll-margin-top:16px;}
+  .msg-head{display:flex;align-items:flex-start;gap:12px;margin:0 2px 14px;}
+  .num{flex:0 0 auto;width:36px;height:36px;border-radius:10px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(239,101,47,.35);}
+  .msg-head h3{margin:0 0 2px;font-size:17px;letter-spacing:-.01em;}
+  .msg-head .trig{font-size:12.5px;color:var(--ink-3);}
+  .msg-head .trig code{font-family:var(--mono);font-size:11.5px;background:var(--field);border:1px solid var(--field-line);padding:1px 6px;border-radius:6px;color:var(--ink-2);}
+  .note{display:flex;gap:8px;align-items:flex-start;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:10px;padding:9px 12px;margin:0 0 12px;font-size:12.5px;color:var(--ink);}
+
+  /* виразний роздільник між листами */
+  .divider{display:flex;align-items:center;gap:0;margin:34px 8px;}
+  .divider::before,.divider::after{content:"";height:2px;flex:1;background:var(--line);border-radius:2px;}
+  .divider .d{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:0 16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);}
+  .divider .dot{width:9px;height:9px;transform:rotate(45deg);background:var(--accent);border-radius:2px;box-shadow:0 0 0 5px var(--accent-soft);}
+
+  /* поле */
+  .field{position:relative;background:var(--field);border:1px solid var(--field-line);border-radius:var(--radius);box-shadow:var(--field-shadow);padding:15px 54px 15px 17px;margin-bottom:12px;transition:border-color .15s;}
+  .field:hover{border-color:var(--accent-mid);}
+  .flabel{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+  .flabel .badge{background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:1px 7px;font-weight:600;}
+  .subject-val{font-weight:600;font-size:14.5px;color:var(--ink);}
+  .content{font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;color:var(--ink);}
+  .content a{color:var(--link);}
+  .content b{color:var(--ink);font-weight:700;}
+  .field.tg .content{font-family:var(--sans);}
+  .field.tg{border-left:3px solid var(--tg);}
+  .field.img{border-style:dashed;background:transparent;box-shadow:none;}
+  .imgrow{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2);}
+  .imgrow code{font-family:var(--mono);font-size:12px;color:var(--accent);}
+
+  .btnface{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:700;font-size:13.5px;padding:10px 18px;border-radius:10px;}
+  .meta{margin-top:11px;display:flex;flex-direction:column;gap:7px;}
+  .mrow{display:flex;align-items:center;gap:9px;font-size:12.5px;}
+  .mrow .mk{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);flex:0 0 58px;}
+  .mrow .mv{font-family:var(--mono);font-size:12px;color:var(--ink-2);word-break:break-all;flex:1;}
+  .mrow .mv.action{color:var(--accent);}
+  .swatch{width:14px;height:14px;border-radius:4px;background:var(--accent);border:1px solid rgba(0,0,0,.15);flex:0 0 auto;}
+
+  .copy{position:absolute;top:11px;right:11px;width:30px;height:30px;border-radius:8px;border:1px solid var(--field-line);background:var(--letter);color:var(--ink-2);display:grid;place-items:center;cursor:pointer;transition:.14s;}
+  .copy:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+  .copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .copy svg{width:15px;height:15px;pointer-events:none;}
+  .copy.done{border-color:var(--ok);color:var(--ok);}
+  .cbi{width:24px;height:24px;border-radius:6px;border:1px solid var(--field-line);background:var(--letter);color:var(--ink-3);display:grid;place-items:center;cursor:pointer;transition:.14s;flex:0 0 auto;}
+  .cbi:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+  .cbi:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .cbi svg{width:12px;height:12px;pointer-events:none;}
+  .cbi.done{border-color:var(--ok);color:var(--ok);}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;background:var(--ink);color:var(--bg);font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px;box-shadow:var(--field-shadow);pointer-events:none;transition:.2s;z-index:99;}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+  /* ресурси */
+  .res{background:var(--field);border:1px solid var(--field-line);border-radius:var(--radius);box-shadow:var(--field-shadow);margin-bottom:24px;overflow:hidden;}
+  .res>summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:600;font-size:14px;display:flex;align-items:center;gap:9px;color:var(--ink);}
+  .res>summary::-webkit-details-marker{display:none;}
+  .res>summary .chev{margin-left:auto;color:var(--ink-3);transition:.2s;}
+  .res[open]>summary .chev{transform:rotate(90deg);}
+  .res .rbody{padding:2px 18px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;border-top:1px solid var(--field-line);}
+  .rgroup h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:14px 0 9px;}
+  .rgroup ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+  .rgroup li{font-size:12.5px;line-height:1.4;color:var(--ink-2);}
+  .rgroup li .l{color:var(--ink-3);display:block;margin-bottom:1px;}
+  .rgroup a{color:var(--link);word-break:break-all;}
+  .rgroup code{font-family:var(--mono);font-size:11px;color:var(--ink-2);word-break:break-all;}
+  .rgroup .todo{color:var(--ink-3);font-style:italic;}
+  /* верхнє меню + вкладка інформації */
+  .maintabs{display:flex;gap:6px;margin:4px 0 26px;border-bottom:1px solid var(--line);}
+  .mtab{padding:12px 22px;border:none;border-bottom:2px solid transparent;background:none;color:var(--ink-2);font-weight:600;font-size:15px;cursor:pointer;transition:.15s;margin-bottom:-1px;}
+  .mtab:hover{color:var(--ink);}
+  .mtab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);}
+  .mtab:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  [hidden]{display:none !important;}
+  .info{display:flex;flex-direction:column;gap:20px;padding-bottom:80px;max-width:960px;}
+  .info-sec{background:var(--field);border:1px solid var(--field-line);border-radius:var(--radius);box-shadow:var(--field-shadow);padding:22px 24px;}
+  .info-sec h3{margin:0 0 3px;font-size:16.5px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;}
+  .info-sec .desc{color:var(--ink-3);font-size:12.5px;margin:0 0 14px;}
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 30px;}
+  .irow{padding:10px 0;border-top:1px solid var(--field-line);}
+  .irow:first-child{border-top:none;}
+  .irow .k{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px;}
+  .irow .v{font-size:13.5px;color:var(--ink);word-break:break-word;line-height:1.45;}
+  .irow .v a{color:var(--link);word-break:break-all;}
+  .irow .v code{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);word-break:break-all;}
+  .irow .v .todo{color:var(--ink-3);font-style:italic;}
+  /* чеклист / статус */
+  .check{display:flex;flex-direction:column;gap:20px;padding-bottom:80px;max-width:960px;}
+  .cksec{background:var(--field);border:1px solid var(--field-line);border-radius:var(--radius);box-shadow:var(--field-shadow);padding:22px 24px;}
+  .cksec.you{border-left:3px solid var(--accent);}
+  .cksec.claude{border-left:3px solid var(--tg);}
+  .cksec h3{margin:0 0 12px;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;}
+  .ckprog{margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-3);background:var(--bg);border:1px solid var(--field-line);border-radius:999px;padding:2px 10px;}
+  .cklist{display:flex;flex-direction:column;}
+  .ck{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--field-line);}
+  .ck:first-child{border-top:none;}
+  .ckbox{flex:0 0 auto;width:21px;height:21px;border-radius:6px;border:1.5px solid var(--field-line);background:var(--field);display:grid;place-items:center;cursor:pointer;margin-top:1px;transition:.15s;color:transparent;font-size:12px;font-weight:800;user-select:none;}
+  .ckbox:hover{border-color:var(--accent);}
+  .ckbox:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .ck.done .ckbox{background:var(--ok);border-color:var(--ok);color:#fff;}
+  .ck .cbody{flex:1;min-width:0;}
+  .ck .t{font-size:14px;color:var(--ink);line-height:1.4;}
+  .ck.done .t{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--ink-3);}
+  .ck .m{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.4;}
+  .ck .m a{color:var(--link);word-break:break-all;}
+  .ck .m code{font-family:var(--mono);font-size:11px;color:var(--ink-2);}
+  @media (max-width:820px){ .grid{grid-template-columns:1fr;} aside{position:static;max-height:none;order:-1;} .navlist{display:grid;grid-template-columns:1fr 1fr;gap:4px;} }
+</style>
+
+<div class="shell">
+  <header class="top">
+    <p class="eyebrow">CRMiUM · тексти комунікацій</p>
+    <h1>Керована дистрибуція 2026 — повідомлення для розсилки</h1>
+    <p class="sub">Вебінар 11 серпня 2026, 17:00 (Київ). Блоки листа = блоки Zoho: картинка · текст (одразу кілька абзаців) · кнопка · текст. Кожне поле копіюється кнопкою в куті: текст — як HTML (Arial 12, посилання вшиті), кнопка — назва, посилання й код кольору.</p>
+    <div class="legend">
+      <span><b>Ім'я:</b> <code>${Leads.First Name}</code> — email · <code>{{first_name}}</code> — Telegram</span>
+    </div>
+  </header>
+
+  <div class="maintabs" role="tablist">
+    <button class="mtab" role="tab" aria-selected="true" id="mt-texts" onclick="switchMain('texts')">✍️ Тексти повідомлень</button>
+    <button class="mtab" role="tab" aria-selected="false" id="mt-info" onclick="switchMain('info')">ℹ️ Основна інформація</button>
+    <button class="mtab" role="tab" aria-selected="false" id="mt-check" onclick="switchMain('check')">✅ Чеклист</button>
+  </div>
+
+  <div id="view-texts">
+    <div class="grid">
+      <aside>
+        <div class="tabset" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" id="tab-email" onclick="switchTab('email')">📧 Email <span class="cnt">6</span></button>
+          <button class="tab" role="tab" aria-selected="false" id="tab-tg" onclick="switchTab('tg')">✈️ Telegram <span class="cnt">12</span></button>
+        </div>
+        <nav class="navlist" id="nav"></nav>
+      </aside>
+      <main id="view"></main>
+    </div>
+  </div>
+
+  <div id="view-info" class="info" hidden>
+    <div class="info-sec">
+      <h3>📅 Подія</h3>
+      <div class="info-grid">
+        <div class="irow"><div class="k">Назва</div><div class="v">Керована дистрибуція 2026</div></div>
+        <div class="irow"><div class="k">Дата / час</div><div class="v">11 серпня 2026, 17:00 (Київ) · онлайн · ~1 година</div></div>
+        <div class="irow"><div class="k">Спікери</div><div class="v">Антон Рімін (Head of Practice Zoho) · Анна Бабаєва (CBDO)</div></div>
+        <div class="irow"><div class="k">Формат</div><div class="v">Безкоштовно, відкрита реєстрація</div></div>
+        <div class="irow"><div class="k">Форма Zoho (order_type)</div><div class="v"><code>webinar-distribution-2026</code></div></div>
+        <div class="irow"><div class="k">CF7-форма</div><div class="v"><code>event-form-mini</code> (ім'я + email)</div></div>
+        <div class="irow"><div class="k">Merge-ім'я</div><div class="v"><code>${Leads.First Name}</code> email · <code>{{first_name}}</code> Telegram</div></div>
+        <div class="irow"><div class="k">Thank-you (спільна, реєстрація)</div><div class="v"><a href="https://crmium.com/uk/thank-you-page-event/" target="_blank" rel="noopener">/uk/thank-you-page-event/</a> · <code>event-thank-you.php</code> — під кожен івент міняємо бот-лінк</div></div>
+      </div>
+    </div>
+
+    <div class="info-sec">
+      <h3>🔗 Посилання</h3>
+      <div class="info-grid">
+        <div class="irow"><div class="k">Лендинг вебінару (опубліковано ✅)</div><div class="v"><a href="https://crmium.com/uk/webinar-distribution-2026/" target="_blank" rel="noopener">crmium.com/uk/webinar-distribution-2026/</a></div></div>
+        <div class="irow"><div class="k">Zoom-трансляція</div><div class="v"><a href="https://us06web.zoom.us/j/82478767718?pwd=krQYyMKKwwMKKEWnFsbgn4ONrMEtCq.1" target="_blank" rel="noopener">приєднатися</a></div></div>
+        <div class="irow"><div class="k">Telegram-бот (deep-link)</div><div class="v"><a href="https://t.me/CRMiUM_UA_bot?start=6a606fafb70d0fa0500fddf6" target="_blank" rel="noopener">t.me/CRMiUM_UA_bot?start=6a606…</a></div></div>
+        <div class="irow"><div class="k">Форма питань</div><div class="v"><a href="https://crmium.com/uk/ask-a-question-form/" target="_blank" rel="noopener">crmium.com/uk/ask-a-question-form/</a></div></div>
+        <div class="irow"><div class="k">Додати в календар</div><div class="v"><a href="https://crmium.com/custom/calendar-add.html" target="_blank" rel="noopener">crmium.com/custom/calendar-add.html</a></div></div>
+        <div class="irow"><div class="k">Мінілендинг «отримати запис»</div><div class="v"><span class="todo">🔜 заплановано</span></div></div>
+        <div class="irow"><div class="k">Ця сторінка (Artifact)</div><div class="v"><a href="https://claude.ai/code/artifact/f8f879f0-5c4f-45ac-b736-3c4550b3c084" target="_blank" rel="noopener">claude.ai/code/artifact/cfcb8dd3…</a></div></div>
+      </div>
+    </div>
+
+    <div class="info-sec">
+      <h3>🖼 Банери для email-розсилки</h3>
+      <p class="desc">На crmium.com (<code>uploads/Landing/</code>), jpg — щоб коректно показувалось у всіх поштовиках (Outlook не показує webp).</p>
+      <div class="info-grid">
+        <div class="irow"><div class="k">Реєстрація (hero)</div><div class="v"><a href="https://crmium.com/wp-content/uploads/Landing/webinar-distribution-hero.jpg" target="_blank" rel="noopener">…/Landing/webinar-distribution-hero.jpg</a></div></div>
+        <div class="irow"><div class="k">Запис</div><div class="v"><a href="https://crmium.com/wp-content/uploads/Landing/webinar-distribution-record.jpg" target="_blank" rel="noopener">…/Landing/webinar-distribution-record.jpg</a></div></div>
+      </div>
+    </div>
+
+    <div class="info-sec">
+      <h3>📂 Локальні файли <code>projects/webinar-distribution/</code></h3>
+      <div class="info-grid">
+        <div class="irow"><div class="k">Стан / чеклісти</div><div class="v"><code>HANDOFF.md</code></div></div>
+        <div class="irow"><div class="k">Лендинг: прев'ю</div><div class="v"><code>index.html</code></div></div>
+        <div class="irow"><div class="k">Лендинг: WP-шаблон</div><div class="v"><code>crmium-landings/…/templates/bento-event-webinar-distribution.php</code></div></div>
+        <div class="irow"><div class="k">Тексти листів / Telegram</div><div class="v">на вкладці «Тексти повідомлень» (docx більше не робимо)</div></div>
+        <div class="irow"><div class="k">Календар + .ics</div><div class="v"><code>calendar/</code></div></div>
+        <div class="irow"><div class="k">Реклама FB</div><div class="v"><code>ads/facebook-ads.md</code></div></div>
+        <div class="irow"><div class="k">Банери / фото</div><div class="v"><code>assets/images/</code></div></div>
+        <div class="irow"><div class="k">Ця сторінка</div><div class="v"><code>templates.html</code></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-check" class="check" hidden>
+    <p class="desc" style="color:var(--ink-3);font-size:12.5px;margin:0 0 2px;">Тисни на квадратик, щоб відмітити. Відмітки зберігаються у твоєму браузері.</p>
+
+    <div class="cksec you">
+      <h3>🟠 До вебінару — Ти <span class="ckprog" data-sec></span></h3>
+      <div class="cklist">
+        <div class="ck" data-ck="you-pre-approve"><span class="ckbox">✓</span><div class="cbody"><div class="t">Погодити концепт / тему з керівником + питання (блоки)</div></div></div>
+        <div class="ck" data-ck="you-pre-img-hero"><span class="ckbox">✓</span><div class="cbody"><div class="t">Замовити hero-картинку для вебінару у Олени</div></div></div>
+        <div class="ck" data-ck="you-pre-img-ticket"><span class="ckbox">✓</span><div class="cbody"><div class="t">Замовити картинку-квиток для Telegram у Олени</div><div class="m">jpeg, ширина 1280</div></div></div>
+        <div class="ck" data-ck="you-pre-img-record"><span class="ckbox">✓</span><div class="cbody"><div class="t">Замовити картинку для запису вебінару у Олени</div></div></div>
+        <div class="ck" data-ck="you-pre-sendinfo"><span class="ckbox">✓</span><div class="cbody"><div class="t">Надіслати всю інформацію в Claude</div><div class="m">готові картинки → я оновлю лендинг / банери</div></div></div>
+        <div class="ck" data-ck="you-pre-sendpulse"><span class="ckbox">✓</span><div class="cbody"><div class="t">Поповнити SendPulse — оплачений тариф</div></div></div>
+        <div class="ck" data-ck="you-pre-zoompay"><span class="ckbox">✓</span><div class="cbody"><div class="t">Перевірити і оплатити Zoom</div></div></div>
+        <div class="ck" data-ck="you-pre-dryrun"><span class="ckbox">✓</span><div class="cbody"><div class="t">Створити Dry-run міт + Zoom для тех.тестування</div><div class="m">за 2-3 дні до вебінару</div></div></div>
+        <div class="ck" data-ck="you-pre-speakerzoom"><span class="ckbox">✓</span><div class="cbody"><div class="t">Створити Zoom зі спікерами на час вебінару</div></div></div>
+        <div class="ck" data-ck="you-pre-funnel-copy"><span class="ckbox">✓</span><div class="cbody"><div class="t">Скопіювати вебінарну воронку і переназвати</div><div class="m">під <code>webinar-distribution-2026</code></div></div></div>
+        <div class="ck" data-ck="you-pre-funnel-edit"><span class="ckbox">✓</span><div class="cbody"><div class="t">Змінити теги, змінні й дати у скопійованій воронці</div></div></div>
+        <div class="ck" data-ck="you-pre-zoho"><span class="ckbox">✓</span><div class="cbody"><div class="t">Запрограмувати відправку всіх листів з нагадуванням (Руслан Крикун)</div><div class="m">Zoho, по order_type <code>webinar-distribution-2026</code>; тексти — вкладка «Тексти» → Email</div></div></div>
+        <div class="ck" data-ck="you-pre-bot"><span class="ckbox">✓</span><div class="cbody"><div class="t">Бот: внести повідомлення + кнопки</div><div class="m">квиток-картинку — окремим повідомленням</div></div></div>
+        <div class="ck" data-ck="you-pre-calendar"><span class="ckbox">✓</span><div class="cbody"><div class="t">Залити календар у теку <code>/custom/</code></div><div class="m">готові: <code>calendar-add.html</code> · <code>webinar-distribution.ics</code></div></div></div>
+        <div class="ck" data-ck="you-pre-submit"><span class="ckbox">✓</span><div class="cbody"><div class="t">Тестовий сабміт на лендингу → перевірити лід у Zoho</div><div class="m">Registration_Form = <code>webinar-distribution-2026</code></div></div></div>
+        <div class="ck" data-ck="you-pre-fbads"><span class="ckbox">✓</span><div class="cbody"><div class="t">Запустити Facebook-рекламу</div><div class="m">креативи готові: <code>ads/facebook-ads.md</code></div></div></div>
+        <div class="ck" data-ck="you-pre-speakerlink"><span class="ckbox">✓</span><div class="cbody"><div class="t">Надіслати спікерам лінк на підключення</div><div class="m">⚠️ за замовчуванням вони його НЕ отримують</div></div></div>
+        <div class="ck" data-ck="you-pre-obs"><span class="ckbox">✓</span><div class="cbody"><div class="t">Записати вебінар в OBS Studio</div><div class="m">⚠️ підготувати й перевірити OBS заздалегідь — не забути</div></div></div>
+      </div>
+    </div>
+
+    <div class="cksec claude">
+      <h3>🔵 До вебінару — Claude <span class="ckprog" data-sec></span></h3>
+      <div class="cklist">
+        <div class="ck done" data-ck="cl-pre-concept"><span class="ckbox">✓</span><div class="cbody"><div class="t">Концепт вебінару</div><div class="m"><code>concept.md</code></div></div></div>
+        <div class="ck done" data-ck="cl-pre-ads"><span class="ckbox">✓</span><div class="cbody"><div class="t">Рекламний комплект Facebook (4 кути)</div><div class="m"><code>ads/facebook-ads.md</code></div></div></div>
+        <div class="ck done" data-ck="cl-pre-landing"><span class="ckbox">✓</span><div class="cbody"><div class="t">Лендинг реєстрації — опубліковано</div><div class="m"><a href="https://crmium.com/uk/webinar-distribution-2026/" target="_blank" rel="noopener">crmium.com/uk/webinar-distribution-2026/</a></div></div></div>
+        <div class="ck done" data-ck="cl-pre-emails"><span class="ckbox">✓</span><div class="cbody"><div class="t">Тексти листів (6)</div><div class="m">вкладка «Тексти повідомлень» → Email</div></div></div>
+        <div class="ck done" data-ck="cl-pre-tg"><span class="ckbox">✓</span><div class="cbody"><div class="t">Telegram (12) — 2 кореневі + цикл</div><div class="m">вкладка «Тексти повідомлень» → Telegram</div></div></div>
+        <div class="ck done" data-ck="cl-pre-calendar"><span class="ckbox">✓</span><div class="cbody"><div class="t">Календар-сторінка + .ics</div><div class="m"><code>calendar/</code></div></div></div>
+        <div class="ck done" data-ck="cl-pre-banners"><span class="ckbox">✓</span><div class="cbody"><div class="t">Банери на сайті (лендинг + email)</div><div class="m"><code>uploads/Landing/</code></div></div></div>
+        <div class="ck done" data-ck="cl-pre-seo"><span class="ckbox">✓</span><div class="cbody"><div class="t">SEO-мета + Open Graph лендинга</div></div></div>
+        <div class="ck done" data-ck="cl-pre-dash"><span class="ckbox">✓</span><div class="cbody"><div class="t">Ця сторінка-дашборд</div><div class="m"><a href="https://claude.ai/code/artifact/f8f879f0-5c4f-45ac-b736-3c4550b3c084" target="_blank" rel="noopener">Artifact</a></div></div></div>
+        <div class="ck done" data-ck="cl-pre-thankyou"><span class="ckbox">✓</span><div class="cbody"><div class="t">Спільна thank-you оновлена (бот-лінк + кнопка календаря + /uk/)</div><div class="m"><code>event-thank-you.php</code> → <a href="https://crmium.com/uk/thank-you-page-event/" target="_blank" rel="noopener">/uk/thank-you-page-event/</a></div></div></div>
+        <div class="ck done" data-ck="cl-pre-presentation"><span class="ckbox">✓</span><div class="cbody"><div class="t">Презентація-заставка (перед ефіром)</div><div class="m"><code>presentation/index.html</code></div></div></div>
+        <div class="ck done" data-ck="cl-pre-rectemplate"><span class="ckbox">✓</span><div class="cbody"><div class="t">Шаблон сторінки «отримати запис» — готовий і на сервері</div><div class="m"><code>bento-event-webinar-distribution-record.php</code> · банер у Landing · свап на цю ж сторінку — після події</div></div></div>
+        <div class="ck done" data-ck="cl-pre-zohodoc"><span class="ckbox">✓</span><div class="cbody"><div class="t">Інструкція по листах у Zoho (шаблони · воркфлоу · розсилки)</div><div class="m"><code>context/zoho-email-templates.md</code></div></div></div>
+        <div class="ck done" data-ck="cl-pre-recemail"><span class="ckbox">✓</span><div class="cbody"><div class="t">HTML-шаблон листа із записом (по блоках для Zoho)</div><div class="m"><code>zoho-templates/record-email.html</code> — ⚠️ чекає YouTube-лінк і таймкоди, ще НЕ заплановано</div></div></div>
+        <div class="ck done" data-ck="cl-pre-skill"><span class="ckbox">✓</span><div class="cbody"><div class="t">Чернетка скіла <code>/webinar</code> (повний алгоритм)</div><div class="m">уточнити після цієї події</div></div></div>
+      </div>
+    </div>
+
+    <div class="cksec you">
+      <h3>🟠 Після вебінару — Ти <span class="ckprog" data-sec></span></h3>
+      <div class="cklist">
+        <div class="ck" data-ck="you-post-edit"><span class="ckbox">✓</span><div class="cbody"><div class="t">Змонтувати запис і залити на YouTube</div><div class="m">прибрати паузи, прискорити, об'єднати з записом з OBS</div></div></div>
+        <div class="ck" data-ck="you-post-reclink"><span class="ckbox">✓</span><div class="cbody"><div class="t">Надіслати Claude посилання на запис (YouTube)</div></div></div>
+        <div class="ck" data-ck="you-post-zohoworkflow"><span class="ckbox">✓</span><div class="cbody"><div class="t">Зробити воркфлоу у Zoho (лист на отримання запису) (Руслан Крикун)</div><div class="m">по order_type <code>record-webinar-distribution</code></div></div></div>
+        <div class="ck" data-ck="you-post-chain"><span class="ckbox">✓</span><div class="cbody"><div class="t">Переписати вітальний ланцюжок бота → «отримати запис»</div><div class="m">текст — вкладка «Тексти» → Telegram → «Корінь бота — версія запис»</div></div></div>
+        <div class="ck" data-ck="you-post-swaptemplate"><span class="ckbox">✓</span><div class="cbody"><div class="t">Замінити шаблон сторінки реєстрації на «отримати запис»</div><div class="m">та сама сторінка — не створюємо нову</div></div></div>
+      </div>
+    </div>
+
+    <div class="cksec claude">
+      <h3>🔵 Після вебінару — Claude <span class="ckprog" data-sec></span></h3>
+      <div class="cklist">
+        <div class="ck" data-ck="cl-post-youtube"><span class="ckbox">✓</span><div class="cbody"><div class="t">YouTube: таймкоди, опис, теги, обкладинка</div><div class="m">усе, що потрібно для завантаження (за записом з OBS)</div></div></div>
+        <div class="ck" data-ck="cl-post-execdash"><span class="ckbox">✓</span><div class="cbody"><div class="t">Дашборд для керівника (підсумки події)</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Скопійовано</div>
+
+<script>
+(function(){
+  "use strict";
+  var N="${Leads.First Name}", F="{{first_name}}";
+  var BOT="https://t.me/CRMiUM_UA_bot?start=6a606fafb70d0fa0500fddf6";
+  var QF="https://crmium.com/uk/ask-a-question-form/";
+  var ZOOM="https://us06web.zoom.us/j/82478767718?pwd=krQYyMKKwwMKKEWnFsbgn4ONrMEtCq.1";
+  var CAL="https://crmium.com/custom/calendar-add.html";
+  var REC="[YouTube — ВСТАВИТИ після монтажу]";
+  var WA="https://wa.me/380953222178";
+  var HEX="#EF652F";
+  var HERO="webinar-destribution-hero.webp";
+  var RECBAN="webinar-destribution-record.webp";
+  var HERO_URL="https://crmium.com/wp-content/uploads/Landing/webinar-distribution-hero.jpg";
+  var REC_URL="https://crmium.com/wp-content/uploads/Landing/webinar-distribution-record.jpg";
+  function bannerUrl(b){return b===RECBAN?REC_URL:HERO_URL;}
+  function P(){return Array.prototype.slice.call(arguments).join("<br><br>");} // порожній рядок між абзацами
+
+  var EMAILS=[
+    { title:"Реєстрація (підтвердження)", trigger:'форма <code>webinar-distribution-2026</code> → одразу після реєстрації',
+      subject:"Вас зареєстровано на вебінар «Керована дистрибуція 2026» — 11 серпня", banner:HERO,
+      blocks:[
+        {t:"text",html:P(
+          N+", дякуємо за реєстрацію.",
+          "<b>Ви на вебінарі «Керована дистрибуція 2026».</b><br>📅 11 серпня, 17:00 (Київ) · онлайн · ~1 година.",
+          "Спікери — Антон Рімін (Head of Practice Zoho, CRMiUM) і Анна Бабаєва (CBDO).<br>Жива розмова без води: як дистриб'ютору зібрати продажі, склад і фінанси в одну керовану систему і перестати втрачати гроші на хаосі в Excel та 1С.<br>Посилання на трансляцію і нагадування надішлемо ближче до старту. Щоб не загубити дату — додайте подію в календар."
+        )},
+        {t:"btn",label:"Додати в календар →",url:CAL},
+        {t:"text",html:P(
+          'Маєте конкретне питання до спікерів? Напишіть ваше питання в <a href="'+BOT+'">Telegram бота</a> або в <a href="'+QF+'">форму на сайті</a> і ми розберемо його на вебінарі або особисто.',
+          "До зустрічі 11 серпня,<br>команда CRMiUM"
+        )}
+      ]},
+    { title:"За день", trigger:"за 1 день (10 серпня), заплановано в CRM",
+      subject:"Нагадування: завтра о 17:00 — вебінар «Керована дистрибуція 2026»", banner:HERO,
+      blocks:[
+        {t:"text",html:P(
+          "Вітаємо, "+N+"!",
+          "Нагадуємо: вже завтра проводимо вебінар <b>«Керована дистрибуція 2026»</b>.",
+          "<b>Про що говоритимемо:</b><br>• Клієнтська база: структура, дублі, картка з повною історією<br>• Ціноутворення та КП: індивідуальні умови автоматично, контроль мінімальної ціни<br>• Замовлення й логістика: воронка заявка→відвантаження, інтеграція з 1С/BAS, дебіторка<br>• Команда, аналітика та AI у дистрибуції",
+          "📅 11 серпня · 🕔 17:00 (за Києвом) · онлайн, Zoom<br>Посилання для підключення — у кнопці нижче."
+        )},
+        {t:"btn",label:"Підключитися до вебінару →",url:ZOOM},
+        {t:"btn",label:"Додати в календар →",url:CAL},
+        {t:"text",html:"До зустрічі завтра,<br>команда CRMiUM"}
+      ]},
+    { title:"За годину", trigger:"за 1 годину до старту (11 серпня, 16:00)",
+      subject:"За годину стартуємо — вебінар «Керована дистрибуція 2026»", banner:HERO,
+      blocks:[
+        {t:"text",html:P(
+          "Вітаємо, "+N+", до старту — 1 година.",
+          "О 17:00 починаємо з головного: як зробити дистрибуцію керованою — єдина картина по клієнтах, цінах, замовленнях, складі й команді. На знеособлених прикладах.",
+          'Питання можна писати в чат трансляції, у <a href="'+BOT+'">Telegram-бот</a> або в особистий WhatsApp Анни. Спікери відповідатимуть наживо.'
+        )},
+        {t:"btn",label:"Підключитися →",url:ZOOM},
+        {t:"text",html:"До зв'язку за годину,<br>команда CRMiUM"}
+      ]},
+    { title:"На старті", trigger:"у момент старту (11 серпня, 17:00)",
+      subject:"Ми в ефірі — приєднуйтесь", banner:HERO,
+      blocks:[
+        {t:"text",html:P(
+          N+", стартуємо.",
+          "Зараз в ефірі — Антон Рімін і Анна Бабаєва. Тема: як побудувати керовану дистрибуцію на базі CRM/ERP + AI.",
+          "Підключайтесь — далі предметно і без води."
+        )},
+        {t:"btn",label:"Підключитися →",url:ZOOM},
+        {t:"text",html:"Команда CRMiUM"}
+      ]},
+    { title:"Запис (для учасників)", trigger:"після події (12 серпня), коли запис готовий",
+      subject:"Запис вебінару «Керована дистрибуція 2026» готовий — дивіться у зручний час", banner:RECBAN,
+      blocks:[
+        {t:"text",html:P(
+          "Вітаємо, "+N+"!",
+          "Дякуємо, що були з нами на вебінарі: <b>«Керована дистрибуція 2026».</b>",
+          "Якщо долучитися не вдалося, нічого не втрачено. Запис вебінару вже доступний.",
+          'Маєте індивідуальне питання?<br>Напишіть у <a href="'+WA+'">WhatsApp</a> Анні Бабаєвій, і вона відповість Вам особисто!'
+        )},
+        {t:"btn",label:"Дивитися відео →",url:REC},
+        {t:"text",html:P(
+          "<b>Ключові моменти:</b> [додати таймкоди після монтажу запису]",
+          'Залишилося питання щодо Ваших процесів? Поставте його у <a href="'+QF+'">короткій формі</a> і ми розберемо ваш кейс особисто.',
+          "До зв'язку,<br>команда CRMiUM"
+        )}
+      ]},
+    { title:"Запис із реклами (мінілендинг)", trigger:'форма <code>record-webinar-distribution</code> (мінілендинг «отримати запис»)',
+      subject:"Ваш запис вебінару «Керована дистрибуція 2026» — дивіться у зручний час", banner:RECBAN,
+      blocks:[
+        {t:"text",html:P(
+          "Вітаємо, "+N+"!",
+          "Дякуємо за заявку — тримайте повний запис вебінару: <b>«Керована дистрибуція 2026».</b>",
+          "Це жива розмова практиків — Антона Рімина (Head of Practice Zoho) і Анни Бабаєвої (CBDO): як зібрати дистрибуцію в одну керовану систему, від клієнтської бази до складу, фінансів і AI. Без води — тільки практика.",
+          'Маєте індивідуальне питання?<br>Напишіть у <a href="'+WA+'">WhatsApp</a> Анні Бабаєвій, і вона відповість Вам особисто!'
+        )},
+        {t:"btn",label:"Дивитися відео →",url:REC},
+        {t:"text",html:P(
+          "<b>Ключові моменти:</b> [додати таймкоди після монтажу запису]",
+          'Залишилося питання щодо Ваших процесів? Поставте його у <a href="'+QF+'">короткій формі</a> і ми розберемо ваш кейс особисто.',
+          "До зв'язку,<br>команда CRMiUM"
+        )}
+      ]}
+  ];
+
+  var TG=[
+    { title:"Корінь бота — версія «реєстрація»", when:"стартове повідомлення, коли людина заходить у корінь бота (/start). ⚠️ Редагується вручну: спочатку найближчий вебінар (реєстрація), після події — версія «запис» нижче.",
+      text:"👋 Раді вітати, "+F+"!\n\nВи в офіційному боті CRMiUM — системного інтегратора CRM/ERP.\nМи більше 10 років на ринку, реалізували 500+ проєктів для клієнтів у 36 країнах.\n\nЧим корисний цей бот:\n• анонси вебінарів і розборів для керівників\n• записи минулих подій\n• практичні матеріали про автоматизацію процесів, продажів і фінансів\n\n<b>Наступний вебінар:</b>\n<b>Керована дистрибуція 2026</b>\n📅 11 серпня, 17:00 (Київ) · онлайн\nРеєструйтесь по кнопці нижче 👇\n\nТакож Ви можете переглянути:\n- Запис Zoho Summit 2026\n- Запис вебінару «MilTech росте швидше за власні процеси. Як повернути контроль»\n\nОберіть, з чого почати 👇",
+      buttons:[{label:"Zoho Summit 2026"},{label:"MilTech автоматизація"},{label:"Керована дистрибуція 2026"}] },
+    { title:"Корінь бота — версія «запис»", when:"той самий корінь бота ПІСЛЯ вебінару: замість реєстрації — отримання запису Керованої дистрибуції.",
+      text:"👋 Раді вітати, "+F+"!\n\nВи в офіційному боті CRMiUM — системного інтегратора CRM/ERP.\nМи більше 10 років на ринку, реалізували 500+ проєктів для клієнтів у 36 країнах.\n\nЧим корисний цей бот:\n• анонси вебінарів і розборів для керівників\n• записи минулих подій\n• практичні матеріали про автоматизацію процесів, продажів і фінансів\n\n<b>Останній вебінар:</b>\n<b>Керована дистрибуція 2026</b>\nЗапис уже доступний — дивіться по кнопці нижче 👇\n\nТакож Ви можете переглянути:\n- Запис Zoho Summit 2026\n- Запис вебінару «MilTech росте швидше за власні процеси. Як повернути контроль»\n\nОберіть, з чого почати 👇",
+      buttons:[{label:"Zoho Summit 2026"},{label:"MilTech автоматизація"},{label:"Керована дистрибуція 2026 — запис"}] },
+    { title:"Запрошення до реєстрації", when:"перше повідомлення в боті (deep-link / QR / реклама)",
+      text:"👋 Вітаю, "+F+"!\n\nДякуємо за інтерес до вебінару <b>«Керована дистрибуція 2026»</b>.\n\n📅 11 серпня, 17:00 (Київ) · Online\n\nЖива розмова практиків CRMiUM про те, як дистриб'ютору зібрати продажі, склад і фінанси в одну керовану систему. Ставте свої питання спікерам — розберемо на вебінарі.\n\nЩоб зареєструватися, натисніть кнопку нижче.\n\nВідписатися можна будь-коли — просто надішліть /stop\n\nНатисніть кнопку нижче — і ваш квиток уже чекає!",
+      buttons:[{label:"Зареєструватися"}] },
+    { title:"Підтвердження + квиток", when:"після кнопки «Зареєструватися»",
+      note:"Спочатку окремим повідомленням надішліть картинку-квиток (jpeg, ширина 1280). Текст — наступним повідомленням.",
+      text:F+"! ✅ Вашу реєстрацію підтверджено!\n\nЧекаємо на Вас:\n📅 11 серпня, 17:00 (Київ) · онлайн\n\nНагадування про старт ми надішлемо автоматично — Ви нічого не пропустите.\n\nНатисніть кнопку нижче, щоб переглянути програму вебінару, та додайте подію до свого календаря, щоб забронювати час.",
+      buttons:[{label:"Дізнатися програму"},{label:"Додати в календар",url:CAL}] },
+    { title:"Програма + питання", when:"після кнопки «Дізнатися програму»",
+      text:"Розповідаємо, про що вебінар.\n\nДистрибуція росте, а контроль губиться: тисячі клієнтів, прайси, замовлення і склад розкидані по Excel, 1С і головах менеджерів.\n\nАнтон Рімін (Head of Practice Zoho, CRMiUM) і Анна Бабаєва (CBDO) розберуть на практиці:\n\n🔸клієнтська база: структура, дублі, картка з повною історією\n🔸ціноутворення і КП: індивідуальні умови автоматично, контроль мінімальної ціни\n🔸замовлення й логістика: воронка заявка→відвантаження, інтеграція з 1С/BAS, дебіторка\n🔸команда, аналітика і AI у дистрибуції\n\n💬 Хочете, щоб ми розібрали саме ваш випадок? Надішліть своє питання сюди, в чат, і ми дамо відповідь під час вебінару.",
+      buttons:[{label:"Додати в календар",url:CAL}] },
+    { title:"Нагадування за день", when:"за 1 день (10 серпня)",
+      text:F+", уже завтра зустрічаємося.\n\n🚀 Вебінар <b>«Керована дистрибуція 2026»</b>\n🕔 11 серпня, 17:00 (Київ) · онлайн\n\nЩо на Вас чекає:\n• як зібрати клієнтів, ціни, замовлення й склад в одну систему\n• контроль команди і дебіторки\n• аналітика, що показує, де ростуть гроші\n• де AI вже дає результат у дистрибуції\n\nЖива розмова практиків і Ваші питання.\n\nЩоб не шукати посилання завтра — додайте подію в календар 👇",
+      buttons:[{label:"Додати в календар",url:CAL}] },
+    { title:"За годину", when:"за 1 годину (11 серпня, 16:00)",
+      text:F+", до старту — 1 година ⏳\n\nО 17:00 починаємо з головного: як зробити дистрибуцію керованою — щоб бачити кожного клієнта, замовлення і гривню в реальному часі.\n\nПитання можна писати в чат трансляції — спікери відповідають наживо. А якщо хочете, щоб ми розібрали Ваш кейс приватно, залиште його у формі — і ми звʼяжемося окремо.\n\nДо зустрічі за годину 👇",
+      buttons:[{label:"Підключитися до трансляції",url:ZOOM}] },
+    { title:"На старті (ми в ефірі)", when:"у момент старту (17:00)",
+      text:F+", ми в ефірі 🔴\n\n📌 Починаємо: <b>як побудувати керовану дистрибуцію на CRM/ERP + AI</b>.\n🎙 Антон Рімін (Head of Practice Zoho) і Анна Бабаєва (CBDO).\n\nПриєднуйтеся — попереду предметна розмова.",
+      buttons:[{label:"Підключитися до трансляції",url:ZOOM}] },
+    { title:"Після події (подяка)", when:"увечері після події (11 серпня)",
+      text:F+", дякуємо, що були з нами на вебінарі.\n\nСподіваємося, Ви отримали кілька конкретних ідей, які можна впровадити вже зараз.\n\n👋 Якщо приєднатися не вдалося — не хвилюйтеся: запис ми надішлемо в цей канал найближчим часом.\n\nТут ми анонсуємо наступні події CRMiUM — вебінари, демонстрації, розбори. Залишайтеся з нами.\n\n💬 Залишилося питання щодо Вашої дистрибуції? Натисніть кнопку — і ми розберемо його приватно.",
+      buttons:[{label:"Задати питання",url:QF}] },
+    { title:"Пізня реєстрація (без запису)", when:"реєстрація вже ПІСЛЯ дати вебінару, поки запис не готовий",
+      text:F+", дякуємо за інтерес!\n\nВебінар <b>«Керована дистрибуція 2026»</b> уже завершився.\n\nАле ми завжди раді відповісти на ваші питання — напишіть нам, і ми розберемо ваш кейс особисто.\n\n📼 Запис вебінару надішлемо в цей чат — залишайтеся з нами, щоб переглянути його у зручний час.",
+      buttons:[{label:"Поставити питання",url:QF}] },
+    { title:"Пізня реєстрація (запис готовий)", when:"реєстрація після події, коли запис уже є",
+      note:"Спочатку окремим повідомленням надішліть банер запису (webinar-destribution-record.webp).",
+      text:F+", дякуємо за інтерес!\n\nВебінар <b>«Керована дистрибуція 2026»</b> уже завершився.\n\nАле ми завжди раді відповісти на ваші питання — напишіть нам, і ми розберемо ваш кейс особисто.\n\n📼 Запис вебінару ви можете отримати по кнопці нижче 👇",
+      buttons:[{label:"Поставити питання",url:QF},{label:"Дивитися запис",url:REC}] },
+    { title:"Запис готовий (розсилка)", when:"коли запис готовий (12 серпня)",
+      note:"Можна надіслати банер запису окремим повідомленням перед текстом. Таймкоди додати після монтажу.",
+      text:"🎬 "+F+", запис вебінару готовий!\n\nДивіться у зручний час — <b>«Керована дистрибуція 2026»</b>.\n\n📌 Ключові моменти: [додати таймкоди після монтажу запису]\n\n💬 Хочете розібрати саме Ваш кейс? Напишіть Анні у WhatsApp або залиште питання у формі 👇",
+      buttons:[{label:"Дивитися запис",url:REC},{label:"Поставити питання",url:QF}] }
+  ];
+
+  function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function htmlToPlain(h){return h.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/\n{3,}/g,"\n\n").trim();}
+  function wrapEmail(h){return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.5;color:#1a1a1a;">'+h.replace(/<a href=/g,'<a style="color:#2563EB;" href=')+'</div>';}
+  var toastEl=document.getElementById('toast'),toastT;
+  function toast(m){toastEl.textContent=m||"Скопійовано";toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('on');},1400);}
+  function done(btn,ico){btn.classList.add('done');btn.innerHTML=checkSvg();setTimeout(function(){btn.classList.remove('done');btn.innerHTML=ico;},1200);}
+  function copyText(str,btn,ico){var d=function(){toast();done(btn,ico);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(str).then(d).catch(function(){fb(str,d);});}else fb(str,d);}
+  function copyRich(html,plain,btn,ico){var d=function(){toast();done(btn,ico);};try{if(navigator.clipboard&&window.ClipboardItem){var it=new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([plain],{type:"text/plain"})});navigator.clipboard.write([it]).then(d).catch(function(){copyText(plain,btn,ico);});}else copyText(plain,btn,ico);}catch(e){copyText(plain,btn,ico);}}
+  function fb(str,d){var t=document.createElement('textarea');t.value=str;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');d();}catch(e){}document.body.removeChild(t);}
+  function copySvg(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';}
+  function checkSvg(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';}
+  function cornerCopy(title,onclick){var b=el('button','copy',copySvg());b.type='button';b.title=title;b.setAttribute('aria-label',title);b.addEventListener('click',function(){onclick(b,copySvg());});return b;}
+  function inlineCopy(title,onclick){var b=el('button','cbi',copySvg());b.type='button';b.title=title;b.setAttribute('aria-label',title);b.addEventListener('click',function(){onclick(b,copySvg());});return b;}
+
+  function renderEmail(){
+    var v=document.getElementById('view');v.innerHTML='';var nav=document.getElementById('nav');nav.innerHTML='';
+    EMAILS.forEach(function(e,i){
+      var id='e'+(i+1);nav.appendChild(navLink(id,'E'+(i+1),e.title));
+      var L=el('div','letter');L.id=id;
+      var head=el('div','msg-head');head.appendChild(el('div','num','E'+(i+1)));
+      var h=el('div');h.appendChild(el('h3',null,esc(e.title)));h.appendChild(el('div','trig','Тригер: '+e.trigger));
+      head.appendChild(h);L.appendChild(head);
+
+      var img=el('div','field img');
+      img.appendChild(el('div','flabel','<span class="badge">картинка</span> банер зверху листа'));
+      img.appendChild(el('div','imgrow','🖼 <code>'+esc(e.banner)+'</code>'));
+      var imeta=el('div','meta');
+      imeta.appendChild(mrow('URL',bannerUrl(e.banner),null,function(b,ic){copyText(bannerUrl(e.banner),b,ic);}));
+      img.appendChild(imeta);
+      img.appendChild(cornerCopy('Копіювати URL картинки',function(b,ic){copyText(bannerUrl(e.banner),b,ic);}));
+      L.appendChild(img);
+
+      var subj=el('div','field');
+      subj.appendChild(el('div','flabel','<span class="badge">тема</span> тема листа'));
+      subj.appendChild(el('div','subject-val',esc(e.subject)));
+      subj.appendChild(cornerCopy('Копіювати тему',function(b,ic){copyText(e.subject,b,ic);}));
+      L.appendChild(subj);
+
+      var tc=0;
+      e.blocks.forEach(function(bl){
+        if(bl.t==='text'){
+          tc++;
+          var f=el('div','field');
+          f.appendChild(el('div','flabel','<span class="badge">текст '+tc+'</span> текстовий блок'));
+          f.appendChild(el('div','content',bl.html));
+          f.appendChild(cornerCopy('Копіювати текст (HTML, Arial 12)',function(b,ic){copyRich(wrapEmail(bl.html),htmlToPlain(bl.html),b,ic);}));
+          L.appendChild(f);
+        } else {
+          var f=el('div','field');
+          f.appendChild(el('div','flabel','<span class="badge">кнопка</span> блок кнопки'));
+          var bf=el('div');bf.appendChild(el('span','btnface',esc(bl.label)));f.appendChild(bf);
+          var meta=el('div','meta');
+          meta.appendChild(mrow('Назва',bl.label,null,function(b,ic){copyText(bl.label,b,ic);}));
+          meta.appendChild(mrow('Лінк',bl.url,null,function(b,ic){copyText(bl.url,b,ic);}));
+          var cr=el('div','mrow');cr.appendChild(el('span','mk','Колір'));cr.appendChild(el('span','swatch'));cr.appendChild(el('span','mv',HEX));
+          cr.appendChild(inlineCopy('Копіювати колір',function(b,ic){copyText(HEX,b,ic);}));
+          meta.appendChild(cr);
+          f.appendChild(meta);
+          L.appendChild(f);
+        }
+      });
+      v.appendChild(L);
+      if(i<EMAILS.length-1)v.appendChild(divider('E'+(i+1)+' → E'+(i+2)));
+    });
+    initSpy();
+  }
+
+  function renderTG(){
+    var v=document.getElementById('view');v.innerHTML='';var nav=document.getElementById('nav');nav.innerHTML='';
+    TG.forEach(function(m,i){
+      var id='t'+(i+1);nav.appendChild(navLink(id,'T'+(i+1),m.title));
+      var L=el('div','letter');L.id=id;
+      var head=el('div','msg-head');head.appendChild(el('div','num','T'+(i+1)));
+      var h=el('div');h.appendChild(el('h3',null,esc(m.title)));h.appendChild(el('div','trig','Коли: '+esc(m.when)));
+      head.appendChild(h);L.appendChild(head);
+      if(m.note)L.appendChild(el('div','note','⚠️ '+esc(m.note)));
+      var f=el('div','field tg');
+      f.appendChild(el('div','flabel','<span class="badge">текст</span> текст повідомлення'));
+      f.appendChild(el('div','content',esc(m.text).replace(/\n/g,'<br>').replace(/&lt;b&gt;/g,'<b>').replace(/&lt;\/b&gt;/g,'</b>')));
+      f.appendChild(cornerCopy('Копіювати текст повідомлення',function(b,ic){copyText(m.text,b,ic);}));
+      L.appendChild(f);
+      if(m.buttons)m.buttons.forEach(function(bt){
+        var bf=el('div','field');
+        bf.appendChild(el('div','flabel','<span class="badge">кнопка</span> кнопка бота'));
+        var face=el('div');face.appendChild(el('span','btnface','▸ '+esc(bt.label)));bf.appendChild(face);
+        var meta=el('div','meta');
+        meta.appendChild(mrow('Назва',bt.label,null,function(b,ic){copyText(bt.label,b,ic);}));
+        if(bt.url)meta.appendChild(mrow('Лінк',bt.url,null,function(b,ic){copyText(bt.url,b,ic);}));
+        else meta.appendChild(mrow('Тип','дія бота (без посилання)','action',null));
+        bf.appendChild(meta);
+        L.appendChild(bf);
+      });
+      v.appendChild(L);
+      if(i<TG.length-1)v.appendChild(divider('T'+(i+1)+' → T'+(i+2)));
+    });
+    initSpy();
+  }
+
+  function mrow(k,val,cls,onCopy){var r=el('div','mrow');r.appendChild(el('span','mk',k));r.appendChild(el('span','mv'+(cls?' '+cls:''),esc(val)));if(onCopy)r.appendChild(inlineCopy('Копіювати '+k.toLowerCase(),onCopy));return r;}
+  function divider(lbl){return el('div','divider','<span class="d"><span class="dot"></span>'+esc(lbl)+'<span class="dot"></span></span>');}
+  function navLink(id,k,title){var a=el('a',null,'<span class="k">'+k+'</span><span class="t">'+esc(title)+'</span>');a.href='#'+id;
+    a.addEventListener('click',function(ev){ev.preventDefault();var t=document.getElementById(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});return a;}
+  var spy;
+  function initSpy(){
+    if(spy)spy.disconnect();
+    var links={};document.querySelectorAll('.navlist a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a;});
+    spy=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){document.querySelectorAll('.navlist a').forEach(function(a){a.classList.remove('active');});var a=links[en.target.id];if(a)a.classList.add('active');}});},{rootMargin:'-8% 0px -78% 0px'});
+    document.querySelectorAll('.letter').forEach(function(m){spy.observe(m);});
+  }
+  window.switchTab=function(w){
+    document.getElementById('tab-email').setAttribute('aria-selected',w==='email');
+    document.getElementById('tab-tg').setAttribute('aria-selected',w==='tg');
+    if(w==='email')renderEmail();else renderTG();
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  function updateProg(){
+    document.querySelectorAll('#view-check .cksec').forEach(function(s){
+      var all=s.querySelectorAll('.ck').length, done=s.querySelectorAll('.ck.done').length;
+      var p=s.querySelector('.ckprog'); if(p)p.textContent=done+'/'+all;
+    });
+  }
+  function initChecklist(){
+    document.querySelectorAll('#view-check .ck').forEach(function(ck){
+      var id=ck.getAttribute('data-ck'), box=ck.querySelector('.ckbox');
+      var stored=null; try{stored=localStorage.getItem('wd-ck:'+id);}catch(e){}
+      if(stored==='1')ck.classList.add('done'); else if(stored==='0')ck.classList.remove('done');
+      box.setAttribute('role','checkbox'); box.setAttribute('tabindex','0');
+      box.setAttribute('aria-checked',ck.classList.contains('done'));
+      function toggle(){
+        var now=!ck.classList.contains('done');
+        ck.classList.toggle('done',now); box.setAttribute('aria-checked',now);
+        try{localStorage.setItem('wd-ck:'+id, now?'1':'0');}catch(e){}
+        updateProg();
+      }
+      box.addEventListener('click',toggle);
+      box.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle();}});
+    });
+    updateProg();
+  }
+  window.switchMain=function(w){
+    document.getElementById('mt-texts').setAttribute('aria-selected',w==='texts');
+    document.getElementById('mt-info').setAttribute('aria-selected',w==='info');
+    document.getElementById('mt-check').setAttribute('aria-selected',w==='check');
+    document.getElementById('view-texts').hidden=(w!=='texts');
+    document.getElementById('view-info').hidden=(w!=='info');
+    document.getElementById('view-check').hidden=(w!=='check');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  renderEmail();
+  initChecklist();
+})();
+</script>
