@@ -170,6 +170,7 @@
   <div class="maintabs" role="tablist">
     <button class="mtab" role="tab" aria-selected="true" id="mt-texts" onclick="switchMain('texts')">✍️ Тексти повідомлень</button>
     <button class="mtab" role="tab" aria-selected="false" id="mt-info" onclick="switchMain('info')">ℹ️ Основна інформація</button>
+    <button class="mtab" role="tab" aria-selected="false" id="mt-yt" onclick="switchMain('yt')">🎬 YouTube</button>
     <button class="mtab" role="tab" aria-selected="false" id="mt-check" onclick="switchMain('check')">✅ Чеклист</button>
   </div>
 
@@ -178,11 +179,118 @@
       <aside>
         <div class="tabset" role="tablist">
           <button class="tab" role="tab" aria-selected="true" id="tab-email" onclick="switchTab('email')">📧 Email <span class="cnt">6</span></button>
-          <button class="tab" role="tab" aria-selected="false" id="tab-tg" onclick="switchTab('tg')">✈️ Telegram <span class="cnt">12</span></button>
+          <button class="tab" role="tab" aria-selected="false" id="tab-tg" onclick="switchTab('tg')">✈️ Telegram <span class="cnt">13</span></button>
         </div>
         <nav class="navlist" id="nav"></nav>
       </aside>
       <main id="view"></main>
+    </div>
+  </div>
+
+  <style>
+    .ytbox{position:relative;margin-top:6px}
+    .ytbox pre{white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid #e3e3e3;border-radius:10px;
+      padding:16px 16px 52px;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#222;margin:0;max-height:420px;overflow:auto}
+    .ytcopy{position:absolute;right:12px;bottom:12px;border:1px solid #d8d8d8;background:#fafafa;border-radius:8px;
+      padding:7px 14px;font:600 12.5px/1 inherit;color:#333;cursor:pointer;transition:.15s}
+    .ytcopy:hover{background:#EF652F;border-color:#EF652F;color:#fff}
+  </style>
+  <div id="view-yt" class="info" hidden>
+    <div class="info-sec">
+      <h3>🎬 Відео на YouTube</h3>
+      <div class="info-grid">
+        <div class="irow"><div class="k">Посилання (робоче, для розсилок)</div><div class="v"><a href="https://www.youtube.com/watch?v=lAJ_lFeeTsM" target="_blank" rel="noopener">youtube.com/watch?v=lAJ_lFeeTsM</a></div></div>
+        <div class="irow"><div class="k">Коротке (для соцмереж)</div><div class="v"><a href="https://youtu.be/lAJ_lFeeTsM" target="_blank" rel="noopener">youtu.be/lAJ_lFeeTsM</a> — <b>без</b> хвоста <code>?si=…</code></div></div>
+        <div class="irow"><div class="k">Хронометраж</div><div class="v">56:02</div></div>
+        <div class="irow"><div class="k">Обкладинка</div><div class="v">1280×720 JPG до 2 МБ · <span class="todo">🔜 від Олени</span></div></div>
+      </div>
+      <p class="hint" style="margin-top:10px">⚠️ У листах і Telegram використовуємо <b>довгий</b> URL: до нього чіпляються таймкоди у форматі <code>&amp;t=92s</code>. У короткого лінка синтаксис інший (<code>?t=92</code>) і він конфліктує з <code>?si=</code>.</p>
+    </div>
+
+    <div class="info-sec">
+      <h3>📝 Назва відео</h3>
+      <div class="ytbox"><pre id="yt-title">Керована дистрибуція 2026: як зібрати продажі, склад і фінанси в одну систему | Вебінар CRMiUM</pre>
+      <button class="ytcopy" onclick="copyFrom('yt-title',this)">Копіювати</button></div>
+      <p class="hint">92 символи. «Керована дистрибуція 2026» стоїть першим, бо YouTube обрізає назву приблизно на 60 символах у пошуку.</p>
+    </div>
+
+    <div class="info-sec">
+      <h3>📄 Опис (повністю, разом з таймкодами)</h3>
+      <div class="ytbox"><pre id="yt-desc">Запис вебінару CRMiUM «Керована дистрибуція 2026».
+
+Жива розмова двох практиків - Анна Бабаєва (CBDO CRMiUM) і Антон Рімін (Head of Practice Zoho) - про те, як дистриб'ютору зібрати клієнтську базу, ціноутворення, замовлення, склад і фінанси в одну керовану систему: з чого починати переїзд з Excel і 1С, як тримати менеджерів під контролем і де AI вже дає результат. Без води - тільки практика.
+
+💬 Хочете розібрати свої процеси дистрибуції? Заповніть форму - ми звʼяжемось: https://crmium.com/uk/ask-a-question-form/
+
+Таймкоди:
+00:00 Чому дистрибуція - найскладніша сфера автоматизації
+01:32 Переїзд з Excel і 1С: як не перенести хаос у CRM
+06:13 Як структурувати базу: дилери, мережі, сплячі, потенційні
+09:01 Ціноутворення: різні прайси, валюти і знижки в одній системі
+13:38 Коли ціни краще лишити в 1С і не переносити в CRM
+15:12 Комерційна пропозиція з тисяч позицій за хвилини
+17:27 Контроль мінімальної ціни: три рівні погодження
+20:12 Питання з чату: як аналізувати ефективність промо
+23:20 Заявка - відвантаження: єдине поле для продажів, складу і бухгалтерії
+26:47 Питання з чату: як влаштований обмін даними між CRM і 1С
+30:48 Дебіторка: нагадування, блокування відвантажень, B2B-портал
+35:40 Розподіл клієнтів між менеджерами: регіони, категорії, ключові
+37:51 Як побачити, що менеджер справді працює з угодою
+41:21 Які KPI власнику дивитися щодня, щотижня і щомісяця
+45:32 Чи може CRM прогнозувати продажі й планувати закупівлі
+47:51 AI в дистрибуції: що вміє сьогодні і коли його впроваджувати рано
+53:08 Повторні продажі і крос-сел: як система підказує менеджеру
+
+Контакти CRMiUM:
+🌐 Сайт: https://crmium.com/uk/
+🟠 Zoho для бізнесу: https://crmium.com/uk/crm/zoho-ukr/
+📂 Кейси: https://crmium.com/uk/cases-ua/
+📞 +380 93 170 37 47
+
+Ми в соцмережах:
+LinkedIn: https://linkedin.com/company/crmium/
+Facebook: https://www.facebook.com/crmium/
+Instagram: https://www.instagram.com/crm_i_um/
+YouTube: https://www.youtube.com/channel/UCiWpa4OOZopTeRApUp_mAjg
+
+#дистрибуція #CRM #ERP #Zoho #автоматизаціябізнесу #CRMiUM #AI</pre>
+      <button class="ytcopy" onclick="copyFrom('yt-desc',this)">Копіювати опис</button></div>
+      <p class="hint">Усі посилання перевірені 12.08 — 200. ⚠️ <code>/uk/crm/zoho-crm-ukr/</code> не існує (404), правильно <code>/uk/crm/zoho-ukr/</code>. Рядка «отримати запис» тут свідомо немає — людина вже на записі.</p>
+    </div>
+
+    <div class="info-sec">
+      <h3>🏷 Теги</h3>
+      <div class="ytbox"><pre id="yt-tags">дистрибуція, оптова торгівля, керована дистрибуція, CRM для дистрибуції, ERP для дистрибуції, Zoho CRM, Zoho, автоматизація продажів, автоматизація бізнесу, облік клієнтів, клієнтська база, дебіторка, управління складом, інтеграція з 1С, перехід з Excel, ціноутворення, комерційна пропозиція, KPI менеджерів, аналітика продажів, прогноз замовлень, AI в бізнесі, штучний інтелект для продажів, CRMiUM, вебінар CRM, цифровізація бізнесу</pre>
+      <button class="ytcopy" onclick="copyFrom('yt-tags',this)">Копіювати теги</button></div>
+      <p class="hint">~460 символів із ліміту 500.</p>
+    </div>
+
+    <div class="info-sec">
+      <h3>📌 Закріплений коментар</h3>
+      <div class="ytbox"><pre id="yt-pin">Дякуємо всім, хто був на ефірі 🙌
+
+Розбирали 6 блоків керованої дистрибуції: клієнтська база, ціноутворення і КП, замовлення та логістика, команда і контроль, аналітика, і окремо - AI.
+
+Що болить у вашій дистрибуції найбільше? Напишіть у коментарях - зберемо теми для наступного вебінару.
+
+Хочете розібрати свої процеси персонально - заповніть форму: https://crmium.com/uk/ask-a-question-form/</pre>
+      <button class="ytcopy" onclick="copyFrom('yt-pin',this)">Копіювати коментар</button></div>
+    </div>
+
+    <div class="info-sec">
+      <h3>⚙️ Налаштування при заливанні</h3>
+      <div class="info-grid">
+        <div class="irow"><div class="k">Видимість</div><div class="v">Публічне</div></div>
+        <div class="irow"><div class="k">Плейлист</div><div class="v">Вебінари CRMiUM</div></div>
+        <div class="irow"><div class="k">Мова / категорія</div><div class="v">Українська · Наука і технології · не для дітей</div></div>
+        <div class="irow"><div class="k">Субтитри</div><div class="v">З транскрипту, <b>обовʼязково вичитати</b>: Whisper псує «Zoho» → «Зохо/Зоно», «ERP» → «Е-Ер-Пі», «1С» → «Однеска». Це саме ті слова, за якими шукають.</div></div>
+        <div class="irow"><div class="k">Кінцева заставка</div><div class="v">Останні 20 сек — картка на попередній вебінар + підписка</div></div>
+      </div>
+    </div>
+
+    <div class="info-sec">
+      <h3>🗣 Зворотний зв'язок Руслана (для наступного вебінару)</h3>
+      <p class="hint" style="font-size:13.5px;line-height:1.6">Розмова 12.08, тайм-код 01:06: <b>«Забагато було розмов, треба було розбавити демо»</b> — Антон говорив без показу системи. Руслан не просить повноцінний демо-стенд, а <i>«час від часу розшарювати екран на цікавих темах і показувати вживу, як воно всередині Zoho CRM»</i>.<br><br>➡️ У бриф спікеру на наступний вебінар: <b>2-3 коротких демо по хвилині</b> в заздалегідь узгоджених точках сценарію. Сам івент Руслан оцінив як «супер, на рівні».</p>
     </div>
   </div>
 
@@ -282,7 +390,7 @@
         <div class="ck done" data-ck="cl-pre-presentation"><span class="ckbox">✓</span><div class="cbody"><div class="t">Презентація-заставка (перед ефіром)</div><div class="m"><code>presentation/index.html</code></div></div></div>
         <div class="ck done" data-ck="cl-pre-rectemplate"><span class="ckbox">✓</span><div class="cbody"><div class="t">Шаблон сторінки «отримати запис» — готовий і на сервері</div><div class="m"><code>bento-event-webinar-distribution-record.php</code> · банер у Landing · свап на цю ж сторінку — після події</div></div></div>
         <div class="ck done" data-ck="cl-pre-zohodoc"><span class="ckbox">✓</span><div class="cbody"><div class="t">Інструкція по листах у Zoho (шаблони · воркфлоу · розсилки)</div><div class="m"><code>context/zoho-email-templates.md</code></div></div></div>
-        <div class="ck done" data-ck="cl-pre-recemail"><span class="ckbox">✓</span><div class="cbody"><div class="t">HTML-шаблон листа із записом (по блоках для Zoho)</div><div class="m"><code>zoho-templates/record-email.html</code> — ⚠️ чекає YouTube-лінк і таймкоди, ще НЕ заплановано</div></div></div>
+        <div class="ck done" data-ck="cl-pre-recemail"><span class="ckbox">✓</span><div class="cbody"><div class="t">Лист і Telegram із записом — тексти готові</div><div class="m">вкладка «Тексти» → E5, E6 і два TG-повідомлення «Запис готовий». Посилання на відео вже підставлене, таймкоди клікабельні</div></div></div>
         <div class="ck done" data-ck="cl-pre-skill"><span class="ckbox">✓</span><div class="cbody"><div class="t">Чернетка скіла <code>/webinar</code> (повний алгоритм)</div><div class="m">уточнити після цієї події</div></div></div>
       </div>
     </div>
@@ -301,7 +409,7 @@
     <div class="cksec claude">
       <h3>🔵 Після вебінару — Claude <span class="ckprog" data-sec></span></h3>
       <div class="cklist">
-        <div class="ck" data-ck="cl-post-youtube"><span class="ckbox">✓</span><div class="cbody"><div class="t">YouTube: таймкоди, опис, теги, обкладинка</div><div class="m">усе, що потрібно для завантаження (за записом з OBS)</div></div></div>
+        <div class="ck done" data-ck="cl-post-youtube"><span class="ckbox">✓</span><div class="cbody"><div class="t">YouTube: назва, опис, таймкоди, теги, закріплений коментар</div><div class="m">усе на вкладці «🎬 YouTube», копіюється кнопками. Обкладинка 1280×720 — за Оленою</div></div></div>
         <div class="ck" data-ck="cl-post-execdash"><span class="ckbox">✓</span><div class="cbody"><div class="t">Дашборд для керівника (підсумки події)</div></div></div>
       </div>
     </div>
@@ -318,7 +426,8 @@
   var QF="https://crmium.com/uk/ask-a-question-form/";
   var ZOOM="https://us06web.zoom.us/j/82478767718?pwd=krQYyMKKwwMKKEWnFsbgn4ONrMEtCq.1";
   var CAL="https://crmium.com/custom/calendar-add.html";
-  var REC="[YouTube — ВСТАВИТИ після монтажу]";
+  var REC="https://www.youtube.com/watch?v=lAJ_lFeeTsM";
+  function TS(sec){return REC+"&t="+sec+"s";}
   var WA="https://wa.me/380953222178";
   var HEX="#EF652F";
   var HERO="webinar-destribution-hero.webp";
@@ -383,14 +492,26 @@
       blocks:[
         {t:"text",html:P(
           "Вітаємо, "+N+"!",
-          "Дякуємо, що були з нами на вебінарі: <b>«Керована дистрибуція 2026».</b>",
-          "Якщо долучитися не вдалося, нічого не втрачено. Запис вебінару вже доступний.",
-          'Маєте індивідуальне питання?<br>Напишіть у <a href="'+WA+'">WhatsApp</a> Анні Бабаєвій, і вона відповість Вам особисто!'
+          "Дякуємо, що були з нами на вебінарі <b>«Керована дистрибуція 2026»</b>. Публікуємо запис — дивіться у зручний час.",
+          "Це жива розмова практиків: Анна Бабаєва (CBDO CRMiUM) розпитує Антона Рімина (Head of Practice Zoho) про те, як дистриб'ютору зібрати клієнтську базу, ціноутворення, замовлення, склад і фінанси в одну керовану систему. 56 хвилин без води — тільки реальні кейси з наших проєктів."
         )},
-        {t:"btn",label:"Дивитися відео →",url:REC},
+        {t:"btn",label:"Дивитися запис →",url:REC},
         {t:"text",html:P(
-          "<b>Ключові моменти:</b> [додати таймкоди після монтажу запису]",
-          'Залишилося питання щодо Ваших процесів? Поставте його у <a href="'+QF+'">короткій формі</a> і ми розберемо ваш кейс особисто.',
+          "<b>Що всередині — найкорисніше:</b>",
+          '<a href="'+TS(92)+'">01:32</a> Переїзд з Excel і 1С: як не перенести хаос у CRM<br>'+
+          '<a href="'+TS(541)+'">09:01</a> Ціноутворення: різні прайси, валюти і знижки в одній системі<br>'+
+          '<a href="'+TS(1607)+'">26:47</a> Як влаштований обмін даними між CRM і 1С<br>'+
+          '<a href="'+TS(1848)+'">30:48</a> Дебіторка: нагадування, блокування відвантажень, B2B-портал<br>'+
+          '<a href="'+TS(2871)+'">47:51</a> AI в дистрибуції: що вміє сьогодні і коли його впроваджувати рано',
+          "Цього разу ми розбирали дистрибуцію, бо працюємо по галузях — і в кожної свої процеси. Наступний вебінар буде вже про іншу сферу."
+        )},
+        {t:"text",gray:true,html:P(
+          "<b>Кілька слів про нас — на вебінарі це лишилось за кадром</b>",
+          "Розмова була навколо Zoho, бо саме на ньому зроблені проєкти, які розбирав Антон. Але ми <b>системний інтегратор і працюємо з кількома платформами</b> — Zoho, Odoo, Creatio, Salesforce, HubSpot, а також маємо партнерську екосистему під вужчі задачі. Систему підбираємо під ваші процеси, а не навпаки.",
+          "І ми не зникаємо після запуску: беремо проєкт наскрізно — <b>аудит процесів → впровадження → інтеграції → навчання команди → підтримка</b>."
+        )},
+        {t:"text",html:P(
+          'Хочете розібрати свої процеси? Опишіть задачу у <a href="'+QF+'">короткій формі</a> — подивимось ваш випадок і скажемо, що тут узагалі варто автоматизувати, а що краще не чіпати.',
           "До зв'язку,<br>команда CRMiUM"
         )}
       ]},
@@ -399,14 +520,25 @@
       blocks:[
         {t:"text",html:P(
           "Вітаємо, "+N+"!",
-          "Дякуємо за заявку — тримайте повний запис вебінару: <b>«Керована дистрибуція 2026».</b>",
-          "Це жива розмова практиків — Антона Рімина (Head of Practice Zoho) і Анни Бабаєвої (CBDO): як зібрати дистрибуцію в одну керовану систему, від клієнтської бази до складу, фінансів і AI. Без води — тільки практика.",
-          'Маєте індивідуальне питання?<br>Напишіть у <a href="'+WA+'">WhatsApp</a> Анні Бабаєвій, і вона відповість Вам особисто!'
+          "Дякуємо за заявку — тримайте повний запис вебінару <b>«Керована дистрибуція 2026»</b>.",
+          "Це жива розмова практиків: Анна Бабаєва (CBDO CRMiUM) розпитує Антона Рімина (Head of Practice Zoho) про те, як зібрати дистрибуцію в одну керовану систему — від клієнтської бази до складу, фінансів і AI. 56 хвилин без води, тільки реальні кейси."
         )},
-        {t:"btn",label:"Дивитися відео →",url:REC},
+        {t:"btn",label:"Дивитися запис →",url:REC},
         {t:"text",html:P(
-          "<b>Ключові моменти:</b> [додати таймкоди після монтажу запису]",
-          'Залишилося питання щодо Ваших процесів? Поставте його у <a href="'+QF+'">короткій формі</a> і ми розберемо ваш кейс особисто.',
+          "<b>Що всередині — найкорисніше:</b>",
+          '<a href="'+TS(92)+'">01:32</a> Переїзд з Excel і 1С: як не перенести хаос у CRM<br>'+
+          '<a href="'+TS(541)+'">09:01</a> Ціноутворення: різні прайси, валюти і знижки в одній системі<br>'+
+          '<a href="'+TS(1607)+'">26:47</a> Як влаштований обмін даними між CRM і 1С<br>'+
+          '<a href="'+TS(1848)+'">30:48</a> Дебіторка: нагадування, блокування відвантажень, B2B-портал<br>'+
+          '<a href="'+TS(2871)+'">47:51</a> AI в дистрибуції: що вміє сьогодні і коли його впроваджувати рано'
+        )},
+        {t:"text",gray:true,html:P(
+          "<b>Кілька слів про нас</b>",
+          "Розмова була навколо Zoho, бо саме на ньому зроблені розібрані проєкти. Але ми <b>системний інтегратор і працюємо з кількома платформами</b> — Zoho, Odoo, Creatio, Salesforce, HubSpot, плюс партнерська екосистема під вужчі задачі. Систему підбираємо під ваші процеси, а не навпаки.",
+          "І не зникаємо після запуску: <b>аудит процесів → впровадження → інтеграції → навчання команди → підтримка</b>."
+        )},
+        {t:"text",html:P(
+          'Хочете розібрати свої процеси? Опишіть задачу у <a href="'+QF+'">короткій формі</a> — подивимось ваш випадок і скажемо, що варто автоматизувати, а що краще не чіпати.',
           "До зв'язку,<br>команда CRMiUM"
         )}
       ]}
@@ -448,16 +580,20 @@
       note:"Спочатку окремим повідомленням надішліть банер запису (webinar-destribution-record.webp).",
       text:F+", дякуємо за інтерес!\n\nВебінар <b>«Керована дистрибуція 2026»</b> уже завершився.\n\nАле ми завжди раді відповісти на ваші питання — напишіть нам, і ми розберемо ваш кейс особисто.\n\n📼 Запис вебінару ви можете отримати по кнопці нижче 👇",
       buttons:[{label:"Поставити питання",url:QF},{label:"Дивитися запис",url:REC}] },
-    { title:"Запис готовий (розсилка)", when:"коли запис готовий (12 серпня)",
-      note:"Можна надіслати банер запису окремим повідомленням перед текстом. Таймкоди додати після монтажу.",
-      text:"🎬 "+F+", запис вебінару готовий!\n\nДивіться у зручний час — <b>«Керована дистрибуція 2026»</b>.\n\n📌 Ключові моменти: [додати таймкоди після монтажу запису]\n\n💬 Хочете розібрати саме Ваш кейс? Напишіть Анні у WhatsApp або залиште питання у формі 👇",
-      buttons:[{label:"Дивитися запис",url:REC},{label:"Поставити питання",url:QF}] }
+    { title:"Запис готовий — повідомлення 1 (розсилка)", when:"коли запис готовий. Банер запису — окремим повідомленням ПЕРЕД текстом.",
+      note:"Скорочена версія email-листа: Руслан просив у Telegram коротше (розмова 12.08, 04:11).",
+      text:"Вітаємо, "+F+"! 🙌\n\nЗапис вебінару <b>«Керована дистрибуція 2026»</b> уже доступний — дивіться у зручний час.\n\n56 хвилин без води: Анна Бабаєва розпитує Антона Рімина про те, як дистриб'ютору зібрати клієнтську базу, ціноутворення, замовлення, склад і фінанси в одну керовану систему.\n\n🔸 01:32 Переїзд з Excel і 1С без хаосу\n🔸 09:01 Ціноутворення: прайси, валюти, знижки\n🔸 26:47 Обмін даними між CRM і 1С\n🔸 30:48 Дебіторка і блокування відвантажень\n🔸 47:51 AI в дистрибуції: що вміє вже сьогодні",
+      buttons:[{label:"Дивитися запис",url:REC}] },
+    { title:"Запис готовий — повідомлення 2 (про нас)", when:"через 1 хвилину після повідомлення 1",
+      note:"Те, що Руслан просив додати: мультивендорність + підтримка + галузева спеціалізація (розмова 12.08, 05:46).",
+      text:"Ще кілька слів, які лишились за кадром 👇\n\nНа вебінарі говорили навколо Zoho — бо саме на ньому зроблені проєкти, які розбирав Антон. Але ми <b>системний інтегратор</b> і працюємо з кількома платформами: Zoho, Odoo, Creatio, Salesforce, HubSpot. Систему підбираємо під ваші процеси, а не навпаки.\n\nІ ми не зникаємо після запуску — ведемо проєкт наскрізно: аудит процесів → впровадження → інтеграції → навчання команди → підтримка.\n\nЦього разу розбирали дистрибуцію, бо працюємо по галузях. Наступний вебінар буде вже про іншу сферу.\n\nХочете розібрати свої процеси? Опишіть задачу — подивимось ваш випадок і скажемо, що варто автоматизувати, а що краще не чіпати.",
+      buttons:[{label:"Поставити питання",url:QF}] }
   ];
 
   function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
   function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   function htmlToPlain(h){return h.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/\n{3,}/g,"\n\n").trim();}
-  function wrapEmail(h){return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.5;color:#1a1a1a;">'+h.replace(/<a href=/g,'<a style="color:#2563EB;" href=')+'</div>';}
+  function wrapEmail(h,gray){var bg=gray?'background:#F5F5F5;padding:20px;border-radius:8px;':'';return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.5;color:#1a1a1a;'+bg+'">'+h.replace(/<a href=/g,'<a style="color:#2563EB;" href=')+'</div>';}
   var toastEl=document.getElementById('toast'),toastT;
   function toast(m){toastEl.textContent=m||"Скопійовано";toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('on');},1400);}
   function done(btn,ico){btn.classList.add('done');btn.innerHTML=checkSvg();setTimeout(function(){btn.classList.remove('done');btn.innerHTML=ico;},1200);}
@@ -498,9 +634,13 @@
         if(bl.t==='text'){
           tc++;
           var f=el('div','field');
-          f.appendChild(el('div','flabel','<span class="badge">текст '+tc+'</span> текстовий блок'));
-          f.appendChild(el('div','content',bl.html));
-          f.appendChild(cornerCopy('Копіювати текст (HTML, Arial 12)',function(b,ic){copyRich(wrapEmail(bl.html),htmlToPlain(bl.html),b,ic);}));
+          var lbl='<span class="badge">текст '+tc+'</span> текстовий блок';
+          if(bl.gray)lbl+=' <span class="badge" style="background:#e8e8e8;color:#555;border-color:#d0d0d0;">сіра заливка #F5F5F5</span>';
+          f.appendChild(el('div','flabel',lbl));
+          var cont=el('div','content',bl.html);
+          if(bl.gray){cont.style.background='#F5F5F5';cont.style.padding='16px';cont.style.borderRadius='8px';}
+          f.appendChild(cont);
+          f.appendChild(cornerCopy('Копіювати текст (HTML, Arial 12)',function(b,ic){copyRich(wrapEmail(bl.html,bl.gray),htmlToPlain(bl.html),b,ic);}));
           L.appendChild(f);
         } else {
           var f=el('div','field');
@@ -594,13 +734,19 @@
     });
     updateProg();
   }
+  window.copyFrom=function(id,btn){
+    var t=document.getElementById(id).textContent;
+    var old=btn.textContent;
+    var ok=function(){btn.textContent='Скопійовано ✓';toast();setTimeout(function(){btn.textContent=old;},1400);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok).catch(function(){fb(t,ok);});}
+    else fb(t,ok);
+  };
   window.switchMain=function(w){
-    document.getElementById('mt-texts').setAttribute('aria-selected',w==='texts');
-    document.getElementById('mt-info').setAttribute('aria-selected',w==='info');
-    document.getElementById('mt-check').setAttribute('aria-selected',w==='check');
-    document.getElementById('view-texts').hidden=(w!=='texts');
-    document.getElementById('view-info').hidden=(w!=='info');
-    document.getElementById('view-check').hidden=(w!=='check');
+    ['texts','yt','info','check'].forEach(function(k){
+      var id=(k==='texts')?'mt-texts':(k==='yt')?'mt-yt':(k==='info')?'mt-info':'mt-check';
+      document.getElementById(id).setAttribute('aria-selected',w===k);
+      document.getElementById('view-'+(k==='texts'?'texts':k)).hidden=(w!==k);
+    });
     window.scrollTo({top:0,behavior:'smooth'});
   };
   renderEmail();
