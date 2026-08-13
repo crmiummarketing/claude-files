@@ -142,7 +142,9 @@
   .cksec h3{margin:0 0 12px;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;}
   .ckprog{margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-3);background:var(--bg);border:1px solid var(--field-line);border-radius:999px;padding:2px 10px;}
   .cklist{display:flex;flex-direction:column;}
-  .ck{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--field-line);}
+  .ck{display:flex;gap:12px;align-items:flex-start;padding:11px 8px;margin:0 -8px;border-top:1px solid var(--field-line);cursor:pointer;border-radius:8px;transition:background .12s;}
+  .ck:hover{background:var(--field);}
+  .ck .m a{cursor:pointer;}
   .ck:first-child{border-top:none;}
   .ckbox{flex:0 0 auto;width:21px;height:21px;border-radius:6px;border:1.5px solid var(--field-line);background:var(--field);display:grid;place-items:center;cursor:pointer;margin-top:1px;transition:.15s;color:transparent;font-size:12px;font-weight:800;user-select:none;}
   .ckbox:hover{border-color:var(--accent);}
@@ -347,7 +349,13 @@ YouTube: https://www.youtube.com/channel/UCiWpa4OOZopTeRApUp_mAjg
   </div>
 
   <div id="view-check" class="check" hidden>
-    <p class="desc" style="color:var(--ink-3);font-size:12.5px;margin:0 0 2px;">Тисни на квадратик, щоб відмітити. Відмітки зберігаються у твоєму браузері.</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 2px;">
+      <p class="desc" style="color:var(--ink-3);font-size:12.5px;margin:0;">Клікай будь-де по рядку, щоб відмітити. Позначки зберігаються у цьому браузері й на цьому пристрої.</p>
+      <button onclick="resetChecklist()" style="border:1px solid var(--field-line);background:var(--field);border-radius:8px;padding:6px 12px;font:600 12px/1 inherit;color:var(--ink-3);cursor:pointer;">Скинути позначки</button>
+    </div>
+    <p id="ck-warn" hidden style="margin:8px 0 0;padding:10px 12px;border-radius:8px;background:#FFF4E5;border:1px solid #F0C48A;color:#7A4A00;font-size:12.5px;">
+      ⚠️ Цей браузер не дає зберігати стан (приватний режим або заблоковані дані сайтів) — позначки зникнуть після перезавантаження. Відкрий сторінку у звичайному вікні.
+    </p>
 
     <div class="cksec you">
       <h3>🟠 До вебінару — Ти <span class="ckprog" data-sec></span></h3>
@@ -400,9 +408,12 @@ YouTube: https://www.youtube.com/channel/UCiWpa4OOZopTeRApUp_mAjg
       <div class="cklist">
         <div class="ck" data-ck="you-post-edit"><span class="ckbox">✓</span><div class="cbody"><div class="t">Змонтувати запис і залити на YouTube</div><div class="m">прибрати паузи, прискорити, об'єднати з записом з OBS</div></div></div>
         <div class="ck" data-ck="you-post-reclink"><span class="ckbox">✓</span><div class="cbody"><div class="t">Надіслати Claude посилання на запис (YouTube)</div></div></div>
-        <div class="ck" data-ck="you-post-zohoworkflow"><span class="ckbox">✓</span><div class="cbody"><div class="t">Зробити воркфлоу у Zoho (лист на отримання запису) (Руслан Крикун)</div><div class="m">по order_type <code>record-webinar-distribution</code></div></div></div>
-        <div class="ck" data-ck="you-post-chain"><span class="ckbox">✓</span><div class="cbody"><div class="t">Переписати вітальний ланцюжок бота → «отримати запис»</div><div class="m">текст — вкладка «Тексти» → Telegram → «Корінь бота — версія запис»</div></div></div>
-        <div class="ck" data-ck="you-post-swaptemplate"><span class="ckbox">✓</span><div class="cbody"><div class="t">Замінити шаблон сторінки реєстрації на «отримати запис»</div><div class="m">та сама сторінка — не створюємо нову</div></div></div>
+        <div class="ck done" data-ck="you-post-swaptemplate"><span class="ckbox">✓</span><div class="cbody"><div class="t">Замінити шаблон сторінки реєстрації на «отримати запис»</div><div class="m">✅ зроблено 12.08 — та сама сторінка <code>/uk/webinar-distribution-2026/</code>, URL не змінювався. Claude зробив свап + переписав SEO-мету</div></div></div>
+        <div class="ck done" data-ck="you-post-zohoworkflow"><span class="ckbox">✓</span><div class="cbody"><div class="t">Змінити воркфлоу в Zoho CRM: лист із записом при заповненні форми</div><div class="m">✅ перевірено 12.08 — тригер по <code>record-webinar-distribution-2026</code>, лист приходить</div></div></div>
+        <div class="ck done" data-ck="you-post-chain"><span class="ckbox">✓</span><div class="cbody"><div class="t">Бот: переписати вітальне повідомлення в корені → версія «запис»</div><div class="m">✅ зроблено 11.08 · текст — вкладка «Тексти» → Telegram → «Корінь бота — версія запис»</div></div></div>
+        <div class="ck done" data-ck="you-post-botflow"><span class="ckbox">✓</span><div class="cbody"><div class="t">Бот: переписати ланцюжок вебінару → віддає запис замість реєстрації</div><div class="m">✅ зроблено 11.08 · deep-link <b>не змінюється</b> — перемикається вміст самого ланцюжка в SendPulse</div></div></div>
+        <div class="ck" data-ck="you-post-sendrec"><span class="ckbox">✓</span><div class="cbody"><div class="t">Відправити розсилку із записом — email, потім Telegram</div><div class="m">⚠️ спершу email (Zoho Mass Email по <code>Registration_Form</code>), через паузу — Telegram: підписники бота сильно перетинаються з реєстраціями, одночасна відправка дасть дубль. Тексти — вкладка «Тексти»</div></div></div>
+        <div class="ck" data-ck="you-post-nastia"><span class="ckbox">✓</span><div class="cbody"><div class="t">Настя надсилає персональний лист із пропозицією зустрічі</div><div class="m">окремо від масової розсилки, зі своєї пошти — домовленість із Русланом 12.08</div></div></div>
       </div>
     </div>
 
@@ -737,11 +748,32 @@ YouTube: https://www.youtube.com/channel/UCiWpa4OOZopTeRApUp_mAjg
         try{localStorage.setItem('wd-ck:'+id, now?'1':'0');}catch(e){}
         updateProg();
       }
-      box.addEventListener('click',toggle);
-      box.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle();}});
+      // клікабельний УВЕСЬ рядок, а не квадратик 21px — інакше не влучиш
+      ck.addEventListener('click',function(e){
+        if(e.target.closest('a'))return;              // не перехоплюємо посилання
+        if(String(window.getSelection()))if(window.getSelection().toString().length>2)return; // не збиваємо виділення тексту
+        toggle();
+      });
+      box.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();e.stopPropagation();toggle();}});
     });
     updateProg();
+    checkStorage();
   }
+
+  // чи взагалі зберігається стан у цьому браузері
+  function checkStorage(){
+    var ok=true;
+    try{localStorage.setItem('wd-probe','1');localStorage.removeItem('wd-probe');}catch(e){ok=false;}
+    var w=document.getElementById('ck-warn');
+    if(w)w.hidden=ok;
+  }
+  window.resetChecklist=function(){
+    if(!confirm('Зняти всі позначки в чеклисті?'))return;
+    document.querySelectorAll('#view-check .ck').forEach(function(ck){
+      try{localStorage.removeItem('wd-ck:'+ck.getAttribute('data-ck'));}catch(e){}
+    });
+    location.reload();
+  };
   window.copyFrom=function(id,btn){
     var t=document.getElementById(id).textContent;
     var old=btn.textContent;
