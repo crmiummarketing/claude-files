@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Аналіз мікросегментів для просування Zoho — CRMiUM</title>
+<style>
+:root{
+  --ink:#15171C; --ink-2:#3D4350; --dim:#6B7280; --line:#E3E6EB; --bg:#FFFFFF;
+  --soft:#F6F7F9; --acc:#EF652F; --acc-soft:#FDEEE7;
+  --ok:#1E7F4F; --ok-soft:#E8F5EE; --ok-line:#BFE2CE;
+  --warn:#9A6B00; --warn-soft:#FCF3DF; --warn-line:#EBD9A8;
+  --bad:#B3261E; --bad-soft:#FBE9E7; --bad-line:#F2C4BF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--soft);color:var(--ink);
+  font:15px/1.55 Inter,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;background:var(--bg);box-shadow:0 1px 3px rgba(21,23,28,.08)}
+.pad{padding:0 46px}
+
+header{background:var(--ink);color:#fff;padding:26px 46px 24px}
+.logo{font-weight:800;letter-spacing:-.02em;font-size:17px;margin-bottom:16px;display:block}
+.logo i{color:var(--acc);font-style:normal}
+h1{margin:0 0 10px;font-size:29px;line-height:1.2;font-weight:700;letter-spacing:-.02em}
+.sub{font-size:15px;color:#C4CAD4;max-width:760px;margin:0;line-height:1.55}
+
+h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+  font-weight:700;margin:34px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h2 span{color:var(--acc)}
+h3{font-size:15.5px;margin:0 0 7px;font-weight:650;letter-spacing:-.01em}
+p{margin:0 0 11px}
+small,.note{font-size:12.5px;color:var(--dim);line-height:1.5}
+strong{font-weight:650}
+
+.callout{background:var(--acc-soft);border-left:4px solid var(--acc);
+  border-radius:0 10px 10px 0;padding:14px 19px;margin:0 0 12px}
+.callout.warn{background:var(--warn-soft);border-color:#D9A400}
+.callout p:last-child{margin-bottom:0}
+
+.grid{display:grid;gap:13px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
+.card p{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin:0}
+.card p b{color:var(--ink)}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 10px}
+th{text-align:left;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--dim);font-weight:700;padding:0 10px 8px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:0}
+td.n{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:650}
+.nm{font-weight:650}
+.geo{font-size:11px;font-weight:700;color:var(--dim);border:1px solid var(--line);
+  border-radius:5px;padding:1px 5px;margin-left:5px;white-space:nowrap}
+.up{color:var(--ok);font-weight:700;white-space:nowrap}
+.flat{color:var(--warn);font-weight:700;white-space:nowrap}
+tr.head td{background:var(--soft);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-2);padding:8px 10px}
+.tag{font-size:11.5px;padding:2px 9px;border-radius:999px;background:var(--soft);
+  border:1px solid var(--line);color:var(--ink-2);font-weight:600;white-space:nowrap}
+.tag.w{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn)}
+.tag.r{background:var(--bad-soft);border-color:var(--bad-line);color:var(--bad)}
+
+ul.clean{margin:0;padding-left:0;list-style:none}
+ul.num{counter-reset:n}
+ul.num li{counter-increment:n;padding-left:27px;margin-bottom:10px;position:relative;line-height:1.5}
+ul.num li::before{content:counter(n);color:#fff;background:var(--acc);width:19px;height:19px;
+  border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;
+  position:absolute;left:0;top:3px;font-weight:700}
+
+footer{padding:22px 46px 30px;color:var(--dim);font-size:12.5px;line-height:1.55;
+  border-top:1px solid var(--line);margin-top:30px}
+footer b{color:var(--ink-2)}
+
+@media (max-width:900px){
+  .pad,header,footer{padding-left:22px;padding-right:22px}
+  .g3{grid-template-columns:1fr}
+  h1{font-size:23px}table{font-size:12.5px}
+}
+@media print{
+  body{background:#fff}.page{box-shadow:none;max-width:none}
+  h2{break-after:avoid}.card,.callout{break-inside:avoid}tr{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <span class="logo">CRM<i>i</i>UM</span>
+  <h1>Аналіз мікросегментів для просування Zoho</h1>
+  <p class="sub">Перевірили 28 гіпотез про те, у які вузькі сегменти є сенс іти окремо — зі своєю
+    посадковою, вебінаром і аутрічем. Нижче перелік із цифрами, потім відкинуті гіпотези,
+    канали просування і висновки.</p>
+</header>
+
+<div class="pad">
+
+<h2>Як <span>шукали</span></h2>
+<table>
+  <thead><tr><th style="width:22%">Джерело гіпотез</th><th style="width:44%">Що саме дивились</th><th style="width:34%">Що це дало</th></tr></thead>
+  <tbody>
+    <tr><td class="nm">Власні гіпотези</td>
+      <td>Галузі, де видно рух, є знайомства або відчувається попит</td>
+      <td>Більшість переліку — далі кожну перевіряли цифрами</td></tr>
+    <tr><td class="nm">Ринкові дані</td>
+      <td>Вакансії й зарплати, реєстрації нових бізнесів, галузеві підсумки, рейтинги виручки, урядові реєстри</td>
+      <td>Де реально з'являються гроші й наймають людей</td></tr>
+    <tr><td class="nm">Технічний слід</td>
+      <td>Які системи стоять на сайтах українських компаній</td>
+      <td>Поіменні списки компаній замість оцінок</td></tr>
+  </tbody>
+</table>
+<p class="note">Критерії відбору: ніша росте або хоча б не падає · є гроші, попит і конкуренція ·
+  обсяг 50–200 компаній · чи можемо дотягнутись (кейс, експерт, посадкова, канал).
+  <b class="up">↗↗</b> швидко росте · <b class="up">↗</b> росте · <b class="flat">→</b> стабільна.
+  ⚠️ = оцінка, без позначки = публічний реєстр.</p>
+
+<h2>Перелік <span>гіпотез</span></h2>
+<table>
+  <thead><tr>
+    <th style="width:25%">Мікросегмент</th><th style="width:9%">Компаній</th><th style="width:5%">Дин.</th>
+    <th style="width:36%">Чим доведено</th><th style="width:25%">Що в нас уже є</th>
+  </tr></thead>
+  <tbody>
+    <tr class="head"><td colspan="5">Український ринок</td></tr>
+
+    <tr><td class="nm">Приватні школи 100+ учнів і мережі</td><td class="n">⚠️ 150–200</td><td class="up">↗↗</td>
+      <td>570 приватних шкіл проти 282 у 2019; учнів 40 → 104 тис.; топ-10 шкіл — 1,8 млрд грн виручки</td>
+      <td>Вебінар 16.09 готується, лендинг, кейси й відгуки</td></tr>
+
+    <tr><td class="nm">Дистанційні онлайн-школи з учнями за кордоном</td><td class="n">⚠️ 60–120</td><td class="up">↗↗</td>
+      <td>~400 тис. дітей учаться повністю онлайн; лідер ринку — 402 млн грн виручки</td>
+      <td>Та сама аудиторія; оплати в EUR</td></tr>
+
+    <tr><td class="nm">Експертні онлайн-школи для дорослих</td><td class="n">⚠️ 100–200</td><td class="up">↗</td>
+      <td>EdTech — 31 % стартапів країни; чеки на запусках високі</td>
+      <td>Кейси в сегменті є</td></tr>
+
+    <tr><td class="nm">Мережі приватних клінік і лабораторій (3+ філії)</td><td class="n">⚠️ 50–80</td><td class="up">↗↗</td>
+      <td>Ринок <b>+40 % за 2025</b>; топ-20 клінік понад 16 млрд грн; лабринок +25 % у грошах</td>
+      <td>Healthcare-лендинг, клієнти-клініки</td></tr>
+
+    <tr><td class="nm">Приватні реабцентри і протезні підприємства</td><td class="n">~50 + ⚠️ 100–150</td><td class="up">↗↗</td>
+      <td>8 млрд грн на протези у 2026 (+60 %); 315 тис. пацієнтів реабілітації за НСЗУ</td>
+      <td>Healthcare-практика</td></tr>
+
+    <tr><td class="nm">Мережі клінік естетичної медицини</td><td class="n">⚠️ 30–50</td><td class="up">↗</td>
+      <td>Ринок +6,6–10 % на рік; лідер — 75 філій у 46 містах</td>
+      <td>Кілька клієнтів; у малих домінує софт запису</td></tr>
+
+    <tr><td class="nm">Дистриб'ютори енергообладнання (генератори, ДБЖ, інвертори)</td><td class="n">⚠️ 50–120</td><td class="up">↗↗</td>
+      <td>Ринок 8,2 млрд грн, <b>+65 %</b>; 2,5 млрд субвенцій громадам; закупівлі <b>без тендерів</b> за постановою КМУ №112</td>
+      <td>Кейсу немає; поріг топ-20 — 100 млн грн доходу</td></tr>
+
+    <tr><td class="nm">EPC-компанії: комерційні СЕС і накопичувачі</td><td class="n">⚠️ 100–200</td><td class="up">↗↗</td>
+      <td>1,5 ГВт нових СЕС у 2025 — вдвічі більше за 2024; прогноз на 2026 такий самий</td>
+      <td>Кейсу немає</td></tr>
+
+    <tr><td class="nm">Експедитори збірних вантажів EU↔UA</td><td class="n">⚠️ 100–150</td><td class="up">↗</td>
+      <td>Частка авто в міжнародних потоках 68 %; лідер подвоює мережу в ЄС</td>
+      <td><b>Найбільший наш Zoho-кейс</b> і профільний експерт</td></tr>
+
+    <tr><td class="nm">Дистриб'ютори спортхарчу і добавок</td><td class="n">⚠️ 50–100</td><td class="up">↗</td>
+      <td>Сегмент +24,8 % у грошах за 2025; 12,1 % аптечного кошика</td>
+      <td>Є вихід на гравця в сегменті</td></tr>
+
+    <tr><td class="nm">Дистриб'ютори насіння, ЗЗР і добрив</td><td class="n">⚠️ 60–100</td><td class="flat">→</td>
+      <td>Топ-10 тримає 55–70 % ринку; не падає, але й не росте</td>
+      <td>Кейси в сегменті є</td></tr>
+
+    <tr><td class="nm">Українські фармвиробники</td><td class="n">50+</td><td class="up">↗↗</td>
+      <td>Ринок 194 млрд грн, +13–16 %; експорт +20 %; медпредставники — задача для CRM</td>
+      <td>Клієнт у фармі є; великі часто на SAP</td></tr>
+
+    <tr><td class="nm">Постачальники компонентів для оборонки</td><td class="n">⚠️ 100–200</td><td class="up">↗↗</td>
+      <td>Дрони 2,2 → 4,5 млн, план 7 млн+; гранти на локалізацію компонентів до €200 тис.</td>
+      <td>Досвід у MilTech, профільний експерт</td></tr>
+
+    <tr><td class="nm">Оператори розмінування</td><td class="n">137</td><td class="up">↗↗</td>
+      <td>Зобов'язання донорів понад $1,6 млрд. ⚠️ Але «в полі» працюють лише <b>8</b> операторів</td>
+      <td>Нічого; водночас найнижча конкуренція</td></tr>
+
+    <tr><td class="nm">Компанії на Bitrix24 / amoCRM</td><td class="n">73<br><small>із 398</small></td><td class="flat">→</td>
+      <td>Зібрали список: 398 доменів зі слідом, 227 підтверджено зараз, 73 не роздріб і з контактами.
+        ⚠️ Пошукового попиту на міграцію немає — <b>0 запитів на місяць</b>; хвиля відмов від російського софту пройшла у 2023</td>
+      <td>Готовий список із контактами. Але список не дорівнює ліду — без ресурсу на дзвінки чи аутріч він лежить</td></tr>
+
+    <tr><td class="nm">Виробники модульних укриттів</td><td class="n">⚠️ 20–50</td><td class="up">↗</td>
+      <td>113 шкільних укриттів у 22 областях + 61 проєкт на 2,73 млрд грн</td>
+      <td>Нічого; продажі через Prozorro</td></tr>
+
+    <tr><td class="nm">Компанії з підбору та імпорту авто зі США</td><td class="n">⚠️ 100–150</td><td class="up">↗</td>
+      <td>США — 43 % імпорту авто; липень +8 % р/р</td>
+      <td>Типова компанія 5–15 осіб — нижче нашого профілю</td></tr>
+
+    <tr><td class="nm">Оренда генераторів і спецтехніки</td><td class="n">⚠️ 100–200</td><td class="up">↗</td>
+      <td>Оренда стала «як страховка»; власна станція 100 кВт — від 1 млн грн</td>
+      <td>Компанії малі, потрібен облік техніки, а не CRM</td></tr>
+
+    <tr><td class="nm">Психологічні центри</td><td class="n">⚠️ 50–100</td><td class="flat">попит ↗<br>гроші ↓</td>
+      <td>Держава розгорнула <b>безоплатну</b> допомогу: 152 центри, 118 тис. пацієнтів</td>
+      <td>Кілька клієнтів; чек низький</td></tr>
+
+    <tr><td class="nm">Агенції із залучення іноземних робітників</td><td class="n">⚠️ 20–50</td><td class="flat">→</td>
+      <td>За I квартал 2026 по всій країні лише ~3 тис. дозволів — ринок не сформувався</td>
+      <td>Нічого</td></tr>
+
+    <tr class="head"><td colspan="5">Експорт з України — виручка у валюті</td></tr>
+
+    <tr><td class="nm">Харчопереробники з правом експорту в ЄС</td><td class="n">229</td><td class="up">↗</td>
+      <td>Частка переробки в агроекспорті 43 → 57 %; виручка +8,3 % при обсягах +1,2 %</td>
+      <td>Список публічний; євроаудит = зрілі процеси</td></tr>
+
+    <tr><td class="nm">Виробники вікон і фасадів з дилерами в ЄС</td><td class="n">⚠️ 30–80</td><td class="flat">↗ лише<br>експорт</td>
+      <td>Експорт €51,87 млн за 2025. ⚠️ Внутрішній попит при цьому <b>впав</b></td>
+      <td>Клієнт у сегменті є; галузь у кадровому голоді</td></tr>
+
+    <tr><td class="nm">Швейні фабрики під приватні лейбли ЄС</td><td class="n">⚠️ 150–300</td><td class="up">↗</td>
+      <td>80 % текстильного експорту вже в ЄС, але Україна дає лише 1,3 % імпорту одягу</td>
+      <td>Нічого; маржа низька</td></tr>
+
+    <tr><td class="nm">Машинобудівники з майданчиком у ЄС</td><td class="n">⚠️ 50–100</td><td class="up">↗</td>
+      <td>Заводи переносять у ЄС, з'являються СП з європейцями</td>
+      <td>Нічого; часто просять ERP, а не CRM</td></tr>
+
+    <tr class="head"><td colspan="5">Закордонні ринки</td></tr>
+
+    <tr><td class="nm">Оборонні МСП Польщі та Балтії <span class="geo">EN</span></td><td class="n">⚠️ 150–250</td><td class="up">↗↗</td>
+      <td>Оборонні витрати ЄС €418 → €454 млрд; Польща 4,8 % ВВП і €43,7 млрд кредитів SAFE</td>
+      <td>Досвід у MilTech як доказ; є вихід на профільні івенти</td></tr>
+
+    <tr><td class="nm">Міграційно-юридичні компанії для українців у ЄС <span class="geo">PL · DE</span></td><td class="n">⚠️ 150–400</td><td class="up">↗↗</td>
+      <td>У Німеччині 28,7 % українців під захистом у ЄС, у Польщі 22,3 %; з 27.04.2026 нова посвідка CUKR — хвиля заяв</td>
+      <td>Суміжні клієнти в PL і FR є</td></tr>
+
+    <tr><td class="nm">Агенції освіти за кордоном</td><td class="n">≈80</td><td class="up">↗</td>
+      <td>З 28.08.2025 дозволено виїзд 18–22 на навчання: лише через Польщу за перший місяць 10 тис.</td>
+      <td>Клієнти є; команди 5–20 осіб</td></tr>
+
+    <tr><td class="nm">Українські перевізники і брокери в США та Канаді</td><td class="n">⚠️ 300–600</td><td class="up">↗</td>
+      <td>Ринок у ранньому відновленні: spot +20 % р/р. ⚠️ Маржа брокерів стискається</td>
+      <td>Логістичні кейси й мова; кейсів у США немає, різниця часу 7–10 год</td></tr>
+  </tbody>
+</table>
+
+<h2>Гіпотези, які дані <span>не підтвердили</span></h2>
+<table>
+  <thead><tr><th style="width:28%">Гіпотеза</th><th style="width:52%">Що показали дані</th><th style="width:20%">Вердикт</th></tr></thead>
+  <tbody>
+    <tr><td class="nm">Виробники вікон ростуть, бо прильоти вибивають вікна</td>
+      <td>Внутрішній попит <b>впав</b>; ціни +30–40 % — це подорожчання комплектуючих. Біль галузі — кадри, а не збут: до двох місяців черги на монтаж</td>
+      <td><span class="tag r">знято</span><br><small>жива лише експортна частина</small></td></tr>
+    <tr><td class="nm">HoReCa і рітейл відновлюються</td>
+      <td>Єдині два сектори, які не відскочили після зимової кризи</td>
+      <td><span class="tag r">знято</span></td></tr>
+    <tr><td class="nm">ІТ як платоспроможна ніша</td>
+      <td>Зарплати в ІТ вперше скорочуються, тоді як в інженерів ростуть</td>
+      <td><span class="tag r">знято</span></td></tr>
+    <tr><td class="nm">AI-хайп означає ринок</td>
+      <td>AI-вакансій на Work.ua трохи більше сотні зі 100 тисяч</td>
+      <td><span class="tag r">не ніша</span><br><small>лишається темою контенту</small></td></tr>
+    <tr><td class="nm">Приплив іноземних робітників створює ринок</td>
+      <td>~3 тис. дозволів за квартал по всій країні</td>
+      <td><span class="tag w">рано</span></td></tr>
+    <tr><td class="nm">Будівельна відбудова вже дає B2B-попит</td>
+      <td>Ремонти йдуть держпрограмами й нацбригадами — гроші не в приватному циклі</td>
+      <td><span class="tag w">рано</span></td></tr>
+    <tr><td class="nm">Нове європейське вуглецеве мито підштовхне експортерів купувати системи</td>
+      <td>ЄС з 2026 бере доплату за вуглецевий слід імпорту — це б'є по металургії, цементу й добривах. Обов'язок звітувати з'явився, але галузь від цього біднішає: втрати експортерів оцінюють у $4,7 млрд за 2026–2030</td>
+      <td><span class="tag r">знято</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Канали, якими можна просувати <span>сегмент</span></h2>
+<table>
+  <thead><tr><th style="width:24%">Канал</th><th style="width:30%">Яка аудиторія потрібна</th><th style="width:46%">Що він дає і де межа</th></tr></thead>
+  <tbody>
+    <tr><td class="nm">Google Пошук</td><td>Не розмір, а наявність запитів</td>
+      <td>Найкращі заявки — людина вже шукає рішення. Але якщо в ніші запитів немає, трафіку не буде за жодні гроші</td></tr>
+    <tr><td class="nm">Meta, реклама на свій список</td><td>Від <b>100 зіставлених</b> людей, тобто фактично від 300–500 контактів: B2B-список зіставляється з профілями лише на 20–50 %</td>
+      <td>Дає дотик і впізнаваність. Заявки звідси рідко доходять до угоди — це верх воронки, а не джерело продажів</td></tr>
+    <tr><td class="nm">Meta, схожа аудиторія</td><td>Сід від 100, стабільно від <b>1 000</b></td>
+      <td>Розширює охоплення. На меншому сіді алгоритм будує неточну аудиторію</td></tr>
+    <tr><td class="nm">Meta, стабільна робота алгоритму</td><td><b>~50 конверсій на тиждень</b> на групу оголошень</td>
+      <td>Без цього кампанія не виходить із фази навчання: ціна стрибає, результат неповторюваний</td></tr>
+    <tr><td class="nm">LinkedIn Ads</td><td>Від <b>300 зіставлених</b>, рекомендація платформи — від 50 000</td>
+      <td>Єдиний канал із точним таргетингом по посаді. На малих аудиторіях дорого і швидко вигорає</td></tr>
+    <tr><td class="nm">Email-хвилі по базі</td><td><b>250–500 адрес на один SQL</b> навіть в оптимістичному сценарії</td>
+      <td>Дешево, але потрібні тисячі адрес, щоб вийшов передбачуваний потік</td></tr>
+    <tr><td class="nm">LinkedIn-аутріч вручну</td><td>Мінімуму немає. Обмеження — час: 300–500 доторків на місяць на одного SDR</td>
+      <td>Працює на будь-якому розмірі сегмента. Плата за це — низька конверсія з доторку: рахунок іде на частки відсотка</td></tr>
+    <tr><td class="nm">Галузеві події, партнери, офлайн</td><td>Мінімуму немає</td>
+      <td>Чим вужчий сегмент, тим краще працює: на профільній виставці вся зала цільова</td></tr>
+    <tr><td class="nm">Вебінар</td><td>Мінімуму немає, але аудиторію треба привести з бази, партнерів, аутрічу або реклами</td>
+      <td>Найдешевший формат, який ми можемо запускати часто. Це конвертер, а не джерело трафіку</td></tr>
+  </tbody>
+</table>
+
+<h2>Висновки</h2>
+
+<p>Усі чотири критерії одночасно проходить приблизно половина переліку. Різницю робить те,
+  чи можемо ми зайти туди зараз, а не через три місяці підготовки.</p>
+
+<div class="grid g3">
+  <div class="card"><h3>Можемо стартувати одразу</h3>
+    <p>Освіта (приватні й дистанційні школи), логістика EU↔UA, мережі приватних клінік,
+      оборонні МСП Польщі та Балтії. Є кейс, експерт або готова посадкова.</p></div>
+  <div class="card"><h3>Найшвидше зростання, без кейсу</h3>
+    <p>Енергообладнання, комерційні СЕС і накопичувачі, харчопереробники-експортери, фармвиробники.
+      Гроші очевидні, але першого клієнта брати «за кейс».</p></div>
+  <div class="card"><h3>Найдешевший вхід</h3>
+    <p>Оператори розмінування — 137 у реєстрі й майже ніхто з ними не працює. ⚠️ У полі реально
+      працюють 8 із 137 — спершу 5–10 дзвінків на перевірку.</p></div>
+</div>
+
+<div class="callout" style="margin-top:14px">
+  <p><strong>Скільки пілотів брати.</strong> Оптимально три — по одному з кожної групи: один дає
+    результат швидко на готовому активі, другий перевіряє найбільший ринок, третій стоїть дешево.
+    Кожен сегмент — це окрема посадкова, офер, вебінар і список, тому п'ять одночасно означає,
+    що жоден не буде зроблений як слід.</p>
+</div>
+
+<div class="callout warn">
+  <p><strong>Що змінюється, коли сегмент дуже вузький.</strong> Платні канали мають технічний поріг:
+    щоб таргетинг був стабільним і не стрибав у ціні, потрібна аудиторія приблизно <b>від тисячі
+    контактів</b> у сегменті, а щоб алгоритм оптимізувався — ще й 50 конверсій на тиждень.
+    Нижче цього реклама або не запускається, або працює ривками, і платити доводиться більше за
+    той самий результат. Тому сегмент на 10–50 компаній — це не рекламна задача: там працюють
+    аутріч, події, партнери й вебінар, а маркетинг дає матеріали — посадкову, демку, кейс — але не потік заявок.
+    Це не аргумент проти вузьких ніш: вузькість дає кращий офер і кращу конверсію в розмові.
+    Просто чим вужче ми йдемо, тим менше залишається каналів і тим більше результат залежить
+    від ручної роботи продажу.</p>
+  <p>Друге, що варто врахувати: на десяти компаніях нічого не виміряти. Одна угода з десяти — це 10 %,
+    дві — 20 %; це випадковість, а не конверсія. Щоб порівняти гіпотези між собою і ухвалити рішення
+    на цифрах, потрібні десятки однотипних дотиків.</p>
+</div>
+
+<h2>Відкриті питання</h2>
+<ul class="clean num">
+  <li><b>Чи лишаються приватна медицина і фарма в пріоритетному переліку галузей.</b>
+    Медицина була в шістці індустрій під лендинги з червня, але востаннє перелік переглядали без неї.</li>
+  <li><b>Чи називаємо російські системи в офері про міграцію.</b> У нас правило не згадувати їх
+    як альтернативи; тут вони згадуються як те, від чого клієнт іде.</li>
+  <li><b>Критерій успіху пілоту.</b> Пропонуємо міряти конверсію SQL→продаж усередині ніші при жорсткому фільтрі
+    на вході, а не кількість лідів.</li>
+</ul>
+
+</div>
+
+<footer>
+  <b>Джерела.</b> Ринкові дані: Work.ua і Robota.ua, Opendatabot, Forbes Ukraine, YouControl.Market,
+  галузеві підсумки та урядові реєстри. Технічний слід: HTTP Archive, Google Keyword Planner, Meta Ad Library.
+  Мінімуми рекламних майданчиків — з довідок Meta, LinkedIn і Google; Де кількість компаній не публікується — дано діапазон. Дані станом на 11.09.2026.
+</footer>
+
+</div>
+</body>
+</html>
