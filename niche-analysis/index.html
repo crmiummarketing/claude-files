@@ -43,12 +43,20 @@ strong{font-weight:650}
 .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
 .card p{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin:0}
 .card p b{color:var(--ink)}
+.card table{border:0;margin:0}
+.card table td{border-right:0}
 
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 10px;
+  border:1px solid var(--line);border-radius:10px;overflow:hidden}
 th{text-align:left;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--dim);font-weight:700;padding:0 10px 8px;border-bottom:1px solid var(--line)}
-td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
-tr:last-child td{border-bottom:0}
+  color:var(--ink-2);font-weight:700;padding:10px;background:var(--soft);
+  border-bottom:2px solid var(--line);border-right:1px solid var(--line)}
+th:last-child{border-right:0}
+td{padding:10px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+  vertical-align:top;line-height:1.45}
+td:last-child{border-right:0}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even):not(.head) td{background:#FBFCFD}
 td.n{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:650}
 .nm{font-weight:650}
 .geo{font-size:11px;font-weight:700;color:var(--dim);border:1px solid var(--line);
@@ -337,15 +345,7 @@ footer b{color:var(--ink-2)}
     на цифрах, потрібні десятки однотипних дотиків.</p>
 </div>
 
-<h2>Відкриті питання</h2>
-<ul class="clean num">
-  <li><b>Чи лишаються приватна медицина і фарма в пріоритетному переліку галузей.</b>
-    Медицина була в шістці індустрій під лендинги з червня, але востаннє перелік переглядали без неї.</li>
-  <li><b>Чи називаємо російські системи в офері про міграцію.</b> У нас правило не згадувати їх
-    як альтернативи; тут вони згадуються як те, від чого клієнт іде.</li>
-  <li><b>Критерій успіху пілоту.</b> Пропонуємо міряти конверсію SQL→продаж усередині ніші при жорсткому фільтрі
-    на вході, а не кількість лідів.</li>
-</ul>
+
 
 </div>
 
